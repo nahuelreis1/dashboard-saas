@@ -1,0 +1,37 @@
+---
+// src/pages/login.astro
+import '../styles/globals.css';
+---
+
+<!DOCTYPE html>
+<html lang="es" class="h-full bg-white">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Login | AI Agents</title>
+</head>
+<body class="h-full flex flex-col justify-center items-center p-8 bg-slate-50">
+    <div class="w-full max-w-sm space-y-8 bg-white p-10 rounded-2xl shadow-xl border border-slate-100">
+        <div class="text-center">
+            <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">AI Agents MVP</h1>
+            <p class="mt-2 text-sm text-slate-500 font-medium">Dashboard SaaS para Agentes Inteligentes</p>
+        </div>
+
+        <div class="mt-10">
+            <a 
+                href="/dashboard" 
+                class="w-full flex items-center justify-center gap-3 px-6 py-3 border border-slate-300 rounded-xl bg-white hover:bg-slate-50 text-slate-700 font-semibold transition-all shadow-sm active:scale-95 group"
+            >
+                <img src="https://www.google.com/favicon.ico" class="w-5 h-5 group-hover:scale-110 transition-transform" alt="Google" />
+                Iniciar sesión con Google
+            </a>
+            
+            <p class="mt-6 text-center text-xs text-slate-400">
+                Al continuar, aceptas nuestros términos de servicio y política de privacidad.
+            </p>
+        </div>
+    </div>
+    
+    <p class="mt-8 text-slate-400 text-sm font-medium">Built with Astro SSR + Node.js</p>
+</body>
+</html>

@@ -1,0 +1,19 @@
+---
+// src/pages/config.astro
+import DashboardLayout from '../layouts/DashboardLayout.astro';
+import AgentConfigForm from '../components/AgentConfigForm';
+---
+
+<DashboardLayout title="Configuración del Agente">
+  <div class="max-w-4xl">
+    <div class="mb-8">
+      <h3 class="text-lg font-bold text-slate-900 mb-2">Personaliza la Inteligencia</h3>
+      <p class="text-slate-500">
+        Aquí es donde defines quién es tu agente, qué sabe hacer y cuál es su tono de voz. 
+        Este prompt se envía junto con cada mensaje para guiar a la IA.
+      </p>
+    </div>
+
+    <AgentConfigForm client:load />
+  </div>
+</DashboardLayout>

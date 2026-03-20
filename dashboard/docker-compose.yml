@@ -1,0 +1,39 @@
+# Docker Compose Configuration for Dashboard MVP
+# Astro SSR + PostgreSQL 16
+services:
+  dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: dashboard_app
+    ports:
+      - "4321:4321"
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=postgresql://dashboard_user:dashboard_pass@postgres:5432/dashboard_db
+      - PORT=4321
+      - HOST=0.0.0.0
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: dashboard_db
+    environment:
+      - POSTGRES_USER=dashboard_user
+      - POSTGRES_PASSWORD=dashboard_pass
+      - POSTGRES_DB=dashboard_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ../db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U dashboard_user -d dashboard_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+volumes:
+  postgres_data:

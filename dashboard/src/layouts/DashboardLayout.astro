@@ -1,0 +1,67 @@
+---
+import '../styles/globals.css';
+
+interface Props {
+	title: string;
+}
+
+const { title } = Astro.props;
+
+const navItems = [
+	{ name: 'Dashboard', href: '/dashboard', icon: 'LayoutDashboard' },
+	{ name: 'Configuración', href: '/config', icon: 'Settings' },
+	{ name: 'Base de Conocimiento', href: '/knowledge', icon: 'Database' },
+];
+---
+
+<!doctype html>
+<html lang="es" class="h-full bg-slate-50">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content="Dashboard de Agentes IA" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title} | AI Agents Dashboard</title>
+	</head>
+	<body class="h-full flex">
+		<!-- Sidebar -->
+		<aside class="w-64 bg-white border-r border-slate-200 hidden md:flex flex-col fixed h-full">
+			<div class="p-6 border-b border-slate-100">
+				<h1 class="text-xl font-bold text-slate-900 tracking-tight">AI Agents MVP</h1>
+			</div>
+			
+			<nav class="flex-1 p-4 space-y-1">
+				{navItems.map((item) => (
+					<a
+						href={item.href}
+						class="flex items-center gap-3 px-3 py-2 text-slate-600 rounded-lg hover:bg-slate-100 hover:text-slate-900 transition-colors"
+					>
+						<span class="text-sm font-medium">{item.name}</span>
+					</a>
+				))}
+			</nav>
+
+			<div class="p-4 border-t border-slate-100">
+				<div class="flex items-center gap-3 px-3 py-2 text-slate-600">
+					<div class="w-8 h-8 rounded-full bg-slate-200"></div>
+					<div class="flex-1 overflow-hidden">
+						<p class="text-sm font-medium text-slate-900 truncate">Usuario Pro</p>
+						<p class="text-xs text-slate-500 truncate">pro@nrlabs.ia</p>
+					</div>
+				</div>
+			</div>
+		</aside>
+
+		<!-- Main Content -->
+		<main class="flex-1 md:ml-64 flex flex-col min-h-screen">
+			<header class="h-16 bg-white border-b border-slate-200 flex items-center px-8">
+				<h2 class="text-lg font-semibold text-slate-900">{title}</h2>
+			</header>
+			
+			<div class="p-8 max-w-7xl mx-auto w-full">
+				<slot />
+			</div>
+		</main>
+	</body>
+</html>
