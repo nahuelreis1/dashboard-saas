@@ -166,7 +166,7 @@ const AgentConfigForm: React.FC = () => {
                   : 'border-[var(--border)] bg-[var(--card)] hover:bg-[var(--muted)]'
               }`}
             >
-              <SiWoocommerce className={`w-6 h-6 ${formData.ecommerce === 'woocommerce' ? 'text-[var(--color-accent-base)]' : 'text-[var(--muted-foreground)]'}`} />
+              <SiWoocommerce className={`w-6 h-6 ${formData.ecommerce === 'woocommerce' ? 'text-[#873EFF]' : 'text-[var(--muted-foreground)]'}`} />
               <span className={`text-sm font-medium ${formData.ecommerce === 'woocommerce' ? 'text-[var(--foreground)]' : 'text-[var(--muted-foreground)]'}`}>
                 WooCommerce
               </span>
@@ -181,7 +181,7 @@ const AgentConfigForm: React.FC = () => {
                   : 'border-[var(--border)] bg-[var(--card)] hover:bg-[var(--muted)]'
               }`}
             >
-              <SiShopify className={`w-6 h-6 ${formData.ecommerce === 'shopify' ? 'text-[var(--color-accent-base)]' : 'text-[var(--muted-foreground)]'}`} />
+              <SiShopify className={`w-6 h-6 ${formData.ecommerce === 'shopify' ? 'text-[#95BF47]' : 'text-[var(--muted-foreground)]'}`} />
               <span className={`text-sm font-medium ${formData.ecommerce === 'shopify' ? 'text-[var(--foreground)]' : 'text-[var(--muted-foreground)]'}`}>
                 Shopify
               </span>
