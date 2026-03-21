@@ -13,7 +13,8 @@ import {
   Layers,
   MessageCircle,
   Phone,
-  ShieldCheck
+  ShieldCheck,
+  X
 } from 'lucide-react';
 import {  SiShopify } from '@icons-pack/react-simple-icons';
 
@@ -29,9 +30,11 @@ const AgentConfigForm: React.FC = () => {
     woo_secret: '',
     shopify_url: '',
     shopify_token: '',
-    andreani_enabled: false,
+    carrier: 'none', // none, andreani, oca
     andreani_user: '',
-    andreani_pass: ''
+    andreani_pass: '',
+    oca_user: '',
+    oca_pass: ''
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -44,8 +47,8 @@ const AgentConfigForm: React.FC = () => {
     setFormData(prev => ({ ...prev, ecommerce: platform }));
   };
 
-  const toggleAndreani = () => {
-    setFormData(prev => ({ ...prev, andreani_enabled: !prev.andreani_enabled }));
+  const handleCarrierSelect = (carrier: string) => {
+    setFormData(prev => ({ ...prev, carrier: carrier }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -145,7 +148,7 @@ const AgentConfigForm: React.FC = () => {
             <button
               type="button"
               onClick={() => handleEcomSelect('none')}
-              className={`flex flex-col items-center justify-center p-4 rounded-2xl border-2 transition-all gap-3 ${
+              className={`flex flex-col items-center justify-center p-4 rounded-2xl border-2 transition-all gap-3 hover:scale-105 ${
                 formData.ecommerce === 'none'
                   ? 'border-[var(--color-accent-base)] bg-[var(--color-accent-base)]/10 ring-4 ring-[var(--color-accent-base)]/20'
                   : 'border-[var(--border)] bg-[var(--card)] hover:bg-[var(--muted)]'
@@ -160,9 +163,9 @@ const AgentConfigForm: React.FC = () => {
             <button
               type="button"
               onClick={() => handleEcomSelect('woocommerce')}
-              className={`flex flex-col items-center justify-center p-4 rounded-2xl border-2 transition-all gap-3 ${
+              className={`flex flex-col items-center justify-center p-4 rounded-2xl border-2 transition-all gap-3 hover:scale-105 ${
                 formData.ecommerce === 'woocommerce'
-                  ? 'border-[var(--color-accent-base)] bg-[var(--color-accent-base)]/10 ring-4 ring-[var(--color-accent-base)]/20'
+                  ? 'border-[#873EFF] bg-[#873EFF]/10 ring-4 ring-[#873EFF]/20'
                   : 'border-[var(--border)] bg-[var(--card)] hover:bg-[var(--muted)]'
               }`}
             >
@@ -178,9 +181,9 @@ const AgentConfigForm: React.FC = () => {
             <button
               type="button"
               onClick={() => handleEcomSelect('shopify')}
-              className={`flex flex-col items-center justify-center p-4 rounded-2xl border-2 transition-all gap-3 ${
+              className={`flex flex-col items-center justify-center p-4 rounded-2xl border-2 transition-all gap-3 hover:scale-105 ${
                 formData.ecommerce === 'shopify'
-                  ? 'border-[var(--color-accent-base)] bg-[var(--color-accent-base)]/10 ring-4 ring-[var(--color-accent-base)]/20'
+                  ? 'border-[#95BF47] bg-[#95BF47]/10 ring-4 ring-[#95BF47]/20'
                   : 'border-[var(--border)] bg-[var(--card)] hover:bg-[var(--muted)]'
               }`}
             >
@@ -279,51 +282,112 @@ const AgentConfigForm: React.FC = () => {
         {/* Logistics Section */}
         <div className="space-y-4 pt-4 border-t border-[var(--border)]">
           <label className="text-sm font-medium text-[var(--muted-foreground)]">Logística y Cotizadores</label>
-          <div 
-            onClick={toggleAndreani}
-            className={`flex items-center justify-between p-4 rounded-2xl border-2 cursor-pointer transition-all ${
-              formData.andreani_enabled 
-                ? 'border-[var(--color-accent-base)] bg-[var(--color-accent-base)]/10 ring-4 ring-[var(--color-accent-base)]/20' 
-                : 'border-[var(--border)] bg-[var(--card)] hover:bg-[var(--muted)]'
-            }`}
-          >
-            <div className="flex items-center gap-4">
-              <div className={`p-2 rounded-xl transition-colors ${formData.andreani_enabled ? 'bg-[var(--color-accent-base)] text-white' : 'bg-[var(--muted)] text-[var(--muted-foreground)]'}`}>
-                <Truck className="w-6 h-6" />
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {/* None Option */}
+            <button
+              type="button"
+              onClick={() => handleCarrierSelect('none')}
+              className={`flex flex-col items-center justify-center p-4 rounded-2xl border-2 transition-all gap-3 hover:scale-105 ${
+                formData.carrier === 'none'
+                  ? 'border-[var(--color-accent-base)] bg-[var(--color-accent-base)]/10 ring-4 ring-[var(--color-accent-base)]/20'
+                  : 'border-[var(--border)] bg-[var(--card)] hover:bg-[var(--muted)]'
+              }`}
+            >
+              <div className={`p-2 rounded-xl ${formData.carrier === 'none' ? 'bg-[var(--color-accent-base)] text-white' : 'bg-[var(--muted)] text-[var(--muted-foreground)]'}`}>
+                <X className="w-6 h-6" />
               </div>
-              <div>
-                <p className={`font-semibold ${formData.andreani_enabled ? 'text-[var(--foreground)]' : 'text-[var(--muted-foreground)]'}`}>API Andreani</p>
-                <p className="text-xs text-[var(--muted-foreground)]/80">Integración nativa dinámica para cotización y tracking en tiempo real</p>
-              </div>
-            </div>
-            <div className={`w-12 h-6 rounded-full relative transition-colors ${formData.andreani_enabled ? 'bg-[var(--color-accent-base)]' : 'bg-[var(--border)]'}`}>
-              <div className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all shadow-sm ${formData.andreani_enabled ? 'left-7' : 'left-1'}`} />
-            </div>
+              <span className={`text-sm font-medium ${formData.carrier === 'none' ? 'text-[var(--foreground)]' : 'text-[var(--muted-foreground)]'}`}>
+                Sin Logística
+              </span>
+            </button>
+
+            {/* Andreani Option */}
+            <button
+              type="button"
+              onClick={() => handleCarrierSelect('andreani')}
+              className={`flex flex-col items-center justify-center p-4 rounded-2xl border-2 transition-all gap-3 hover:scale-105 relative overflow-hidden group ${
+                formData.carrier === 'andreani'
+                  ? 'border-[#E3000F] bg-[#E3000F]/10 ring-4 ring-[#E3000F]/20 shadow-[0_0_15px_-3px_rgba(227,0,15,0.4)]'
+                  : 'border-[var(--border)] bg-[var(--card)] hover:bg-[var(--muted)] shadow-sm'
+              }`}
+            >
+              <img 
+                src="https://ps.w.org/andreani-shipping/assets/icon-128x128.png?rev=3429256" 
+                alt="Andreani" 
+                className="h-10 object-contain"
+              />
+              <span className={`text-sm font-bold ${formData.carrier === 'andreani' ? 'text-[#E3000F]' : 'text-[var(--muted-foreground)]'}`}>
+                Andreani
+              </span>
+              {formData.carrier === 'andreani' && (
+                <div className="absolute top-2 right-2">
+                   <div className="w-2 h-2 rounded-full bg-[#E3000F] animate-pulse" />
+                </div>
+              )}
+            </button>
+
+            {/* OCA Option */}
+            <button
+              type="button"
+              onClick={() => handleCarrierSelect('oca')}
+              className={`flex flex-col items-center justify-center p-4 rounded-2xl border-2 transition-all gap-3 hover:scale-105 relative overflow-hidden group ${
+                formData.carrier === 'oca'
+                  ? 'border-[#71277E] bg-[#71277E]/10 ring-4 ring-[#71277E]/20 shadow-[0_0_15px_-3px_rgba(113,39,126,0.4)]'
+                  : 'border-[var(--border)] bg-[var(--card)] hover:bg-[var(--muted)] shadow-sm'
+              }`}
+            >
+              <img 
+                src="https://upload.wikimedia.org/wikipedia/commons/b/ba/Logo_OCA_25.png" 
+                alt="OCA" 
+                className={`h-10 object-contain ${formData.carrier === 'oca' ? '' : 'grayscale opacity-70'}`}
+              />
+              <span className={`text-sm font-bold ${formData.carrier === 'oca' ? 'text-[#71277E]' : 'text-[var(--muted-foreground)]'}`}>
+                OCA
+              </span>
+              {formData.carrier === 'oca' && (
+                <div className="absolute top-2 right-2">
+                   <div className="w-2 h-2 rounded-full bg-[#71277E] animate-pulse" />
+                </div>
+              )}
+            </button>
           </div>
 
-          {formData.andreani_enabled && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-5 rounded-2xl bg-[var(--muted)] border border-[var(--border)] animate-in slide-in-from-top-2 duration-300">
-              <div className="space-y-2">
-                <label className="text-xs uppercase tracking-wider font-bold text-[var(--muted-foreground)]">Usuario Andreani</label>
-                <input
-                  type="text"
-                  name="andreani_user"
-                  value={formData.andreani_user}
-                  onChange={handleChange}
-                  placeholder="Tu usuario"
-                  className="w-full px-4 py-2 rounded-lg bg-[var(--background)] border border-[var(--border)] text-[var(--foreground)] outline-none focus:border-[var(--color-accent-base)]/50"
-                />
+          {/* Logistics Conditional Inputs */}
+          {formData.carrier !== 'none' && (
+            <div className="p-5 rounded-2xl bg-[var(--muted)] border border-[var(--border)] animate-in slide-in-from-top-2 duration-300">
+               <div className="flex items-start gap-3 mb-6 p-3 rounded-lg bg-[var(--background)] border border-[var(--border)]">
+                <Truck className={`w-5 h-5 shrink-0 mt-0.5 ${formData.carrier === 'andreani' ? 'text-[#E3000F]' : 'text-[#71277E]'}`} />
+                <div>
+                  <p className="text-sm font-medium text-[var(--foreground)]">Configuración de {formData.carrier === 'andreani' ? 'Andreani' : 'OCA'}</p>
+                  <p className="text-xs text-[var(--muted-foreground)] mt-0.5">Integración nativa para cotización y tracking en tiempo real. Los datos se transmiten vía HTTPS TLS 1.3.</p>
+                </div>
               </div>
-              <div className="space-y-2">
-                <label className="text-xs uppercase tracking-wider font-bold text-[var(--muted-foreground)]">Contraseña Andreani</label>
-                <input
-                  type="password"
-                  name="andreani_pass"
-                  value={formData.andreani_pass}
-                  onChange={handleChange}
-                  placeholder="••••••••"
-                  className="w-full px-4 py-2 rounded-lg bg-[var(--background)] border border-[var(--border)] text-[var(--foreground)] outline-none focus:border-[var(--color-accent-base)]/50"
-                />
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <label className="text-xs uppercase tracking-wider font-bold text-[var(--muted-foreground)]">
+                    {formData.carrier === 'oca' ? 'Usuario (CUIT)' : 'Usuario'}
+                  </label>
+                  <input
+                    type="text"
+                    name={formData.carrier === 'andreani' ? 'andreani_user' : 'oca_user'}
+                    value={formData.carrier === 'andreani' ? formData.andreani_user : formData.oca_user}
+                    onChange={handleChange}
+                    placeholder={formData.carrier === 'oca' ? '30-XXXXXXXX-X' : 'Tu usuario'}
+                    className="w-full px-4 py-2 rounded-lg bg-[var(--background)] border border-[var(--border)] text-[var(--foreground)] outline-none focus:border-[var(--color-accent-base)]/50 transition-all"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-xs uppercase tracking-wider font-bold text-[var(--muted-foreground)]">Contraseña</label>
+                  <input
+                    type="password"
+                    name={formData.carrier === 'andreani' ? 'andreani_pass' : 'oca_pass'}
+                    value={formData.carrier === 'andreani' ? formData.andreani_pass : formData.oca_pass}
+                    onChange={handleChange}
+                    placeholder="••••••••"
+                    className="w-full px-4 py-2 rounded-lg bg-[var(--background)] border border-[var(--border)] text-[var(--foreground)] outline-none focus:border-[var(--color-accent-base)]/50 transition-all"
+                  />
+                </div>
               </div>
             </div>
           )}
