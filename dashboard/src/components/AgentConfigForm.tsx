@@ -1,101 +1,316 @@
 import React, { useState } from 'react';
-import { Save, Sparkles, MessageSquare, Briefcase, ChevronDown } from 'lucide-react';
+import { 
+  Save, 
+  Sparkles, 
+  MessageSquare, 
+  Briefcase, 
+  ChevronDown, 
+  ShoppingCart, 
+  Globe, 
+  Key, 
+  Lock, 
+  Truck,
+  Layers,
+  Store,
+  MessageCircle
+} from 'lucide-react';
 
 const AgentConfigForm: React.FC = () => {
   const [formData, setFormData] = useState({
-    name: '',
-    company: '',
+    agent_name: '',
+    company_name: '',
+    company_description: '',
     tone: 'professional',
-    objective: ''
+    ecommerce: 'none', // none, woocommerce, shopify
+    woo_url: '',
+    woo_key: '',
+    woo_secret: '',
+    shopify_url: '',
+    shopify_token: '',
+    andreani_enabled: false,
+    andreani_user: '',
+    andreani_pass: ''
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    const { name, value, type } = e.target as HTMLInputElement;
+    const val = type === 'checkbox' ? (e.target as HTMLInputElement).checked : value;
+    setFormData(prev => ({ ...prev, [name]: val }));
+  };
+
+  const handleEcomSelect = (platform: string) => {
+    setFormData(prev => ({ ...prev, ecommerce: platform }));
+  };
+
+  const toggleAndreani = () => {
+    setFormData(prev => ({ ...prev, andreani_enabled: !prev.andreani_enabled }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Saving config...', formData);
-    // Logic to save
+    console.log('Final Configuration:', JSON.stringify(formData, null, 2));
+    alert('Configuración guardada (ver consola)');
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="space-y-2">
-          <label className="text-sm font-medium flex items-center gap-2 text-[var(--foreground)]/80">
-            <Sparkles className="w-4 h-4 text-[var(--color-accent-base)]" />
-            Nombre del Agente
-          </label>
-          <input
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            placeholder="Ej: Sofia de Soporte"
-            className="w-full px-4 py-2.5 rounded-xl border border-[var(--input)] bg-[var(--background)]/50 focus:ring-2 focus:ring-[var(--color-accent-base)]/20 focus:border-[var(--color-accent-base)]/50 outline-none transition-all placeholder:text-[var(--muted-foreground)]/50"
-          />
+    <form onSubmit={handleSubmit} className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+      {/* Información Base */}
+      <section className="space-y-6">
+        <h3 className="text-lg font-semibold flex items-center gap-2 text-[var(--foreground)]">
+          <Layers className="w-5 h-5 text-[var(--color-accent-base)]" />
+          Configuración General
+        </h3>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="space-y-2">
+            <label className="text-sm font-medium flex items-center gap-2 text-[var(--muted-foreground)]">
+              <Sparkles className="w-4 h-4 text-[var(--color-accent-base)]" />
+              Nombre del Agente
+            </label>
+            <input
+              type="text"
+              name="agent_name"
+              value={formData.agent_name}
+              onChange={handleChange}
+              placeholder="Ej: Sofia de Soporte"
+              className="w-full px-4 py-2.5 rounded-xl border border-[var(--border)] bg-[var(--background)] focus:ring-2 focus:ring-[var(--color-accent-base)]/20 focus:border-[var(--color-accent-base)]/50 outline-none transition-all text-[var(--foreground)]"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-medium flex items-center gap-2 text-[var(--muted-foreground)]">
+              <Briefcase className="w-4 h-4 text-[var(--color-accent-base)]" />
+              Empresa
+            </label>
+            <input
+              type="text"
+              name="company_name"
+              value={formData.company_name}
+              onChange={handleChange}
+              placeholder="Ej: NR Labs Tech"
+              className="w-full px-4 py-2.5 rounded-xl border border-[var(--border)] bg-[var(--background)] focus:ring-2 focus:ring-[var(--color-accent-base)]/20 focus:border-[var(--color-accent-base)]/50 outline-none transition-all text-[var(--foreground)]"
+            />
+          </div>
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm font-medium flex items-center gap-2 text-[var(--foreground)]/80">
-            <Briefcase className="w-4 h-4 text-[var(--color-accent-base)]" />
-            Empresa
+          <label className="text-sm font-medium flex items-center gap-2 text-[var(--muted-foreground)]">
+            <MessageSquare className="w-4 h-4 text-[var(--color-accent-base)]" />
+            Tono de Voz
           </label>
-          <input
-            type="text"
-            name="company"
-            value={formData.company}
+          <div className="relative">
+            <select
+              name="tone"
+              value={formData.tone}
+              onChange={handleChange}
+              className="w-full px-4 py-2.5 rounded-xl border border-[var(--border)] bg-[var(--background)] focus:ring-2 focus:ring-[var(--color-accent-base)]/20 focus:border-[var(--color-accent-base)]/50 outline-none appearance-none transition-all text-[var(--foreground)]"
+            >
+              <option value="professional">Profesional y Ejecutivo</option>
+              <option value="friendly">Amigable y Cercano</option>
+              <option value="direct">Directo y Conciso</option>
+              <option value="technical">Técnico y Preciso</option>
+            </select>
+            <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--muted-foreground)] pointer-events-none" />
+          </div>
+        </div>
+
+        <div className="space-y-2">
+          <label className="text-sm font-medium text-[var(--muted-foreground)]">
+            Descripción de la Empresa
+          </label>
+          <textarea
+            name="company_description"
+            value={formData.company_description}
             onChange={handleChange}
-            placeholder="Ej: NR Labs Tech"
-            className="w-full px-4 py-2.5 rounded-xl border border-[var(--input)] bg-[var(--background)]/50 focus:ring-2 focus:ring-[var(--color-accent-base)]/20 focus:border-[var(--color-accent-base)]/50 outline-none transition-all placeholder:text-[var(--muted-foreground)]/50"
+            rows={3}
+            placeholder="Describe brevemente qué hace tu empresa y qué servicios ofrece..."
+            className="w-full px-4 py-3 rounded-xl border border-[var(--border)] bg-[var(--background)] focus:ring-2 focus:ring-[var(--color-accent-base)]/20 focus:border-[var(--color-accent-base)]/50 outline-none transition-all resize-none text-[var(--foreground)]"
           />
         </div>
-      </div>
+      </section>
 
-      <div className="space-y-2">
-        <label className="text-sm font-medium flex items-center gap-2 text-[var(--foreground)]/80">
-          <MessageSquare className="w-4 h-4 text-[var(--color-accent-base)]" />
-          Tono de Voz
-        </label>
-        <div className="relative">
-          <select
-            name="tone"
-            value={formData.tone}
-            onChange={handleChange}
-            className="w-full px-4 py-2.5 rounded-xl border border-[var(--input)] bg-[var(--background)]/50 focus:ring-2 focus:ring-[var(--color-accent-base)]/20 focus:border-[var(--color-accent-base)]/50 outline-none appearance-none transition-all"
+      {/* Sección de Integraciones */}
+      <section className="space-y-6 pt-4 border-t border-[var(--border)]">
+        <h3 className="text-lg font-semibold flex items-center gap-2 text-[var(--foreground)]">
+          <ShoppingCart className="w-5 h-5 text-[var(--color-accent-base)]" />
+          Integraciones
+        </h3>
+
+        {/* E-commerce Selection */}
+        <div className="space-y-4">
+          <label className="text-sm font-medium text-[var(--muted-foreground)]">Plataforma de E-commerce</label>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {[
+              { id: 'none', label: 'Sin E-commerce', icon: Globe },
+              { id: 'woocommerce', label: 'WooCommerce', icon: Store },
+              { id: 'shopify', label: 'Shopify', icon: ShoppingCart },
+            ].map((platform) => (
+              <button
+                key={platform.id}
+                type="button"
+                onClick={() => handleEcomSelect(platform.id)}
+                className={`flex flex-col items-center justify-center p-4 rounded-2xl border-2 transition-all gap-3 ${
+                  formData.ecommerce === platform.id
+                    ? 'border-[var(--color-accent-base)] bg-[var(--color-accent-base)]/10 ring-4 ring-[var(--color-accent-base)]/20'
+                    : 'border-[var(--border)] bg-[var(--card)] hover:bg-[var(--muted)]'
+                }`}
+              >
+                <platform.icon className={`w-6 h-6 ${formData.ecommerce === platform.id ? 'text-[var(--color-accent-base)]' : 'text-[var(--muted-foreground)]'}`} />
+                <span className={`text-sm font-medium ${formData.ecommerce === platform.id ? 'text-[var(--foreground)]' : 'text-[var(--muted-foreground)]'}`}>
+                  {platform.label}
+                </span>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* E-commerce Conditional Inputs */}
+        {formData.ecommerce === 'woocommerce' && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-5 rounded-2xl bg-[var(--muted)] border border-[var(--border)] animate-in slide-in-from-top-2 duration-300">
+            <div className="md:col-span-2 space-y-2">
+              <label className="text-xs uppercase tracking-wider font-bold text-[var(--muted-foreground)]">Store URL</label>
+              <input
+                type="text"
+                name="woo_url"
+                value={formData.woo_url}
+                onChange={handleChange}
+                placeholder="https://tu-tienda.com"
+                className="w-full px-4 py-2 rounded-lg bg-[var(--background)] border border-[var(--border)] text-[var(--foreground)] outline-none focus:border-[var(--color-accent-base)]/50"
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="text-xs uppercase tracking-wider font-bold text-[var(--muted-foreground)] flex items-center gap-2">
+                <Key className="w-3 h-3" /> Consumer Key
+              </label>
+              <input
+                type="text"
+                name="woo_key"
+                value={formData.woo_key}
+                onChange={handleChange}
+                placeholder="ck_..."
+                className="w-full px-4 py-2 rounded-lg bg-[var(--background)] border border-[var(--border)] text-[var(--foreground)] outline-none focus:border-[var(--color-accent-base)]/50"
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="text-xs uppercase tracking-wider font-bold text-[var(--muted-foreground)] flex items-center gap-2">
+                <Lock className="w-3 h-3" /> Consumer Secret
+              </label>
+              <input
+                type="password"
+                name="woo_secret"
+                value={formData.woo_secret}
+                onChange={handleChange}
+                placeholder="cs_..."
+                className="w-full px-4 py-2 rounded-lg bg-[var(--background)] border border-[var(--border)] text-[var(--foreground)] outline-none focus:border-[var(--color-accent-base)]/50"
+              />
+            </div>
+          </div>
+        )}
+
+        {formData.ecommerce === 'shopify' && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-5 rounded-2xl bg-[var(--muted)] border border-[var(--border)] animate-in slide-in-from-top-2 duration-300">
+            <div className="space-y-2">
+              <label className="text-xs uppercase tracking-wider font-bold text-[var(--muted-foreground)]">Shop URL</label>
+              <input
+                type="text"
+                name="shopify_url"
+                value={formData.shopify_url}
+                onChange={handleChange}
+                placeholder="mi-tienda.myshopify.com"
+                className="w-full px-4 py-2 rounded-lg bg-[var(--background)] border border-[var(--border)] text-[var(--foreground)] outline-none focus:border-[var(--color-accent-base)]/50"
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="text-xs uppercase tracking-wider font-bold text-[var(--muted-foreground)] flex items-center gap-2">
+                <Key className="w-3 h-3" /> Admin Access Token
+              </label>
+              <input
+                type="password"
+                name="shopify_token"
+                value={formData.shopify_token}
+                onChange={handleChange}
+                placeholder="shpat_..."
+                className="w-full px-4 py-2 rounded-lg bg-[var(--background)] border border-[var(--border)] text-[var(--foreground)] outline-none focus:border-[var(--color-accent-base)]/50"
+              />
+            </div>
+          </div>
+        )}
+
+        {/* Logistics Section */}
+        <div className="space-y-4 pt-4 border-t border-[var(--border)]">
+          <label className="text-sm font-medium text-[var(--muted-foreground)]">Logística y Envíos</label>
+          <div 
+            onClick={toggleAndreani}
+            className={`flex items-center justify-between p-4 rounded-2xl border-2 cursor-pointer transition-all ${
+              formData.andreani_enabled 
+                ? 'border-[var(--color-accent-base)] bg-[var(--color-accent-base)]/10 ring-4 ring-[var(--color-accent-base)]/20' 
+                : 'border-[var(--border)] bg-[var(--card)] hover:bg-[var(--muted)]'
+            }`}
           >
-            <option value="professional">Profesional y Ejecutivo</option>
-            <option value="friendly">Amigable y Cercano</option>
-            <option value="humorous">Humorístico (TikTok Style)</option>
-            <option value="technical">Técnico y Preciso</option>
-          </select>
-          <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--muted-foreground)] pointer-events-none" />
+            <div className="flex items-center gap-4">
+              <div className={`p-2 rounded-xl transition-colors ${formData.andreani_enabled ? 'bg-[var(--color-accent-base)] text-white' : 'bg-[var(--muted)] text-[var(--muted-foreground)]'}`}>
+                <Truck className="w-6 h-6" />
+              </div>
+              <div>
+                <p className={`font-semibold ${formData.andreani_enabled ? 'text-[var(--foreground)]' : 'text-[var(--muted-foreground)]'}`}>Andreani</p>
+                <p className="text-xs text-[var(--muted-foreground)]/80">Integración nativa para cotización y seguimiento</p>
+              </div>
+            </div>
+            <div className={`w-12 h-6 rounded-full relative transition-colors ${formData.andreani_enabled ? 'bg-[var(--color-accent-base)]' : 'bg-[var(--border)]'}`}>
+              <div className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all shadow-sm ${formData.andreani_enabled ? 'left-7' : 'left-1'}`} />
+            </div>
+          </div>
+
+          {formData.andreani_enabled && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-5 rounded-2xl bg-[var(--muted)] border border-[var(--border)] animate-in slide-in-from-top-2 duration-300">
+              <div className="space-y-2">
+                <label className="text-xs uppercase tracking-wider font-bold text-[var(--muted-foreground)]">Usuario Andreani</label>
+                <input
+                  type="text"
+                  name="andreani_user"
+                  value={formData.andreani_user}
+                  onChange={handleChange}
+                  placeholder="Tu usuario"
+                  className="w-full px-4 py-2 rounded-lg bg-[var(--background)] border border-[var(--border)] text-[var(--foreground)] outline-none focus:border-[var(--color-accent-base)]/50"
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-xs uppercase tracking-wider font-bold text-[var(--muted-foreground)]">Contraseña Andreani</label>
+                <input
+                  type="password"
+                  name="andreani_pass"
+                  value={formData.andreani_pass}
+                  onChange={handleChange}
+                  placeholder="••••••••"
+                  className="w-full px-4 py-2 rounded-lg bg-[var(--background)] border border-[var(--border)] text-[var(--foreground)] outline-none focus:border-[var(--color-accent-base)]/50"
+                />
+              </div>
+            </div>
+          )}
         </div>
-      </div>
+        
+        {/* Zenvia Integration Notice */}
+        <div className="mt-4 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex gap-4">
+           <div className="mt-1 p-1 bg-emerald-500/20 rounded-lg text-emerald-600 dark:text-emerald-400 h-fit">
+             <MessageCircle className="w-5 h-5" />
+           </div>
+           <div>
+             <h4 className="font-semibold text-emerald-700 dark:text-emerald-400">Conectado a Zenvia 🟢</h4>
+             <p className="text-sm text-emerald-600/80 dark:text-emerald-400/80 mt-1">
+               Tu agente IA ya está escuchando. NR Labs gestiona el "cerebro" (LLM) y la infraestructura. Zenvia actúa como puente oficial de WhatsApp.
+             </p>
+           </div>
+        </div>
 
-      <div className="space-y-2">
-        <label className="text-sm font-medium text-[var(--foreground)]/80">
-          Rol y Objetivo Principal
-        </label>
-        <textarea
-          name="objective"
-          value={formData.objective}
-          onChange={handleChange}
-          rows={4}
-          placeholder="Describe detalladamente qué debe hacer el agente, cómo debe saludar y cuáles son sus límites..."
-          className="w-full px-4 py-3 rounded-xl border border-[var(--input)] bg-[var(--background)]/50 focus:ring-2 focus:ring-[var(--color-accent-base)]/20 focus:border-[var(--color-accent-base)]/50 outline-none transition-all resize-none placeholder:text-[var(--muted-foreground)]/50"
-        />
-      </div>
+      </section>
 
-      <div className="flex justify-end pt-2">
+      <div className="flex justify-end pt-6">
         <button
           type="submit"
-          className="flex items-center gap-2 px-8 py-3 bg-[var(--color-accent-base)] text-white font-semibold rounded-xl hover:opacity-90 shadow-lg shadow-[var(--color-accent-base)]/25 active:scale-[0.98] transition-all"
+          className="group flex items-center gap-2 px-8 py-3 bg-[var(--color-accent-base)] text-white font-bold rounded-xl hover:opacity-90 shadow-lg shadow-[var(--color-accent-base)]/20 active:scale-[0.98] transition-all"
         >
-          <Save className="w-5 h-5" />
-          Guardar Configuración
+          <Save className="w-5 h-5 group-hover:rotate-12 transition-transform" />
+          Guardar Cambios
         </button>
       </div>
     </form>
