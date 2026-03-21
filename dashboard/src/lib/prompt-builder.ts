@@ -1,47 +1,54 @@
-/**
- * Prompt Builder Utility
- * Formats the system prompt based on agent configuration
- */
-
 export interface AgentConfig {
-  name: string;
-  role: string;
+  agent_name?: string;
   company_name: string;
-  tone: 'professional' | 'friendly' | 'casual' | 'witty';
-  main_goal: string;
-  additional_instructions?: string;
-  knowledge_base_ref?: string;
+  company_description?: string;
+  company_info?: any;
+  tone?: string;
+  actions?: string[] | any;
+  custom_prompt_additions?: string;
 }
 
 export function buildSystemPrompt(config: AgentConfig): string {
   const {
-    name,
-    role,
+    agent_name = 'Asistente',
     company_name,
-    tone,
-    main_goal,
-    additional_instructions = '',
-    knowledge_base_ref = ''
+    company_description = '',
+    company_info = {},
+    tone = 'formal',
+    actions = [],
+    custom_prompt_additions = ''
   } = config;
 
+  let formattedActions = '';
+  try {
+    const actionsArray = typeof actions === 'string' ? JSON.parse(actions) : actions;
+    if (Array.isArray(actionsArray)) {
+      formattedActions = actionsArray.map(a => `- "${a}"`).join('\n');
+    }
+  } catch (e) {
+    formattedActions = '- "continuar"\n- "derivar"';
+  }
+
+  const infoString = typeof company_info === 'object' && Object.keys(company_info).length > 0
+    ? JSON.stringify(company_info, null, 2)
+    : 'No hay información adicional registrada.';
+
   return `
-Eres ${name}, un agente de IA especializado en el rol de ${role} para la empresa ${company_name}.
+## Identidad
+Sos ${agent_name}, el asistente virtual de ${company_name}.
+${company_description}
 
-TU OBJETIVO PRINCIPAL:
-${main_goal}
+## Estilo de Comunicación
+- Hablás en español ${tone}.
+- Debes ser conciso, directo y útil.
+- Si no sabes algo, admítelo y ofrece derivar la consulta.
 
-TU TONO DE VOZ:
-Debes comunicarte con un tono ${tone}.
+## Información de la Empresa
+${infoString}
 
-${knowledge_base_ref ? `BASE DE CONOCIMIENTO:
-Utiliza la información de los documentos proporcionados para responder de manera precisa.` : ''}
+## Acciones disponibles
+${formattedActions}
 
-INSTRUCCIONES ADICIONALES:
-${additional_instructions}
-
-REGLAS CRÍTICAS:
-1. Sé conciso pero útil.
-2. Si no sabes algo, admítelo y ofrece ayuda en temas relacionados.
-3. Mantén siempre el personaje de ${name}.
+${custom_prompt_additions ? `## Instrucciones Extra\n${custom_prompt_additions}` : ''}
 `.trim();
 }
