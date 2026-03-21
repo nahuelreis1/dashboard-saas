@@ -12,7 +12,9 @@ import {
   Truck,
   Layers,
   Store,
-  MessageCircle
+  MessageCircle,
+  Phone,
+  ShieldCheck
 } from 'lucide-react';
 
 const AgentConfigForm: React.FC = () => {
@@ -133,7 +135,7 @@ const AgentConfigForm: React.FC = () => {
       <section className="space-y-6 pt-4 border-t border-[var(--border)]">
         <h3 className="text-lg font-semibold flex items-center gap-2 text-[var(--foreground)]">
           <ShoppingCart className="w-5 h-5 text-[var(--color-accent-base)]" />
-          Integraciones
+          Conexiones de Sistemas
         </h3>
 
         {/* E-commerce Selection */}
@@ -165,80 +167,92 @@ const AgentConfigForm: React.FC = () => {
         </div>
 
         {/* E-commerce Conditional Inputs */}
-        {formData.ecommerce === 'woocommerce' && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-5 rounded-2xl bg-[var(--muted)] border border-[var(--border)] animate-in slide-in-from-top-2 duration-300">
-            <div className="md:col-span-2 space-y-2">
-              <label className="text-xs uppercase tracking-wider font-bold text-[var(--muted-foreground)]">Store URL</label>
-              <input
-                type="text"
-                name="woo_url"
-                value={formData.woo_url}
-                onChange={handleChange}
-                placeholder="https://tu-tienda.com"
-                className="w-full px-4 py-2 rounded-lg bg-[var(--background)] border border-[var(--border)] text-[var(--foreground)] outline-none focus:border-[var(--color-accent-base)]/50"
-              />
+        {(formData.ecommerce === 'woocommerce' || formData.ecommerce === 'shopify') && (
+          <div className="p-5 rounded-2xl bg-[var(--muted)] border border-[var(--border)] animate-in slide-in-from-top-2 duration-300">
+            <div className="flex items-start gap-3 mb-4 p-3 rounded-lg bg-[var(--background)] border border-[var(--border)]">
+              <ShieldCheck className="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" />
+              <div>
+                <p className="text-sm font-medium text-[var(--foreground)]">Aprovisionamiento Seguro (B2B)</p>
+                <p className="text-xs text-[var(--muted-foreground)] mt-0.5">Tus credenciales se almacenarán encriptadas (AES-256). Nuestro equipo de ingeniería aislará y conectará tu instancia de e-commerce en tu entorno privado.</p>
+              </div>
             </div>
-            <div className="space-y-2">
-              <label className="text-xs uppercase tracking-wider font-bold text-[var(--muted-foreground)] flex items-center gap-2">
-                <Key className="w-3 h-3" /> Consumer Key
-              </label>
-              <input
-                type="text"
-                name="woo_key"
-                value={formData.woo_key}
-                onChange={handleChange}
-                placeholder="ck_..."
-                className="w-full px-4 py-2 rounded-lg bg-[var(--background)] border border-[var(--border)] text-[var(--foreground)] outline-none focus:border-[var(--color-accent-base)]/50"
-              />
-            </div>
-            <div className="space-y-2">
-              <label className="text-xs uppercase tracking-wider font-bold text-[var(--muted-foreground)] flex items-center gap-2">
-                <Lock className="w-3 h-3" /> Consumer Secret
-              </label>
-              <input
-                type="password"
-                name="woo_secret"
-                value={formData.woo_secret}
-                onChange={handleChange}
-                placeholder="cs_..."
-                className="w-full px-4 py-2 rounded-lg bg-[var(--background)] border border-[var(--border)] text-[var(--foreground)] outline-none focus:border-[var(--color-accent-base)]/50"
-              />
-            </div>
-          </div>
-        )}
 
-        {formData.ecommerce === 'shopify' && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-5 rounded-2xl bg-[var(--muted)] border border-[var(--border)] animate-in slide-in-from-top-2 duration-300">
-            <div className="space-y-2">
-              <label className="text-xs uppercase tracking-wider font-bold text-[var(--muted-foreground)]">Shop URL</label>
-              <input
-                type="text"
-                name="shopify_url"
-                value={formData.shopify_url}
-                onChange={handleChange}
-                placeholder="mi-tienda.myshopify.com"
-                className="w-full px-4 py-2 rounded-lg bg-[var(--background)] border border-[var(--border)] text-[var(--foreground)] outline-none focus:border-[var(--color-accent-base)]/50"
-              />
-            </div>
-            <div className="space-y-2">
-              <label className="text-xs uppercase tracking-wider font-bold text-[var(--muted-foreground)] flex items-center gap-2">
-                <Key className="w-3 h-3" /> Admin Access Token
-              </label>
-              <input
-                type="password"
-                name="shopify_token"
-                value={formData.shopify_token}
-                onChange={handleChange}
-                placeholder="shpat_..."
-                className="w-full px-4 py-2 rounded-lg bg-[var(--background)] border border-[var(--border)] text-[var(--foreground)] outline-none focus:border-[var(--color-accent-base)]/50"
-              />
-            </div>
+            {formData.ecommerce === 'woocommerce' && (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="md:col-span-2 space-y-2">
+                  <label className="text-xs uppercase tracking-wider font-bold text-[var(--muted-foreground)]">Store URL</label>
+                  <input
+                    type="text"
+                    name="woo_url"
+                    value={formData.woo_url}
+                    onChange={handleChange}
+                    placeholder="https://tu-tienda.com"
+                    className="w-full px-4 py-2 rounded-lg bg-[var(--background)] border border-[var(--border)] text-[var(--foreground)] outline-none focus:border-[var(--color-accent-base)]/50"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-xs uppercase tracking-wider font-bold text-[var(--muted-foreground)] flex items-center gap-2">
+                    <Key className="w-3 h-3" /> Consumer Key
+                  </label>
+                  <input
+                    type="text"
+                    name="woo_key"
+                    value={formData.woo_key}
+                    onChange={handleChange}
+                    placeholder="ck_..."
+                    className="w-full px-4 py-2 rounded-lg bg-[var(--background)] border border-[var(--border)] text-[var(--foreground)] outline-none focus:border-[var(--color-accent-base)]/50"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-xs uppercase tracking-wider font-bold text-[var(--muted-foreground)] flex items-center gap-2">
+                    <Lock className="w-3 h-3" /> Consumer Secret
+                  </label>
+                  <input
+                    type="password"
+                    name="woo_secret"
+                    value={formData.woo_secret}
+                    onChange={handleChange}
+                    placeholder="cs_..."
+                    className="w-full px-4 py-2 rounded-lg bg-[var(--background)] border border-[var(--border)] text-[var(--foreground)] outline-none focus:border-[var(--color-accent-base)]/50"
+                  />
+                </div>
+              </div>
+            )}
+
+            {formData.ecommerce === 'shopify' && (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <label className="text-xs uppercase tracking-wider font-bold text-[var(--muted-foreground)]">Shop URL</label>
+                  <input
+                    type="text"
+                    name="shopify_url"
+                    value={formData.shopify_url}
+                    onChange={handleChange}
+                    placeholder="mi-tienda.myshopify.com"
+                    className="w-full px-4 py-2 rounded-lg bg-[var(--background)] border border-[var(--border)] text-[var(--foreground)] outline-none focus:border-[var(--color-accent-base)]/50"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-xs uppercase tracking-wider font-bold text-[var(--muted-foreground)] flex items-center gap-2">
+                    <Key className="w-3 h-3" /> Admin Access Token
+                  </label>
+                  <input
+                    type="password"
+                    name="shopify_token"
+                    value={formData.shopify_token}
+                    onChange={handleChange}
+                    placeholder="shpat_..."
+                    className="w-full px-4 py-2 rounded-lg bg-[var(--background)] border border-[var(--border)] text-[var(--foreground)] outline-none focus:border-[var(--color-accent-base)]/50"
+                  />
+                </div>
+              </div>
+            )}
           </div>
         )}
 
         {/* Logistics Section */}
         <div className="space-y-4 pt-4 border-t border-[var(--border)]">
-          <label className="text-sm font-medium text-[var(--muted-foreground)]">Logística y Envíos</label>
+          <label className="text-sm font-medium text-[var(--muted-foreground)]">Logística y Cotizadores</label>
           <div 
             onClick={toggleAndreani}
             className={`flex items-center justify-between p-4 rounded-2xl border-2 cursor-pointer transition-all ${
@@ -252,8 +266,8 @@ const AgentConfigForm: React.FC = () => {
                 <Truck className="w-6 h-6" />
               </div>
               <div>
-                <p className={`font-semibold ${formData.andreani_enabled ? 'text-[var(--foreground)]' : 'text-[var(--muted-foreground)]'}`}>Andreani</p>
-                <p className="text-xs text-[var(--muted-foreground)]/80">Integración nativa para cotización y seguimiento</p>
+                <p className={`font-semibold ${formData.andreani_enabled ? 'text-[var(--foreground)]' : 'text-[var(--muted-foreground)]'}`}>API Andreani</p>
+                <p className="text-xs text-[var(--muted-foreground)]/80">Integración nativa dinámica para cotización y tracking en tiempo real</p>
               </div>
             </div>
             <div className={`w-12 h-6 rounded-full relative transition-colors ${formData.andreani_enabled ? 'bg-[var(--color-accent-base)]' : 'bg-[var(--border)]'}`}>
@@ -288,29 +302,58 @@ const AgentConfigForm: React.FC = () => {
             </div>
           )}
         </div>
-        
-        {/* Zenvia Integration Notice */}
-        <div className="mt-4 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex gap-4">
-           <div className="mt-1 p-1 bg-emerald-500/20 rounded-lg text-emerald-600 dark:text-emerald-400 h-fit">
-             <MessageCircle className="w-5 h-5" />
-           </div>
-           <div>
-             <h4 className="font-semibold text-emerald-700 dark:text-emerald-400">Conectado a Zenvia 🟢</h4>
-             <p className="text-sm text-emerald-600/80 dark:text-emerald-400/80 mt-1">
-               Tu agente IA ya está escuchando. NR Labs gestiona el "cerebro" (LLM) y la infraestructura. Zenvia actúa como puente oficial de WhatsApp.
-             </p>
-           </div>
-        </div>
-
       </section>
 
-      <div className="flex justify-end pt-6">
+      {/* Deployment Channels Section */}
+      <section className="space-y-4 pt-4 border-t border-[var(--border)]">
+        <h3 className="text-lg font-semibold flex items-center gap-2 text-[var(--foreground)]">
+          <Globe className="w-5 h-5 text-[var(--color-accent-base)]" />
+          Canales de Despliegue
+        </h3>
+        <p className="text-sm text-[var(--muted-foreground)] mb-4">
+          NR Labs opera como el motor cognitivo de tu empresa. Conectamos la inteligencia artificial directamente a tus canales de comunicación existentes.
+        </p>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="p-5 rounded-2xl border-2 border-emerald-500/30 bg-emerald-500/5 relative overflow-hidden group">
+             <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+               <Phone className="w-16 h-16 text-emerald-500" />
+             </div>
+             <div className="relative z-10">
+               <div className="flex items-center gap-2 mb-2">
+                 <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                 <h4 className="font-semibold text-emerald-700 dark:text-emerald-400">WhatsApp Nativo</h4>
+               </div>
+               <p className="text-sm text-[var(--muted-foreground)]">
+                 Conexión directa vía Cloud API de WhatsApp Business. Respuestas instantáneas y soporte multimedia.
+               </p>
+             </div>
+          </div>
+
+          <div className="p-5 rounded-2xl border-2 border-blue-500/30 bg-blue-500/5 relative overflow-hidden group">
+             <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+               <MessageCircle className="w-16 h-16 text-blue-500" />
+             </div>
+             <div className="relative z-10">
+               <div className="flex items-center gap-2 mb-2">
+                 <div className="w-2 h-2 rounded-full bg-blue-500" />
+                 <h4 className="font-semibold text-blue-700 dark:text-blue-400">Integración Zenvia</h4>
+               </div>
+               <p className="text-sm text-[var(--muted-foreground)]">
+                 Si ya utilizas Zenvia, inyectamos inteligencia artificial superior en tus flujos de conversación actuales sin cambiar de proveedor.
+               </p>
+             </div>
+          </div>
+        </div>
+      </section>
+
+      <div className="flex justify-end pt-6 border-t border-[var(--border)]">
         <button
           type="submit"
           className="group flex items-center gap-2 px-8 py-3 bg-[var(--color-accent-base)] text-white font-bold rounded-xl hover:opacity-90 shadow-lg shadow-[var(--color-accent-base)]/20 active:scale-[0.98] transition-all"
         >
           <Save className="w-5 h-5 group-hover:rotate-12 transition-transform" />
-          Guardar Cambios
+          Guardar Configuración
         </button>
       </div>
     </form>
