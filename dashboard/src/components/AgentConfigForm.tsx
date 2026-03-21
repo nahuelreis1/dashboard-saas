@@ -24,7 +24,7 @@ const AgentConfigForm: React.FC = () => {
     <form onSubmit={handleSubmit} className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="space-y-2">
-          <label className="text-sm font-medium flex items-center gap-2 text-foreground/80">
+          <label className="text-sm font-medium flex items-center gap-2 text-[var(--foreground)]/80">
             <Sparkles className="w-4 h-4 text-[var(--color-accent-base)]" />
             Nombre del Agente
           </label>
@@ -34,12 +34,12 @@ const AgentConfigForm: React.FC = () => {
             value={formData.name}
             onChange={handleChange}
             placeholder="Ej: Sofia de Soporte"
-            className="w-full px-4 py-2.5 rounded-xl border border-input bg-background/50 focus:ring-2 focus:ring-[var(--color-accent-base)]/20 focus:border-[var(--color-accent-base)]/50 outline-none transition-all placeholder:text-muted-foreground/50"
+            className="w-full px-4 py-2.5 rounded-xl border border-[var(--input)] bg-[var(--background)]/50 focus:ring-2 focus:ring-[var(--color-accent-base)]/20 focus:border-[var(--color-accent-base)]/50 outline-none transition-all placeholder:text-[var(--muted-foreground)]/50"
           />
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm font-medium flex items-center gap-2 text-foreground/80">
+          <label className="text-sm font-medium flex items-center gap-2 text-[var(--foreground)]/80">
             <Briefcase className="w-4 h-4 text-[var(--color-accent-base)]" />
             Empresa
           </label>
@@ -49,13 +49,13 @@ const AgentConfigForm: React.FC = () => {
             value={formData.company}
             onChange={handleChange}
             placeholder="Ej: NR Labs Tech"
-            className="w-full px-4 py-2.5 rounded-xl border border-input bg-background/50 focus:ring-2 focus:ring-[var(--color-accent-base)]/20 focus:border-[var(--color-accent-base)]/50 outline-none transition-all placeholder:text-muted-foreground/50"
+            className="w-full px-4 py-2.5 rounded-xl border border-[var(--input)] bg-[var(--background)]/50 focus:ring-2 focus:ring-[var(--color-accent-base)]/20 focus:border-[var(--color-accent-base)]/50 outline-none transition-all placeholder:text-[var(--muted-foreground)]/50"
           />
         </div>
       </div>
 
       <div className="space-y-2">
-        <label className="text-sm font-medium flex items-center gap-2 text-foreground/80">
+        <label className="text-sm font-medium flex items-center gap-2 text-[var(--foreground)]/80">
           <MessageSquare className="w-4 h-4 text-[var(--color-accent-base)]" />
           Tono de Voz
         </label>
@@ -64,19 +64,19 @@ const AgentConfigForm: React.FC = () => {
             name="tone"
             value={formData.tone}
             onChange={handleChange}
-            className="w-full px-4 py-2.5 rounded-xl border border-input bg-background/50 focus:ring-2 focus:ring-[var(--color-accent-base)]/20 focus:border-[var(--color-accent-base)]/50 outline-none appearance-none transition-all"
+            className="w-full px-4 py-2.5 rounded-xl border border-[var(--input)] bg-[var(--background)]/50 focus:ring-2 focus:ring-[var(--color-accent-base)]/20 focus:border-[var(--color-accent-base)]/50 outline-none appearance-none transition-all"
           >
             <option value="professional">Profesional y Ejecutivo</option>
             <option value="friendly">Amigable y Cercano</option>
             <option value="humorous">Humorístico (TikTok Style)</option>
             <option value="technical">Técnico y Preciso</option>
           </select>
-          <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
+          <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--muted-foreground)] pointer-events-none" />
         </div>
       </div>
 
       <div className="space-y-2">
-        <label className="text-sm font-medium text-foreground/80">
+        <label className="text-sm font-medium text-[var(--foreground)]/80">
           Rol y Objetivo Principal
         </label>
         <textarea
@@ -85,7 +85,7 @@ const AgentConfigForm: React.FC = () => {
           onChange={handleChange}
           rows={4}
           placeholder="Describe detalladamente qué debe hacer el agente, cómo debe saludar y cuáles son sus límites..."
-          className="w-full px-4 py-3 rounded-xl border border-input bg-background/50 focus:ring-2 focus:ring-[var(--color-accent-base)]/20 focus:border-[var(--color-accent-base)]/50 outline-none transition-all resize-none placeholder:text-muted-foreground/50"
+          className="w-full px-4 py-3 rounded-xl border border-[var(--input)] bg-[var(--background)]/50 focus:ring-2 focus:ring-[var(--color-accent-base)]/20 focus:border-[var(--color-accent-base)]/50 outline-none transition-all resize-none placeholder:text-[var(--muted-foreground)]/50"
         />
       </div>
 

@@ -60,10 +60,10 @@
 
 @layer base {
   * {
-    @apply border-border;
+    @apply border-[var(--border)];
   }
   body {
-    @apply bg-background text-foreground transition-colors duration-300 ease-in-out;
+    @apply bg-[var(--background)] text-[var(--foreground)] transition-colors duration-300 ease-in-out;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 }
@@ -76,6 +76,6 @@
   }
 
   .glass-card {
-    @apply bg-card/50 backdrop-blur-md border border-border shadow-sm rounded-xl overflow-hidden;
+    @apply bg-[var(--card)]/50 backdrop-blur-md border border-[var(--border)] shadow-sm rounded-xl overflow-hidden;
   }
 }

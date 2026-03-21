@@ -38,10 +38,10 @@ const currentPath = Astro.url.pathname;
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   </head>
-  <body class="min-h-screen bg-background text-foreground">
+  <body class="min-h-screen bg-[var(--background)] text-[var(--foreground)]">
     <div class="flex h-screen overflow-hidden">
       <!-- Sidebar -->
-      <aside id="sidebar" class="group flex flex-col w-64 bg-card border-r border-border transition-all duration-300 ease-in-out relative z-30">
+      <aside id="sidebar" class="group flex flex-col w-64 bg-[var(--card)] border-r border-[var(--border)] transition-all duration-300 ease-in-out relative z-30">
         <div class="p-6 flex items-center gap-3">
           <div class="w-8 h-8 rounded-lg bg-[var(--color-accent-base)] flex items-center justify-center shadow-lg shadow-accent-base/20">
             <Zap className="w-5 h-5 text-white" />
@@ -60,7 +60,7 @@ const currentPath = Astro.url.pathname;
                   flex items-center gap-3 px-3 py-2 rounded-lg transition-all duration-200 group/item
                   ${isActive 
                     ? 'bg-[var(--color-accent-base)]/10 text-[var(--color-accent-base)] border-l-4 border-[var(--color-accent-base)] pl-2' 
-                    : 'text-muted-foreground hover:bg-muted hover:text-foreground'}
+                    : 'text-[var(--muted-foreground)] hover:bg-[var(--muted)] hover:text-[var(--foreground)]'}
                 `}
               >
                 <Icon className={`w-5 h-5 ${isActive ? 'text-[var(--color-accent-base)]' : 'group-hover/item:text-[var(--color-accent-base)]/70 transition-colors'}`} />
@@ -70,10 +70,10 @@ const currentPath = Astro.url.pathname;
           })}
         </nav>
 
-        <div class="p-4 mt-auto border-t border-border">
+        <div class="p-4 mt-auto border-t border-[var(--border)]">
           <button 
             id="theme-toggle" 
-            class="flex items-center gap-3 w-full px-3 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-all"
+            class="flex items-center gap-3 w-full px-3 py-2 rounded-lg text-[var(--muted-foreground)] hover:bg-[var(--muted)] hover:text-[var(--foreground)] transition-all"
             aria-label="Toggle dark mode"
           >
             <Sun id="sun-icon" className="w-5 h-5 hidden dark:block" />
@@ -81,7 +81,7 @@ const currentPath = Astro.url.pathname;
             <span class="font-medium group-data-[collapsed=true]:hidden">Cambiar Tema</span>
           </button>
           
-          <button class="flex items-center gap-3 w-full px-3 py-2 mt-1 rounded-lg text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-all">
+          <button class="flex items-center gap-3 w-full px-3 py-2 mt-1 rounded-lg text-[var(--muted-foreground)] hover:bg-destructive/10 hover:text-destructive transition-all">
             <LogOut className="w-5 h-5" />
             <span class="font-medium group-data-[collapsed=true]:hidden">Cerrar Sesión</span>
           </button>
@@ -89,13 +89,13 @@ const currentPath = Astro.url.pathname;
       </aside>
 
       <!-- Main Content -->
-      <main class="flex-1 overflow-y-auto bg-background/50 relative">
-        <header class="sticky top-0 z-20 h-16 border-b border-border bg-background/80 backdrop-blur-md flex items-center justify-between px-8">
+      <main class="flex-1 overflow-y-auto bg-[var(--background)]/50 relative">
+        <header class="sticky top-0 z-20 h-16 border-b border-[var(--border)] bg-[var(--background)]/80 backdrop-blur-md flex items-center justify-between px-8">
           <h1 class="text-lg font-semibold">{title}</h1>
           <div class="flex items-center gap-4">
              <div class="flex flex-col items-end">
                <span class="text-sm font-medium">Nahuel Reis</span>
-               <span class="text-xs text-muted-foreground">Admin</span>
+               <span class="text-xs text-[var(--muted-foreground)]">Admin</span>
              </div>
              <div class="w-10 h-10 rounded-full bg-[var(--color-accent-base)]/20 border border-[var(--color-accent-base)]/30 flex items-center justify-center overflow-hidden">
                <img src="https://ui-avatars.com/api/?name=Nahuel+Reis&background=e11d48&color=fff" alt="Avatar" />

@@ -62,12 +62,12 @@ const FileUploader: React.FC = () => {
             : 'border-muted-foreground/20 hover:border-[var(--color-accent-base)]/50 hover:bg-slate-50 dark:hover:bg-slate-800/50'}
         `}
       >
-        <div className={`p-4 rounded-full mb-4 transition-colors ${isDragging ? 'bg-[var(--color-accent-base)] text-white' : 'bg-muted text-muted-foreground'}`}>
+        <div className={`p-4 rounded-full mb-4 transition-colors ${isDragging ? 'bg-[var(--color-accent-base)] text-white' : 'bg-[var(--muted)] text-[var(--muted-foreground)]'}`}>
           <Upload className={`w-8 h-8 ${isDragging ? 'animate-bounce' : ''}`} />
         </div>
         <div>
           <p className="text-lg font-semibold">Arrastra tus archivos aquí</p>
-          <p className="text-sm text-muted-foreground mt-1">
+          <p className="text-sm text-[var(--muted-foreground)] mt-1">
             Soporta PDF, DOCX, CSV y TXT (Max 50MB)
           </p>
         </div>
@@ -81,27 +81,27 @@ const FileUploader: React.FC = () => {
 
       {files.length > 0 && (
         <div className="space-y-3">
-          <h4 className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-4">
+          <h4 className="text-xs font-bold uppercase tracking-widest text-[var(--muted-foreground)] mb-4">
             Archivos Cargados ({files.length})
           </h4>
           <div className="grid gap-3">
             {files.map((file) => (
               <div 
                 key={file.id} 
-                className="group flex items-center gap-4 p-4 bg-background/50 border border-border rounded-xl hover:shadow-md transition-all animate-in fade-in slide-in-from-left-2"
+                className="group flex items-center gap-4 p-4 bg-[var(--background)]/50 border border-[var(--border)] rounded-xl hover:shadow-md transition-all animate-in fade-in slide-in-from-left-2"
               >
                 <div className="w-10 h-10 rounded-lg bg-[var(--color-accent-base)]/10 flex items-center justify-center text-[var(--color-accent-base)] group-hover:bg-[var(--color-accent-base)] group-hover:text-white transition-colors">
                   <FileText className="w-5 h-5" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium truncate">{file.name}</p>
-                  <p className="text-xs text-muted-foreground">{file.size} • Vectorizado</p>
+                  <p className="text-xs text-[var(--muted-foreground)]">{file.size} • Vectorizado</p>
                 </div>
                 <div className="flex items-center gap-2">
                    {file.status === 'completed' && <CheckCircle2 className="w-4 h-4 text-emerald-500" />}
                    <button 
                      onClick={() => removeFile(file.id)}
-                     className="p-2 text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-lg transition-colors"
+                     className="p-2 text-[var(--muted-foreground)] hover:text-destructive hover:bg-destructive/10 rounded-lg transition-colors"
                    >
                      <X className="w-4 h-4" />
                    </button>

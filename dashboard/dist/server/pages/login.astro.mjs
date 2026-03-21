@@ -1,0 +1,29 @@
+import { e as createComponent, n as renderHead, k as renderComponent, r as renderTemplate } from '../chunks/astro/server_BahSWGGF.mjs';
+import 'piccolore';
+import { Zap, Chrome } from 'lucide-react';
+/* empty css                                  */
+export { renderers } from '../renderers.mjs';
+
+const $$Login = createComponent(($$result, $$props, $$slots) => {
+  return renderTemplate`<html lang="es"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Login | NR Labs Agent SaaS</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">${renderHead()}</head> <body class="min-h-screen bg-slate-50 dark:bg-slate-950 flex items-center justify-center p-4"> <!-- Grid background decoration --> <div class="absolute inset-0 z-0 overflow-hidden pointer-events-none"> <div class="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] bg-[var(--color-accent-base)]/5 rounded-full blur-[120px]"></div> <div class="absolute -bottom-[10%] -right-[10%] w-[40%] h-[40%] bg-[var(--color-accent-base)]/5 rounded-full blur-[120px]"></div> </div> <main class="w-full max-w-md z-10"> <div class="text-center mb-8"> <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-[var(--color-accent-base)] shadow-xl shadow-[var(--color-accent-base)]/20 mb-4 animate-in fade-in zoom-in duration-500"> ${renderComponent($$result, "Zap", Zap, { "className": "w-8 h-8 text-white" })} </div> <h1 class="text-3xl font-bold tracking-tight text-[var(--foreground)]">Bienvenido a NR Labs</h1> <p class="text-[var(--muted-foreground)] mt-2">La nueva era de los agentes IA corporativos.</p> </div> <div class="glass-card p-8 shadow-2xl animate-in fade-in slide-in-from-bottom-4 duration-700"> <div class="space-y-6"> <div> <h2 class="text-xl font-semibold">Iniciar Sesión</h2> <p class="text-sm text-[var(--muted-foreground)] mt-1">Accede a tu panel de control centralizado.</p> </div> <button class="flex items-center justify-center gap-3 w-full py-3 px-4 bg-white dark:bg-slate-900 border border-[var(--border)] rounded-xl font-medium text-[var(--foreground)] hover:border-[var(--color-accent-base)]/50 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all duration-300 group shadow-sm"> ${renderComponent($$result, "Chrome", Chrome, { "className": "w-5 h-5 text-slate-600 dark:text-slate-400 group-hover:text-[var(--color-accent-base)] transition-colors" })}
+Continuar con Google
+</button> <div class="relative py-2"> <div class="absolute inset-0 flex items-center"> <span class="w-full border-t border-[var(--border)]"></span> </div> <div class="relative flex justify-center text-xs uppercase"> <span class="bg-[var(--card)] px-2 text-[var(--muted-foreground)]">O vía email corporativo</span> </div> </div> <div class="space-y-4"> <div class="space-y-2"> <label for="email" class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Email</label> <input type="email" id="email" placeholder="nombre@empresa.com" class="flex h-12 w-full rounded-xl border border-[var(--input)] bg-[var(--background)] px-4 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-[var(--muted-foreground)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent-base)]/20 focus-visible:border-[var(--color-accent-base)]/50 transition-all"> </div> <button class="w-full h-12 rounded-xl bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-950 font-semibold hover:opacity-90 active:scale-[0.98] transition-all">
+Siguiente
+</button> </div> </div> <div class="mt-8 pt-6 border-t border-[var(--border)] text-center"> <p class="text-xs text-[var(--muted-foreground)]">
+Al continuar, aceptas nuestros <a href="#" class="underline hover:text-[var(--color-accent-base)]">Términos de Servicio</a> y <a href="#" class="underline hover:text-[var(--color-accent-base)]">Política de Privacidad</a>.
+</p> </div> </div> </main> </body></html>`;
+}, "/app/ideas/dashboard-saas/dashboard/src/pages/login.astro", void 0);
+
+const $$file = "/app/ideas/dashboard-saas/dashboard/src/pages/login.astro";
+const $$url = "/login";
+
+const _page = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: $$Login,
+  file: $$file,
+  url: $$url
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const page = () => _page;
+
+export { page };
