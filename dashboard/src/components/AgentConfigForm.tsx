@@ -11,11 +11,11 @@ import {
   Lock, 
   Truck,
   Layers,
-  Store,
   MessageCircle,
   Phone,
   ShieldCheck
 } from 'lucide-react';
+import { SiWoocommerce, SiShopify } from '@icons-pack/react-simple-icons';
 
 const AgentConfigForm: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -142,27 +142,50 @@ const AgentConfigForm: React.FC = () => {
         <div className="space-y-4">
           <label className="text-sm font-medium text-[var(--muted-foreground)]">Plataforma de E-commerce</label>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            {[
-              { id: 'none', label: 'Sin E-commerce', icon: Globe },
-              { id: 'woocommerce', label: 'WooCommerce', icon: Store },
-              { id: 'shopify', label: 'Shopify', icon: ShoppingCart },
-            ].map((platform) => (
-              <button
-                key={platform.id}
-                type="button"
-                onClick={() => handleEcomSelect(platform.id)}
-                className={`flex flex-col items-center justify-center p-4 rounded-2xl border-2 transition-all gap-3 ${
-                  formData.ecommerce === platform.id
-                    ? 'border-[var(--color-accent-base)] bg-[var(--color-accent-base)]/10 ring-4 ring-[var(--color-accent-base)]/20'
-                    : 'border-[var(--border)] bg-[var(--card)] hover:bg-[var(--muted)]'
-                }`}
-              >
-                <platform.icon className={`w-6 h-6 ${formData.ecommerce === platform.id ? 'text-[var(--color-accent-base)]' : 'text-[var(--muted-foreground)]'}`} />
-                <span className={`text-sm font-medium ${formData.ecommerce === platform.id ? 'text-[var(--foreground)]' : 'text-[var(--muted-foreground)]'}`}>
-                  {platform.label}
-                </span>
-              </button>
-            ))}
+            <button
+              type="button"
+              onClick={() => handleEcomSelect('none')}
+              className={`flex flex-col items-center justify-center p-4 rounded-2xl border-2 transition-all gap-3 ${
+                formData.ecommerce === 'none'
+                  ? 'border-[var(--color-accent-base)] bg-[var(--color-accent-base)]/10 ring-4 ring-[var(--color-accent-base)]/20'
+                  : 'border-[var(--border)] bg-[var(--card)] hover:bg-[var(--muted)]'
+              }`}
+            >
+              <Globe className={`w-6 h-6 ${formData.ecommerce === 'none' ? 'text-[var(--color-accent-base)]' : 'text-[var(--muted-foreground)]'}`} />
+              <span className={`text-sm font-medium ${formData.ecommerce === 'none' ? 'text-[var(--foreground)]' : 'text-[var(--muted-foreground)]'}`}>
+                Sin E-commerce
+              </span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => handleEcomSelect('woocommerce')}
+              className={`flex flex-col items-center justify-center p-4 rounded-2xl border-2 transition-all gap-3 ${
+                formData.ecommerce === 'woocommerce'
+                  ? 'border-[var(--color-accent-base)] bg-[var(--color-accent-base)]/10 ring-4 ring-[var(--color-accent-base)]/20'
+                  : 'border-[var(--border)] bg-[var(--card)] hover:bg-[var(--muted)]'
+              }`}
+            >
+              <SiWoocommerce className={`w-6 h-6 ${formData.ecommerce === 'woocommerce' ? 'text-[var(--color-accent-base)]' : 'text-[var(--muted-foreground)]'}`} />
+              <span className={`text-sm font-medium ${formData.ecommerce === 'woocommerce' ? 'text-[var(--foreground)]' : 'text-[var(--muted-foreground)]'}`}>
+                WooCommerce
+              </span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => handleEcomSelect('shopify')}
+              className={`flex flex-col items-center justify-center p-4 rounded-2xl border-2 transition-all gap-3 ${
+                formData.ecommerce === 'shopify'
+                  ? 'border-[var(--color-accent-base)] bg-[var(--color-accent-base)]/10 ring-4 ring-[var(--color-accent-base)]/20'
+                  : 'border-[var(--border)] bg-[var(--card)] hover:bg-[var(--muted)]'
+              }`}
+            >
+              <SiShopify className={`w-6 h-6 ${formData.ecommerce === 'shopify' ? 'text-[var(--color-accent-base)]' : 'text-[var(--muted-foreground)]'}`} />
+              <span className={`text-sm font-medium ${formData.ecommerce === 'shopify' ? 'text-[var(--foreground)]' : 'text-[var(--muted-foreground)]'}`}>
+                Shopify
+              </span>
+            </button>
           </div>
         </div>
 
