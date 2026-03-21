@@ -1,452 +1,409 @@
 import React, { useState } from 'react';
 import { 
-  Save, 
-  Sparkles, 
-  MessageSquare, 
-  Briefcase, 
-  ChevronDown, 
+  Brain, 
+  Truck, 
   ShoppingCart, 
-  Globe, 
-  Key, 
-  Lock, 
-  Truck,
-  Layers,
-  MessageCircle,
-  Phone,
+  MessageSquare, 
+  Copy, 
+  CheckCircle2, 
+  Clock, 
+  Sparkles, 
+  Briefcase, 
+  ChevronDown,
   ShieldCheck,
-  X
+  Globe,
+  Zap,
+  ExternalLink,
+  MessageCircle,
+  Loader2,
+  Check
 } from 'lucide-react';
-import {  SiShopify } from '@icons-pack/react-simple-icons';
+import { SiShopify, SiWoocommerce, SiWhatsapp } from '@icons-pack/react-simple-icons';
+
+// --- Sub-components for better organization ---
+
+const FeedbackMessage = ({ type, message }: { type: 'success' | 'pending', message: string }) => (
+  <div className={`mt-4 p-3 rounded-lg flex items-center gap-3 animate-in fade-in slide-in-from-top-1 duration-300 ${
+    type === 'success' ? 'bg-emerald-500/10 border border-emerald-500/20 text-emerald-500' : 'bg-amber-500/10 border border-amber-500/20 text-amber-500'
+  }`}>
+    {type === 'success' ? <CheckCircle2 className="w-4 h-4" /> : <Clock className="w-4 h-4" />}
+    <span className="text-sm font-medium">{message}</span>
+  </div>
+);
 
 const AgentConfigForm: React.FC = () => {
-  const [formData, setFormData] = useState({
-    agent_name: '',
-    company_name: '',
-    company_description: '',
+  // --- Module 1: Brain State ---
+  const [brainData, setBrainData] = useState({
+    name: '',
+    company: '',
     tone: 'professional',
-    ecommerce: 'none', // none, woocommerce, shopify
-    woo_url: '',
-    woo_key: '',
-    woo_secret: '',
-    shopify_url: '',
-    shopify_token: '',
-    carrier: 'none', // none, andreani, oca
-    andreani_user: '',
-    andreani_pass: '',
-    oca_user: '',
-    oca_pass: ''
+    description: ''
   });
+  const [brainStatus, setBrainStatus] = useState<'idle' | 'saving' | 'success'>('idle');
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value, type } = e.target as HTMLInputElement;
-    const val = type === 'checkbox' ? (e.target as HTMLInputElement).checked : value;
-    setFormData(prev => ({ ...prev, [name]: val }));
-  };
-
-  const handleEcomSelect = (platform: string) => {
-    setFormData(prev => ({ ...prev, ecommerce: platform }));
-  };
-
-  const handleCarrierSelect = (carrier: string) => {
-    setFormData(prev => ({ ...prev, carrier: carrier }));
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleBrainSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Final Configuration:', JSON.stringify(formData, null, 2));
-    alert('Configuración guardada (ver consola)');
+    setBrainStatus('saving');
+    setTimeout(() => {
+      setBrainStatus('success');
+      setTimeout(() => setBrainStatus('idle'), 3000);
+    }, 1000);
+  };
+
+  // --- Module 2: Logistics State ---
+  const [logisticsData, setLogisticsData] = useState({
+    carrier: 'none',
+    user: '',
+    pass: ''
+  });
+  const [logisticsStatus, setLogisticsStatus] = useState<'idle' | 'saving' | 'success'>('idle');
+
+  const handleLogisticsSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setLogisticsStatus('saving');
+    setTimeout(() => {
+      setLogisticsStatus('success');
+      setTimeout(() => setLogisticsStatus('idle'), 3000);
+    }, 1000);
+  };
+
+  // --- Module 3: E-commerce State ---
+  const [ecomData, setEcomData] = useState({
+    platform: 'none',
+    url: '',
+    token: ''
+  });
+  const [ecomStatus, setEcomStatus] = useState<'idle' | 'saving' | 'pending'>('idle');
+
+  const handleEcomSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setEcomStatus('saving');
+    setTimeout(() => {
+      setEcomStatus('pending');
+      // We keep pending as per requirement (Demora 24hs)
+    }, 1500);
+  };
+
+  // --- Module 4: Channels State ---
+  const [webhookUrl, setWebhookUrl] = useState('');
+  const [isCopied, setIsCopied] = useState(false);
+
+  const generateWebhook = () => {
+    setWebhookUrl(`https://api.nrlabs.com/webhook/tenant-${Math.floor(Math.random() * 10000)}`);
+  };
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(webhookUrl);
+    setIsCopied(true);
+    setTimeout(() => setIsCopied(false), 2000);
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-      {/* Información Base */}
-      <section className="space-y-6">
-        <h3 className="text-lg font-semibold flex items-center gap-2 text-[var(--foreground)]">
-          <Layers className="w-5 h-5 text-[var(--color-accent-base)]" />
-          Configuración General
-        </h3>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="space-y-2">
-            <label className="text-sm font-medium flex items-center gap-2 text-[var(--muted-foreground)]">
-              <Sparkles className="w-4 h-4 text-[var(--color-accent-base)]" />
-              Nombre del Agente
-            </label>
-            <input
-              type="text"
-              name="agent_name"
-              value={formData.agent_name}
-              onChange={handleChange}
-              placeholder="Ej: Sofia de Soporte"
-              className="w-full px-4 py-2.5 rounded-xl border border-[var(--border)] bg-[var(--background)] focus:ring-2 focus:ring-[var(--color-accent-base)]/20 focus:border-[var(--color-accent-base)]/50 outline-none transition-all text-[var(--foreground)]"
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
+      
+      {/* 1. Módulo: Cerebro y Personalidad (⚡ Instantáneo) */}
+      <section className="glass-card bg-[var(--card)] border border-[var(--border)] p-6 rounded-xl flex flex-col">
+        <div className="flex items-center gap-3 mb-6">
+          <div className="p-2 rounded-lg bg-[var(--color-accent-base)]/10">
+            <Brain className="w-5 h-5 text-[var(--color-accent-base)]" />
+          </div>
+          <div>
+            <h3 className="font-bold text-[var(--foreground)]">Cerebro y Personalidad</h3>
+            <p className="text-xs text-[var(--muted-foreground)]">⚡ Configuración en tiempo real</p>
+          </div>
+        </div>
+
+        <form onSubmit={handleBrainSubmit} className="space-y-4 flex-1">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-1.5">
+              <label className="text-[10px] uppercase tracking-wider font-bold text-[var(--muted-foreground)] ml-1">Nombre</label>
+              <input 
+                type="text" 
+                placeholder="Sofia"
+                value={brainData.name}
+                onChange={(e) => setBrainData({...brainData, name: e.target.value})}
+                className="w-full px-4 py-2 rounded-lg bg-[var(--background)] border border-[var(--border)] text-sm focus:ring-2 focus:ring-[var(--color-accent-base)]/20 outline-none transition-all"
+              />
+            </div>
+            <div className="space-y-1.5">
+              <label className="text-[10px] uppercase tracking-wider font-bold text-[var(--muted-foreground)] ml-1">Empresa</label>
+              <input 
+                type="text" 
+                placeholder="NR Labs"
+                value={brainData.company}
+                onChange={(e) => setBrainData({...brainData, company: e.target.value})}
+                className="w-full px-4 py-2 rounded-lg bg-[var(--background)] border border-[var(--border)] text-sm focus:ring-2 focus:ring-[var(--color-accent-base)]/20 outline-none transition-all"
+              />
+            </div>
+          </div>
+
+          <div className="space-y-1.5">
+            <label className="text-[10px] uppercase tracking-wider font-bold text-[var(--muted-foreground)] ml-1">Tono de Voz</label>
+            <div className="relative">
+              <select 
+                value={brainData.tone}
+                onChange={(e) => setBrainData({...brainData, tone: e.target.value})}
+                className="w-full px-4 py-2 rounded-lg bg-[var(--background)] border border-[var(--border)] text-sm focus:ring-2 focus:ring-[var(--color-accent-base)]/20 outline-none appearance-none transition-all"
+              >
+                <option value="professional">Profesional y Ejecutivo</option>
+                <option value="friendly">Amigable y Cercano</option>
+                <option value="direct">Directo y Conciso</option>
+              </select>
+              <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--muted-foreground)] pointer-events-none" />
+            </div>
+          </div>
+
+          <div className="space-y-1.5">
+            <label className="text-[10px] uppercase tracking-wider font-bold text-[var(--muted-foreground)] ml-1">Descripción</label>
+            <textarea 
+              rows={3}
+              placeholder="¿Qué hace tu empresa?"
+              value={brainData.description}
+              onChange={(e) => setBrainData({...brainData, description: e.target.value})}
+              className="w-full px-4 py-2 rounded-lg bg-[var(--background)] border border-[var(--border)] text-sm focus:ring-2 focus:ring-[var(--color-accent-base)]/20 outline-none transition-all resize-none"
             />
           </div>
 
-          <div className="space-y-2">
-            <label className="text-sm font-medium flex items-center gap-2 text-[var(--muted-foreground)]">
-              <Briefcase className="w-4 h-4 text-[var(--color-accent-base)]" />
-              Empresa
-            </label>
-            <input
-              type="text"
-              name="company_name"
-              value={formData.company_name}
-              onChange={handleChange}
-              placeholder="Ej: NR Labs Tech"
-              className="w-full px-4 py-2.5 rounded-xl border border-[var(--border)] bg-[var(--background)] focus:ring-2 focus:ring-[var(--color-accent-base)]/20 focus:border-[var(--color-accent-base)]/50 outline-none transition-all text-[var(--foreground)]"
-            />
-          </div>
-        </div>
+          <button 
+            type="submit"
+            disabled={brainStatus === 'saving'}
+            className="w-full py-2.5 bg-[var(--color-accent-base)] text-white text-sm font-bold rounded-lg hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+          >
+            {brainStatus === 'saving' ? <Loader2 className="w-4 h-4 animate-spin" /> : <Zap className="w-4 h-4" />}
+            Actualizar Cerebro
+          </button>
+        </form>
 
-        <div className="space-y-2">
-          <label className="text-sm font-medium flex items-center gap-2 text-[var(--muted-foreground)]">
-            <MessageSquare className="w-4 h-4 text-[var(--color-accent-base)]" />
-            Tono de Voz
-          </label>
-          <div className="relative">
-            <select
-              name="tone"
-              value={formData.tone}
-              onChange={handleChange}
-              className="w-full px-4 py-2.5 rounded-xl border border-[var(--border)] bg-[var(--background)] focus:ring-2 focus:ring-[var(--color-accent-base)]/20 focus:border-[var(--color-accent-base)]/50 outline-none appearance-none transition-all text-[var(--foreground)]"
-            >
-              <option value="professional">Profesional y Ejecutivo</option>
-              <option value="friendly">Amigable y Cercano</option>
-              <option value="direct">Directo y Conciso</option>
-              <option value="technical">Técnico y Preciso</option>
-            </select>
-            <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--muted-foreground)] pointer-events-none" />
-          </div>
-        </div>
-
-        <div className="space-y-2">
-          <label className="text-sm font-medium text-[var(--muted-foreground)]">
-            Descripción de la Empresa
-          </label>
-          <textarea
-            name="company_description"
-            value={formData.company_description}
-            onChange={handleChange}
-            rows={3}
-            placeholder="Describe brevemente qué hace tu empresa y qué servicios ofrece..."
-            className="w-full px-4 py-3 rounded-xl border border-[var(--border)] bg-[var(--background)] focus:ring-2 focus:ring-[var(--color-accent-base)]/20 focus:border-[var(--color-accent-base)]/50 outline-none transition-all resize-none text-[var(--foreground)]"
-          />
-        </div>
+        {brainStatus === 'success' && (
+          <FeedbackMessage type="success" message="✅ Personalidad actualizada en tiempo real." />
+        )}
       </section>
 
-      {/* Sección de Integraciones */}
-      <section className="space-y-6 pt-4 border-t border-[var(--border)]">
-        <h3 className="text-lg font-semibold flex items-center gap-2 text-[var(--foreground)]">
-          <ShoppingCart className="w-5 h-5 text-[var(--color-accent-base)]" />
-          Conexiones de Sistemas
-        </h3>
-
-        {/* E-commerce Selection */}
-        <div className="space-y-4">
-          <label className="text-sm font-medium text-[var(--muted-foreground)]">Plataforma de E-commerce</label>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <button
-              type="button"
-              onClick={() => handleEcomSelect('none')}
-              className={`flex flex-col items-center justify-center p-4 rounded-2xl border-2 transition-all gap-3 hover:scale-105 ${
-                formData.ecommerce === 'none'
-                  ? 'border-[var(--color-accent-base)] bg-[var(--color-accent-base)]/10 ring-4 ring-[var(--color-accent-base)]/20'
-                  : 'border-[var(--border)] bg-[var(--card)] hover:bg-[var(--muted)]'
-              }`}
-            >
-              <Globe className={`w-6 h-6 ${formData.ecommerce === 'none' ? 'text-[var(--color-accent-base)]' : 'text-[var(--muted-foreground)]'}`} />
-              <span className={`text-sm font-medium ${formData.ecommerce === 'none' ? 'text-[var(--foreground)]' : 'text-[var(--muted-foreground)]'}`}>
-                Sin E-commerce
-              </span>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => handleEcomSelect('woocommerce')}
-              className={`flex flex-col items-center justify-center p-4 rounded-2xl border-2 transition-all gap-3 hover:scale-105 ${
-                formData.ecommerce === 'woocommerce'
-                  ? 'border-[#873EFF] bg-[#873EFF]/10 ring-4 ring-[#873EFF]/20'
-                  : 'border-[var(--border)] bg-[var(--card)] hover:bg-[var(--muted)]'
-              }`}
-            >
-              <svg viewBox="0 0 24 24" fill="currentColor" className={`w-6 h-6 ${formData.ecommerce === 'woocommerce' ? 'text-[#873EFF]' : 'text-[var(--muted-foreground)]'}`} xmlns="http://www.w3.org/2000/svg">
-                <title>Woo</title>
-                <path d="M10.118 8.895c-.562 0-.928.183-1.255.797l-1.49 2.811v-2.496c0-.745-.353-1.111-1.007-1.111s-.928.222-1.255.85l-1.412 2.757v-2.47c0-.797-.327-1.137-1.124-1.137H.954C.34 8.895 0 9.183 0 9.706s.327.837.928.837h.667v3.15c0 .889.601 1.412 1.464 1.412s1.255-.34 1.686-1.137l.941-1.765v1.49c0 .876.575 1.412 1.451 1.412s1.203-.301 1.699-1.137l2.17-3.66c.471-.798.144-1.413-.901-1.413zm4.078 0c-1.778 0-3.124 1.321-3.124 3.112s1.359 3.098 3.124 3.098 3.111-1.32 3.124-3.098c0-1.791-1.359-3.112-3.124-3.112m0 4.301c-.667 0-1.124-.497-1.124-1.19s.458-1.203 1.124-1.203 1.124.51 1.124 1.203-.444 1.19-1.124 1.19m6.68-4.301c-1.765 0-3.124 1.32-3.124 3.111s1.359 3.098 3.124 3.098S24 13.784 24 12.006s-1.359-3.111-3.124-3.111m0 4.301c-.68 0-1.111-.497-1.111-1.19s.444-1.203 1.111-1.203S22 11.313 22 12.006s-.444 1.19-1.124 1.19"/>
-              </svg>
-              <span className={`text-sm font-medium ${formData.ecommerce === 'woocommerce' ? 'text-[var(--foreground)]' : 'text-[var(--muted-foreground)]'}`}>
-                WooCommerce
-              </span>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => handleEcomSelect('shopify')}
-              className={`flex flex-col items-center justify-center p-4 rounded-2xl border-2 transition-all gap-3 hover:scale-105 ${
-                formData.ecommerce === 'shopify'
-                  ? 'border-[#95BF47] bg-[#95BF47]/10 ring-4 ring-[#95BF47]/20'
-                  : 'border-[var(--border)] bg-[var(--card)] hover:bg-[var(--muted)]'
-              }`}
-            >
-              <SiShopify className={`w-6 h-6 ${formData.ecommerce === 'shopify' ? 'text-[#95BF47]' : 'text-[var(--muted-foreground)]'}`} />
-              <span className={`text-sm font-medium ${formData.ecommerce === 'shopify' ? 'text-[var(--foreground)]' : 'text-[var(--muted-foreground)]'}`}>
-                Shopify
-              </span>
-            </button>
+      {/* 2. Módulo: Logística y Cotizadores (⚡ Instantáneo) */}
+      <section className="glass-card bg-[var(--card)] border border-[var(--border)] p-6 rounded-xl flex flex-col">
+        <div className="flex items-center gap-3 mb-6">
+          <div className="p-2 rounded-lg bg-orange-500/10">
+            <Truck className="w-5 h-5 text-orange-500" />
+          </div>
+          <div>
+            <h3 className="font-bold text-[var(--foreground)]">Logística y Cotizadores</h3>
+            <p className="text-xs text-[var(--muted-foreground)]">⚡ Conexión directa APIs</p>
           </div>
         </div>
 
-        {/* E-commerce Conditional Inputs */}
-        {(formData.ecommerce === 'woocommerce' || formData.ecommerce === 'shopify') && (
-          <div className="p-5 rounded-2xl bg-[var(--muted)] border border-[var(--border)] animate-in slide-in-from-top-2 duration-300">
-            <div className="flex items-start gap-3 mb-4 p-3 rounded-lg bg-[var(--background)] border border-[var(--border)]">
-              <ShieldCheck className="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" />
-              <div>
-                <p className="text-sm font-medium text-[var(--foreground)]">Aprovisionamiento Seguro (B2B)</p>
-                <p className="text-xs text-[var(--muted-foreground)] mt-0.5">Tus credenciales se almacenarán encriptadas (AES-256). Nuestro equipo de ingeniería aislará y conectará tu instancia de e-commerce en tu entorno privado.</p>
-              </div>
+        <form onSubmit={handleLogisticsSubmit} className="space-y-6 flex-1">
+          <div className="grid grid-cols-2 gap-3">
+            <button 
+              type="button"
+              onClick={() => setLogisticsData({...logisticsData, carrier: 'andreani'})}
+              className={`p-3 rounded-xl border-2 transition-all flex flex-col items-center gap-2 ${
+                logisticsData.carrier === 'andreani' ? 'border-[#E3000F] bg-[#E3000F]/5' : 'border-[var(--border)] bg-[var(--background)]'
+              }`}
+            >
+              <img src="https://ps.w.org/andreani-shipping/assets/icon-128x128.png?rev=3429256" alt="Andreani" className="h-6 object-contain" />
+              <span className="text-[10px] font-bold">ANDREANI</span>
+            </button>
+            <button 
+              type="button"
+              onClick={() => setLogisticsData({...logisticsData, carrier: 'oca'})}
+              className={`p-3 rounded-xl border-2 transition-all flex flex-col items-center gap-2 ${
+                logisticsData.carrier === 'oca' ? 'border-[#71277E] bg-[#71277E]/5' : 'border-[var(--border)] bg-[var(--background)]'
+              }`}
+            >
+              <img src="https://upload.wikimedia.org/wikipedia/commons/b/ba/Logo_OCA_25.png" alt="OCA" className="h-6 object-contain" />
+              <span className="text-[10px] font-bold">OCA</span>
+            </button>
+          </div>
+
+          <div className="space-y-3">
+            <div className="space-y-1">
+              <label className="text-[10px] uppercase tracking-wider font-bold text-[var(--muted-foreground)] ml-1">Usuario / CUIT</label>
+              <input 
+                type="text" 
+                placeholder="Ingresar credencial..."
+                value={logisticsData.user}
+                onChange={(e) => setLogisticsData({...logisticsData, user: e.target.value})}
+                className="w-full px-4 py-2 rounded-lg bg-[var(--background)] border border-[var(--border)] text-sm focus:ring-2 focus:ring-[var(--color-accent-base)]/20 outline-none"
+              />
             </div>
-
-            {formData.ecommerce === 'woocommerce' && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="md:col-span-2 space-y-2">
-                  <label className="text-xs uppercase tracking-wider font-bold text-[var(--muted-foreground)]">Store URL</label>
-                  <input
-                    type="text"
-                    name="woo_url"
-                    value={formData.woo_url}
-                    onChange={handleChange}
-                    placeholder="https://tu-tienda.com"
-                    className="w-full px-4 py-2 rounded-lg bg-[var(--background)] border border-[var(--border)] text-[var(--foreground)] outline-none focus:border-[var(--color-accent-base)]/50"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-xs uppercase tracking-wider font-bold text-[var(--muted-foreground)] flex items-center gap-2">
-                    <Key className="w-3 h-3" /> Consumer Key
-                  </label>
-                  <input
-                    type="text"
-                    name="woo_key"
-                    value={formData.woo_key}
-                    onChange={handleChange}
-                    placeholder="ck_..."
-                    className="w-full px-4 py-2 rounded-lg bg-[var(--background)] border border-[var(--border)] text-[var(--foreground)] outline-none focus:border-[var(--color-accent-base)]/50"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-xs uppercase tracking-wider font-bold text-[var(--muted-foreground)] flex items-center gap-2">
-                    <Lock className="w-3 h-3" /> Consumer Secret
-                  </label>
-                  <input
-                    type="password"
-                    name="woo_secret"
-                    value={formData.woo_secret}
-                    onChange={handleChange}
-                    placeholder="cs_..."
-                    className="w-full px-4 py-2 rounded-lg bg-[var(--background)] border border-[var(--border)] text-[var(--foreground)] outline-none focus:border-[var(--color-accent-base)]/50"
-                  />
-                </div>
-              </div>
-            )}
-
-            {formData.ecommerce === 'shopify' && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <label className="text-xs uppercase tracking-wider font-bold text-[var(--muted-foreground)]">Shop URL</label>
-                  <input
-                    type="text"
-                    name="shopify_url"
-                    value={formData.shopify_url}
-                    onChange={handleChange}
-                    placeholder="mi-tienda.myshopify.com"
-                    className="w-full px-4 py-2 rounded-lg bg-[var(--background)] border border-[var(--border)] text-[var(--foreground)] outline-none focus:border-[var(--color-accent-base)]/50"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-xs uppercase tracking-wider font-bold text-[var(--muted-foreground)] flex items-center gap-2">
-                    <Key className="w-3 h-3" /> Admin Access Token
-                  </label>
-                  <input
-                    type="password"
-                    name="shopify_token"
-                    value={formData.shopify_token}
-                    onChange={handleChange}
-                    placeholder="shpat_..."
-                    className="w-full px-4 py-2 rounded-lg bg-[var(--background)] border border-[var(--border)] text-[var(--foreground)] outline-none focus:border-[var(--color-accent-base)]/50"
-                  />
-                </div>
-              </div>
-            )}
+            <div className="space-y-1">
+              <label className="text-[10px] uppercase tracking-wider font-bold text-[var(--muted-foreground)] ml-1">Contraseña</label>
+              <input 
+                type="password" 
+                placeholder="••••••••"
+                value={logisticsData.pass}
+                onChange={(e) => setLogisticsData({...logisticsData, pass: e.target.value})}
+                className="w-full px-4 py-2 rounded-lg bg-[var(--background)] border border-[var(--border)] text-sm focus:ring-2 focus:ring-[var(--color-accent-base)]/20 outline-none"
+              />
+            </div>
           </div>
+
+          <button 
+            type="submit"
+            disabled={logisticsStatus === 'saving'}
+            className="w-full py-2.5 bg-[var(--color-accent-base)] text-white text-sm font-bold rounded-lg hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center gap-2 mt-auto"
+          >
+            {logisticsStatus === 'saving' ? <Loader2 className="w-4 h-4 animate-spin" /> : <ExternalLink className="w-4 h-4" />}
+            Conectar APIs
+          </button>
+        </form>
+
+        {logisticsStatus === 'success' && (
+          <FeedbackMessage type="success" message="✅ Cotización en tiempo real activa." />
         )}
+      </section>
 
-        {/* Logistics Section */}
-        <div className="space-y-4 pt-4 border-t border-[var(--border)]">
-          <label className="text-sm font-medium text-[var(--muted-foreground)]">Logística y Cotizadores</label>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            {/* None Option */}
-            <button
+      {/* 3. Módulo: Integraciones E-commerce (⏳ Aprovisionamiento B2B) */}
+      <section className="glass-card bg-[var(--card)] border border-[var(--border)] p-6 rounded-xl flex flex-col">
+        <div className="flex items-center gap-3 mb-6">
+          <div className="p-2 rounded-lg bg-emerald-500/10">
+            <ShoppingCart className="w-5 h-5 text-emerald-500" />
+          </div>
+          <div>
+            <h3 className="font-bold text-[var(--foreground)]">Integraciones E-commerce</h3>
+            <p className="text-xs text-[var(--muted-foreground)]">⏳ Aprovisionamiento B2B</p>
+          </div>
+        </div>
+
+        <div className="mb-4 p-3 rounded-lg bg-blue-500/5 border border-blue-500/20 flex items-start gap-3">
+          <ShieldCheck className="w-4 h-4 text-blue-500 shrink-0 mt-0.5" />
+          <p className="text-[11px] text-blue-700 dark:text-blue-300 leading-tight">
+            <span className="font-bold">Aprovisionamiento Seguro</span> - La conexión requiere una instancia aislada. El proceso demora un máximo de 24hs.
+          </p>
+        </div>
+
+        <form onSubmit={handleEcomSubmit} className="space-y-4 flex-1">
+          <div className="flex gap-4 mb-4">
+            <button 
               type="button"
-              onClick={() => handleCarrierSelect('none')}
-              className={`flex flex-col items-center justify-center p-4 rounded-2xl border-2 transition-all gap-3 hover:scale-105 ${
-                formData.carrier === 'none'
-                  ? 'border-[var(--color-accent-base)] bg-[var(--color-accent-base)]/10 ring-4 ring-[var(--color-accent-base)]/20'
-                  : 'border-[var(--border)] bg-[var(--card)] hover:bg-[var(--muted)]'
+              onClick={() => setEcomData({...ecomData, platform: 'shopify'})}
+              className={`flex-1 p-3 rounded-xl border-2 transition-all flex items-center justify-center gap-2 ${
+                ecomData.platform === 'shopify' ? 'border-[#95BF47] bg-[#95BF47]/5' : 'border-[var(--border)] bg-[var(--background)]'
               }`}
             >
-              <div className={`p-2 rounded-xl ${formData.carrier === 'none' ? 'bg-[var(--color-accent-base)] text-white' : 'bg-[var(--muted)] text-[var(--muted-foreground)]'}`}>
-                <X className="w-6 h-6" />
-              </div>
-              <span className={`text-sm font-medium ${formData.carrier === 'none' ? 'text-[var(--foreground)]' : 'text-[var(--muted-foreground)]'}`}>
-                Sin Logística
-              </span>
+              <SiShopify className={`w-5 h-5 ${ecomData.platform === 'shopify' ? 'text-[#95BF47]' : 'text-[var(--muted-foreground)]'}`} />
+              <span className="text-xs font-bold">Shopify</span>
             </button>
-
-            {/* Andreani Option */}
-            <button
+            <button 
               type="button"
-              onClick={() => handleCarrierSelect('andreani')}
-              className={`flex flex-col items-center justify-center p-4 rounded-2xl border-2 transition-all gap-3 hover:scale-105 relative overflow-hidden group ${
-                formData.carrier === 'andreani'
-                  ? 'border-[#E3000F] bg-[#E3000F]/10 ring-4 ring-[#E3000F]/20 shadow-[0_0_15px_-3px_rgba(227,0,15,0.4)]'
-                  : 'border-[var(--border)] bg-[var(--card)] hover:bg-[var(--muted)] shadow-sm'
+              onClick={() => setEcomData({...ecomData, platform: 'woocommerce'})}
+              className={`flex-1 p-3 rounded-xl border-2 transition-all flex items-center justify-center gap-2 ${
+                ecomData.platform === 'woocommerce' ? 'border-[#96588A] bg-[#96588A]/5' : 'border-[var(--border)] bg-[var(--background)]'
               }`}
             >
-              <img 
-                src="https://ps.w.org/andreani-shipping/assets/icon-128x128.png?rev=3429256" 
-                alt="Andreani" 
-                className="h-10 object-contain"
-              />
-              <span className={`text-sm font-bold ${formData.carrier === 'andreani' ? 'text-[#E3000F]' : 'text-[var(--muted-foreground)]'}`}>
-                Andreani
-              </span>
-              {formData.carrier === 'andreani' && (
-                <div className="absolute top-2 right-2">
-                   <div className="w-2 h-2 rounded-full bg-[#E3000F] animate-pulse" />
-                </div>
-              )}
-            </button>
-
-            {/* OCA Option */}
-            <button
-              type="button"
-              onClick={() => handleCarrierSelect('oca')}
-              className={`flex flex-col items-center justify-center p-4 rounded-2xl border-2 transition-all gap-3 hover:scale-105 relative overflow-hidden group ${
-                formData.carrier === 'oca'
-                  ? 'border-[#71277E] bg-[#71277E]/10 ring-4 ring-[#71277E]/20 shadow-[0_0_15px_-3px_rgba(113,39,126,0.4)]'
-                  : 'border-[var(--border)] bg-[var(--card)] hover:bg-[var(--muted)] shadow-sm'
-              }`}
-            >
-              <img 
-                src="https://upload.wikimedia.org/wikipedia/commons/b/ba/Logo_OCA_25.png" 
-                alt="OCA" 
-                className={`h-10 object-contain ${formData.carrier === 'oca' ? '' : 'grayscale opacity-70'}`}
-              />
-              <span className={`text-sm font-bold ${formData.carrier === 'oca' ? 'text-[#71277E]' : 'text-[var(--muted-foreground)]'}`}>
-                OCA
-              </span>
-              {formData.carrier === 'oca' && (
-                <div className="absolute top-2 right-2">
-                   <div className="w-2 h-2 rounded-full bg-[#71277E] animate-pulse" />
-                </div>
-              )}
+              <SiWoocommerce className={`w-8 h-8 ${ecomData.platform === 'woocommerce' ? 'text-[#96588A]' : 'text-[var(--muted-foreground)]'}`} />
             </button>
           </div>
 
-          {/* Logistics Conditional Inputs */}
-          {formData.carrier !== 'none' && (
-            <div className="p-5 rounded-2xl bg-[var(--muted)] border border-[var(--border)] animate-in slide-in-from-top-2 duration-300">
-               <div className="flex items-start gap-3 mb-6 p-3 rounded-lg bg-[var(--background)] border border-[var(--border)]">
-                <Truck className={`w-5 h-5 shrink-0 mt-0.5 ${formData.carrier === 'andreani' ? 'text-[#E3000F]' : 'text-[#71277E]'}`} />
-                <div>
-                  <p className="text-sm font-medium text-[var(--foreground)]">Configuración de {formData.carrier === 'andreani' ? 'Andreani' : 'OCA'}</p>
-                  <p className="text-xs text-[var(--muted-foreground)] mt-0.5">Integración nativa para cotización y tracking en tiempo real. Los datos se transmiten vía HTTPS TLS 1.3.</p>
-                </div>
-              </div>
+          <div className="space-y-3">
+            <div className="space-y-1">
+              <label className="text-[10px] uppercase tracking-wider font-bold text-[var(--muted-foreground)] ml-1">Store URL</label>
+              <input 
+                type="text" 
+                placeholder="https://tienda.com"
+                value={ecomData.url}
+                onChange={(e) => setEcomData({...ecomData, url: e.target.value})}
+                className="w-full px-4 py-2 rounded-lg bg-[var(--background)] border border-[var(--border)] text-sm focus:ring-2 focus:ring-blue-500/20 outline-none"
+              />
+            </div>
+            <div className="space-y-1">
+              <label className="text-[10px] uppercase tracking-wider font-bold text-[var(--muted-foreground)] ml-1">Admin Token / Key</label>
+              <input 
+                type="password" 
+                placeholder="••••••••"
+                value={ecomData.token}
+                onChange={(e) => setEcomData({...ecomData, token: e.target.value})}
+                className="w-full px-4 py-2 rounded-lg bg-[var(--background)] border border-[var(--border)] text-sm focus:ring-2 focus:ring-blue-500/20 outline-none"
+              />
+            </div>
+          </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <label className="text-xs uppercase tracking-wider font-bold text-[var(--muted-foreground)]">
-                    {formData.carrier === 'oca' ? 'Usuario (CUIT)' : 'Usuario'}
-                  </label>
-                  <input
-                    type="text"
-                    name={formData.carrier === 'andreani' ? 'andreani_user' : 'oca_user'}
-                    value={formData.carrier === 'andreani' ? formData.andreani_user : formData.oca_user}
-                    onChange={handleChange}
-                    placeholder={formData.carrier === 'oca' ? '30-XXXXXXXX-X' : 'Tu usuario'}
-                    className="w-full px-4 py-2 rounded-lg bg-[var(--background)] border border-[var(--border)] text-[var(--foreground)] outline-none focus:border-[var(--color-accent-base)]/50 transition-all"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-xs uppercase tracking-wider font-bold text-[var(--muted-foreground)]">Contraseña</label>
-                  <input
-                    type="password"
-                    name={formData.carrier === 'andreani' ? 'andreani_pass' : 'oca_pass'}
-                    value={formData.carrier === 'andreani' ? formData.andreani_pass : formData.oca_pass}
-                    onChange={handleChange}
-                    placeholder="••••••••"
-                    className="w-full px-4 py-2 rounded-lg bg-[var(--background)] border border-[var(--border)] text-[var(--foreground)] outline-none focus:border-[var(--color-accent-base)]/50 transition-all"
-                  />
+          <button 
+            type="submit"
+            disabled={ecomStatus === 'saving' || ecomStatus === 'pending'}
+            className="w-full py-2.5 bg-slate-800 dark:bg-slate-200 text-white dark:text-slate-900 text-sm font-bold rounded-lg hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center gap-2 mt-auto"
+          >
+            {ecomStatus === 'saving' ? <Loader2 className="w-4 h-4 animate-spin" /> : <Clock className="w-4 h-4" />}
+            Solicitar Conexión Segura
+          </button>
+        </form>
+
+        {ecomStatus === 'pending' && (
+          <FeedbackMessage type="pending" message="⏳ Credenciales recibidas. Equipo de ingeniería asignado." />
+        )}
+      </section>
+
+      {/* 4. Módulo: Canales de Despliegue (🔗 Setup Técnico) */}
+      <section className="glass-card bg-[var(--card)] border border-[var(--border)] p-6 rounded-xl flex flex-col">
+        <div className="flex items-center gap-3 mb-6">
+          <div className="p-2 rounded-lg bg-blue-600/10">
+            <Globe className="w-5 h-5 text-blue-600" />
+          </div>
+          <div>
+            <h3 className="font-bold text-[var(--foreground)]">Canales de Despliegue</h3>
+            <p className="text-xs text-[var(--muted-foreground)]">🔗 Configuración Técnica</p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 gap-3 mb-6">
+          <div className="p-3 rounded-xl border border-[var(--border)] bg-[var(--background)] flex flex-col items-center gap-2 opacity-60">
+            <SiWhatsapp className="w-5 h-5 text-[#25D366]" />
+            <span className="text-[10px] font-bold">WHATSAPP</span>
+          </div>
+          <div className="p-3 rounded-xl border border-[var(--border)] bg-[var(--background)] flex flex-col items-center gap-2 opacity-60">
+            <MessageCircle className="w-5 h-5 text-blue-500" />
+            <span className="text-[10px] font-bold">ZENVIA</span>
+          </div>
+        </div>
+
+        <div className="flex-1 space-y-4">
+          <p className="text-xs text-[var(--muted-foreground)] leading-relaxed">
+            Genera un endpoint de conexión para integrar NR Labs en tus flujos de Zenvia o WhatsApp Cloud API.
+          </p>
+
+          {!webhookUrl ? (
+            <button 
+              onClick={generateWebhook}
+              className="w-full py-3 border-2 border-dashed border-[var(--border)] rounded-xl text-xs font-bold text-[var(--muted-foreground)] hover:border-[var(--color-accent-base)] hover:text-[var(--color-accent-base)] transition-all flex flex-col items-center gap-2 group"
+            >
+              <Zap className="w-5 h-5 group-hover:animate-pulse" />
+              Generar Credenciales de Conexión
+            </button>
+          ) : (
+            <div className="space-y-3 animate-in zoom-in-95 duration-300">
+              <div className="space-y-1">
+                <label className="text-[10px] uppercase tracking-wider font-bold text-[var(--muted-foreground)] ml-1">Webhook URL</label>
+                <div className="flex gap-2">
+                  <div className="flex-1 px-3 py-2 rounded-lg bg-[var(--muted)] border border-[var(--border)] text-[11px] font-mono text-[var(--foreground)] truncate">
+                    {webhookUrl}
+                  </div>
+                  <button 
+                    onClick={copyToClipboard}
+                    className={`p-2 rounded-lg border transition-all ${
+                      isCopied ? 'bg-emerald-500 text-white border-emerald-500' : 'bg-[var(--background)] border-[var(--border)] text-[var(--foreground)] hover:bg-[var(--muted)]'
+                    }`}
+                  >
+                    {isCopied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                  </button>
                 </div>
               </div>
+              <p className="text-[10px] text-amber-500 bg-amber-500/10 p-2 rounded-md border border-amber-500/20">
+                ⚠️ Copia este Webhook a tu consola de Zenvia para activar el agente.
+              </p>
             </div>
           )}
         </div>
-      </section>
 
-      {/* Deployment Channels Section */}
-      <section className="space-y-4 pt-4 border-t border-[var(--border)]">
-        <h3 className="text-lg font-semibold flex items-center gap-2 text-[var(--foreground)]">
-          <Globe className="w-5 h-5 text-[var(--color-accent-base)]" />
-          Canales de Despliegue
-        </h3>
-        <p className="text-sm text-[var(--muted-foreground)] mb-4">
-          NR Labs opera como el motor cognitivo de tu empresa. Conectamos la inteligencia artificial directamente a tus canales de comunicación existentes.
-        </p>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="p-5 rounded-2xl border-2 border-emerald-500/30 bg-emerald-500/5 relative overflow-hidden group">
-             <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-               <Phone className="w-16 h-16 text-emerald-500" />
-             </div>
-             <div className="relative z-10">
-               <div className="flex items-center gap-2 mb-2">
-                 <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                 <h4 className="font-semibold text-emerald-700 dark:text-emerald-400">WhatsApp Nativo</h4>
-               </div>
-               <p className="text-sm text-[var(--muted-foreground)]">
-                 Conexión directa vía Cloud API de WhatsApp Business. Respuestas instantáneas y soporte multimedia.
-               </p>
-             </div>
-          </div>
-
-          <div className="p-5 rounded-2xl border-2 border-blue-500/30 bg-blue-500/5 relative overflow-hidden group">
-             <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-               <MessageCircle className="w-16 h-16 text-blue-500" />
-             </div>
-             <div className="relative z-10">
-               <div className="flex items-center gap-2 mb-2">
-                 <div className="w-2 h-2 rounded-full bg-blue-500" />
-                 <h4 className="font-semibold text-blue-700 dark:text-blue-400">Integración Zenvia</h4>
-               </div>
-               <p className="text-sm text-[var(--muted-foreground)]">
-                 Si ya utilizas Zenvia, inyectamos inteligencia artificial superior en tus flujos de conversación actuales sin cambiar de proveedor.
-               </p>
-             </div>
+        <div className="mt-6 pt-4 border-t border-[var(--border)] flex items-center justify-between">
+          <span className="text-[10px] text-[var(--muted-foreground)]">Seguridad: TLS 1.3 Active</span>
+          <div className="flex items-center gap-1">
+            <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+            <span className="text-[10px] font-bold text-emerald-500">READY</span>
           </div>
         </div>
       </section>
 
-      <div className="flex justify-end pt-6 border-t border-[var(--border)]">
-        <button
-          type="submit"
-          className="group flex items-center gap-2 px-8 py-3 bg-[var(--color-accent-base)] text-white font-bold rounded-xl hover:opacity-90 shadow-lg shadow-[var(--color-accent-base)]/20 active:scale-[0.98] transition-all"
-        >
-          <Save className="w-5 h-5 group-hover:rotate-12 transition-transform" />
-          Guardar Configuración
-        </button>
-      </div>
-    </form>
+    </div>
   );
 };
 
