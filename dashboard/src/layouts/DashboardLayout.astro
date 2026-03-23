@@ -6,8 +6,7 @@ import {
   Moon, 
   Sun, 
   LogOut,
-  ChevronLeft,
-  ChevronRight,
+  Plug,
   Zap
 } from 'lucide-react';
 import '../styles/globals.css';
@@ -20,8 +19,8 @@ const { title } = Astro.props;
 
 const navItems = [
   { href: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
-  { href: '/knowledge', icon: BookOpen, label: 'Conocimiento' },
   { href: '/config', icon: Settings, label: 'Configuración' },
+  { href: '/integrations', icon: Plug, label: 'Integraciones' },
 ];
 
 const currentPath = Astro.url.pathname;
@@ -43,7 +42,7 @@ const currentPath = Astro.url.pathname;
       <!-- Sidebar -->
       <aside id="sidebar" class="group flex flex-col w-64 bg-[var(--card)] border-r border-[var(--border)] transition-all duration-300 ease-in-out relative z-30">
         <div class="p-6 flex items-center gap-3">
-          <div class="w-8 h-8 rounded-lg bg-[var(--color-accent-base)] flex items-center justify-center shadow-lg shadow-accent-base/20">
+          <div class="w-8 h-8 rounded-lg bg-[var(--color-accent-base)] flex items-center justify-center shadow-lg shadow-[var(--color-accent-base)]/20">
             <Zap className="w-5 h-5 text-white" />
           </div>
           <span class="font-bold text-xl tracking-tight group-data-[collapsed=true]:hidden">NR Labs</span>
@@ -113,7 +112,6 @@ const currentPath = Astro.url.pathname;
       const themeToggle = document.getElementById('theme-toggle');
       const doc = document.documentElement;
 
-      // Init theme
       const theme = (() => {
         if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
           return localStorage.getItem('theme');
