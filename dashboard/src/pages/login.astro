@@ -1,5 +1,5 @@
 ---
-import { Zap, Chrome, ArrowRight } from 'lucide-react';
+import LandingUI from '../components/LandingUI.tsx';
 import '../styles/globals.css';
 ---
 
@@ -12,68 +12,7 @@ import '../styles/globals.css';
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   </head>
-  <body class="min-h-screen bg-[var(--background)] text-[var(--foreground)] flex items-center justify-center p-4 transition-colors duration-300">
-    <!-- Grid background decoration -->
-    <div class="fixed inset-0 z-0 overflow-hidden pointer-events-none">
-        <div class="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] bg-[var(--color-accent-base)]/10 rounded-full blur-[120px]"></div>
-        <div class="absolute -bottom-[10%] -right-[10%] w-[40%] h-[40%] bg-[var(--color-accent-base)]/10 rounded-full blur-[120px]"></div>
-    </div>
-
-    <main class="w-full max-w-md z-10">
-      <div class="text-center mb-8">
-        <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-[var(--color-accent-base)] shadow-xl shadow-[var(--color-accent-base)]/20 mb-4 animate-in fade-in zoom-in duration-500">
-          <Zap className="w-8 h-8 text-white" />
-        </div>
-        <h1 class="text-3xl font-bold tracking-tight text-[var(--foreground)]">Bienvenido a NR Labs</h1>
-        <p class="text-[var(--muted-foreground)] mt-2 font-medium">La nueva era de los agentes IA corporativos.</p>
-      </div>
-
-      <div class="glass-card p-8 shadow-2xl animate-in fade-in slide-in-from-bottom-4 duration-700 bg-[var(--card)]/80">
-        <div class="space-y-6">
-          <div>
-            <h2 class="text-xl font-semibold text-[var(--foreground)]">Iniciar Sesión</h2>
-            <p class="text-sm text-[var(--muted-foreground)] mt-1">Accede a tu panel de control centralizado.</p>
-          </div>
-
-          <!-- BOTÓN GOOGLE REAL -->
-          <a 
-            href="/api/auth/google"
-            class="flex items-center justify-center gap-3 w-full py-3 px-4 bg-[var(--background)] border border-[var(--border)] rounded-xl font-medium text-[var(--foreground)] hover:border-[var(--color-accent-base)] hover:text-[var(--color-accent-base)] transition-all duration-300 shadow-sm group"
-          >
-            <Chrome className="w-5 h-5 text-[var(--foreground)] group-hover:text-[var(--color-accent-base)] transition-colors" />
-            <span>Continuar con Google</span>
-          </a>
-
-          <div class="relative py-2">
-            <div class="absolute inset-0 flex items-center">
-              <span class="w-full border-t border-[var(--border)]"></span>
-            </div>
-            <div class="relative flex justify-center text-xs uppercase font-bold">
-              <span class="bg-[var(--card)] px-3 text-[var(--muted-foreground)]">Demo Local</span>
-            </div>
-          </div>
-
-          <div class="space-y-4">
-            <p class="text-xs text-[var(--muted-foreground)] text-center">
-              Si no configuraste las credenciales de Google OAuth, puedes entrar directamente al dashboard para ver el diseño:
-            </p>
-            
-            <!-- BOTÓN BYPASS (Para ver el Dashboard sin Login) -->
-            <a 
-              href="/dashboard"
-              class="flex items-center justify-center gap-2 w-full h-12 rounded-xl bg-[var(--foreground)] text-[var(--background)] font-semibold hover:opacity-90 active:scale-[0.98] transition-all"
-            >
-              Entrar al Dashboard <ArrowRight className="w-4 h-4" />
-            </a>
-          </div>
-        </div>
-
-        <div class="mt-8 pt-6 border-t border-[var(--border)] text-center">
-          <p class="text-xs text-[var(--muted-foreground)]">
-            Al continuar, aceptas nuestros <a href="#" class="font-semibold text-[var(--foreground)] hover:text-[var(--color-accent-base)] transition-colors">Términos de Servicio</a>.
-          </p>
-        </div>
-      </div>
-    </main>
+  <body>
+    <LandingUI client:load />
   </body>
 </html>

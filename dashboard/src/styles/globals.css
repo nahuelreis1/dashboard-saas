@@ -78,4 +78,17 @@
   .glass-card {
     @apply bg-[var(--card)]/50 backdrop-blur-md border border-[var(--border)] shadow-sm rounded-xl overflow-hidden;
   }
+
+  .animate-marquee {
+    animation: marquee 35s linear infinite;
+  }
+  
+  .animate-marquee:hover {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); } /* -50% because we'll duplicate the content inside a flex container */
 }

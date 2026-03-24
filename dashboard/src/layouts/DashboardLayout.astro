@@ -7,7 +7,8 @@ import {
   Sun, 
   LogOut,
   Plug,
-  Zap
+  Zap,
+  AlertTriangle
 } from 'lucide-react';
 import '../styles/globals.css';
 
@@ -89,10 +90,20 @@ const currentPath = Astro.url.pathname;
       </aside>
 
       <!-- Main Content -->
-      <main class="flex-1 overflow-y-auto bg-[var(--background)]/50 relative">
-        <header class="sticky top-0 z-20 h-16 border-b border-[var(--border)] bg-[var(--background)]/80 backdrop-blur-md flex items-center justify-between px-8">
-          <h1 class="text-lg font-semibold">{title}</h1>
-          <div class="flex items-center gap-4">
+      <main class="flex-1 overflow-y-auto bg-[var(--background)]/50 relative flex flex-col">
+        
+        <div class="sticky top-0 z-30 w-full bg-[var(--background)]/80 backdrop-blur-md">
+          <!-- Sticky Warning Banner -->
+          <div class="w-full bg-amber-500/10 border-b border-amber-500/20 text-amber-600 dark:text-amber-400 px-4 py-2 flex items-center justify-center gap-2 text-sm text-center">
+            <AlertTriangle className="w-5 h-5 shrink-0 hidden sm:block" />
+            <p class="font-medium">
+              <span class="font-bold">ESTADO: PENDIENTE DE ACTIVACIÓN.</span> Tu cuenta se encuentra en modo lectura. Para activar tu agente IA y conectar los canales, contacta a tu ejecutivo de cuentas de NR Labs. <a href="#" class="underline font-bold hover:opacity-80 transition-opacity ml-1">Contactar Soporte</a>
+            </p>
+          </div>
+
+          <header class="h-16 border-b border-[var(--border)] flex items-center justify-between px-8">
+            <h1 class="text-lg font-semibold">{title}</h1>
+            <div class="flex items-center gap-4">
              <div class="flex flex-col items-end">
                <span class="text-sm font-medium">Nahuel Reis</span>
                <span class="text-xs text-[var(--muted-foreground)]">Admin</span>
@@ -102,8 +113,9 @@ const currentPath = Astro.url.pathname;
              </div>
           </div>
         </header>
+        </div>
 
-        <div class="p-8 max-w-7xl mx-auto">
+        <div class="p-8 max-w-7xl mx-auto w-full">
           <slot />
         </div>
       </main>
