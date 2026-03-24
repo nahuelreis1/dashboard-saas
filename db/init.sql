@@ -5,6 +5,8 @@ CREATE TABLE IF NOT EXISTS tenants (
   email TEXT NOT NULL,
   name TEXT,
   avatar_url TEXT,
+  google_access_token TEXT,
+  google_refresh_token TEXT,
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 

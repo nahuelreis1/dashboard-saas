@@ -1,6 +1,7 @@
 ---
 import DashboardLayout from '../layouts/DashboardLayout.astro';
 import FileUploader from '../components/FileUploader';
+import DriveFolderSelector from '../components/DriveFolderSelector';
 ---
 
 <DashboardLayout title="Base de Conocimiento">
@@ -13,11 +14,15 @@ import FileUploader from '../components/FileUploader';
     </div>
 
     <div class="grid gap-8">
-      <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-8 shadow-sm">
-        <h3 class="text-xl font-semibold mb-6 flex items-center gap-2">
-          Subir Documentos
-        </h3>
-        <FileUploader client:load />
+      <div>
+        <DriveFolderSelector client:load />
+
+        <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-8 shadow-sm">
+          <h3 class="text-xl font-semibold mb-6 flex items-center gap-2">
+            Subir Documentos
+          </h3>
+          <FileUploader client:load />
+        </div>
       </div>
 
       <div class="grid md:grid-cols-3 gap-6">

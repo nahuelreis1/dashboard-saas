@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { Upload, FileText, X, File, CheckCircle2, AlertCircle } from 'lucide-react';
+import { Upload, FileText, X, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
 
 interface FileItem {
   id: string;
@@ -7,6 +7,7 @@ interface FileItem {
   size: string;
   type: string;
   status: 'uploading' | 'completed' | 'error';
+  errorMsg?: string;
 }
 
 const FileUploader: React.FC = () => {
@@ -35,14 +36,42 @@ const FileUploader: React.FC = () => {
   }, []);
 
   const handleFiles = (newFiles: File[]) => {
-    const fileItems: FileItem[] = newFiles.map(f => ({
-      id: Math.random().toString(36).substr(2, 9),
-      name: f.name,
-      size: (f.size / (1024 * 1024)).toFixed(1) + ' MB',
-      type: f.type,
-      status: 'completed' // In a real app, this would start as 'uploading'
-    }));
-    setFiles(prev => [...prev, ...fileItems]);
+    newFiles.forEach(file => {
+      const id = Math.random().toString(36).substr(2, 9);
+      const newFileItem: FileItem = {
+        id,
+        name: file.name,
+        size: (file.size / (1024 * 1024)).toFixed(1) + ' MB',
+        type: file.type,
+        status: 'uploading'
+      };
+
+      setFiles(prev => [...prev, newFileItem]);
+      uploadFile(file, id);
+    });
+  };
+
+  const uploadFile = async (file: File, id: string) => {
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const response = await fetch('/api/files/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        setFiles(prev => prev.map(f => f.id === id ? { ...f, status: 'completed' } : f));
+      } else {
+        setFiles(prev => prev.map(f => f.id === id ? { ...f, status: 'error', errorMsg: data.error || 'Error al subir' } : f));
+      }
+    } catch (error) {
+      console.error('Error de red al subir archivo:', error);
+      setFiles(prev => prev.map(f => f.id === id ? { ...f, status: 'error', errorMsg: 'Error de conexión' } : f));
+    }
   };
 
   const removeFile = (id: string) => {
@@ -59,7 +88,7 @@ const FileUploader: React.FC = () => {
           relative border-2 border-dashed rounded-2xl p-10 flex flex-col items-center justify-center text-center transition-all duration-300
           ${isDragging 
             ? 'border-[var(--color-accent-base)] bg-[var(--color-accent-base)]/5 scale-[0.99] shadow-inner' 
-            : 'border-muted-foreground/20 hover:border-[var(--color-accent-base)]/50 hover:bg-slate-50 dark:hover:bg-slate-800/50'}
+            : 'border-muted-foreground/20 hover:border-[var(--color-accent-base)]/50 hover:bg-[var(--muted)]/50'}
         `}
       >
         <div className={`p-4 rounded-full mb-4 transition-colors ${isDragging ? 'bg-[var(--color-accent-base)] text-white' : 'bg-[var(--muted)] text-[var(--muted-foreground)]'}`}>
@@ -90,18 +119,33 @@ const FileUploader: React.FC = () => {
                 key={file.id} 
                 className="group flex items-center gap-4 p-4 bg-[var(--background)]/50 border border-[var(--border)] rounded-xl hover:shadow-md transition-all animate-in fade-in slide-in-from-left-2"
               >
-                <div className="w-10 h-10 rounded-lg bg-[var(--color-accent-base)]/10 flex items-center justify-center text-[var(--color-accent-base)] group-hover:bg-[var(--color-accent-base)] group-hover:text-white transition-colors">
+                <div className={`w-10 h-10 rounded-lg flex items-center justify-center transition-colors
+                  ${file.status === 'error' ? 'bg-destructive/10 text-destructive' : 'bg-[var(--color-accent-base)]/10 text-[var(--color-accent-base)] group-hover:bg-[var(--color-accent-base)] group-hover:text-white'}
+                `}>
                   <FileText className="w-5 h-5" />
                 </div>
+                
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium truncate">{file.name}</p>
-                  <p className="text-xs text-[var(--muted-foreground)]">{file.size} • Vectorizado</p>
+                  <div className="flex items-center gap-2">
+                    <p className="text-xs text-[var(--muted-foreground)]">{file.size}</p>
+                    {file.status === 'completed' && <span className="text-xs text-[var(--muted-foreground)]">• Vectorizado</span>}
+                    {file.status === 'error' && (
+                      <span className="text-xs text-destructive flex items-center gap-1">
+                        • {file.errorMsg}
+                      </span>
+                    )}
+                  </div>
                 </div>
+
                 <div className="flex items-center gap-2">
-                   {file.status === 'completed' && <CheckCircle2 className="w-4 h-4 text-emerald-500" />}
+                   {file.status === 'completed' && <CheckCircle2 className="w-5 h-5 text-emerald-500" />}
+                   {file.status === 'uploading' && <Loader2 className="w-5 h-5 animate-spin text-[var(--color-accent-base)]" />}
+                   {file.status === 'error' && <AlertCircle className="w-5 h-5 text-destructive" />}
+                   
                    <button 
                      onClick={() => removeFile(file.id)}
-                     className="p-2 text-[var(--muted-foreground)] hover:text-destructive hover:bg-destructive/10 rounded-lg transition-colors"
+                     className="ml-2 p-2 text-[var(--muted-foreground)] hover:text-destructive hover:bg-destructive/10 rounded-lg transition-colors"
                    >
                      <X className="w-4 h-4" />
                    </button>
