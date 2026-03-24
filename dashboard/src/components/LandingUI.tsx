@@ -13,7 +13,7 @@ export default function LandingUI() {
 
   const integrationsList = [
     { name: 'MercadoLibre', isSvg: true, content: (
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" className="h-10 w-auto opacity-80 hover:opacity-100 transition-opacity" fill="currentColor">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" className="h-12 w-12 opacity-80 hover:opacity-100 transition-opacity" fill="currentColor">
         <path d="M685.8 456.8c-1.6-1.5-3.3-3.1-4.9-4.8l-1.6-1.6-103-91.8c-36-32.3-100.2-22.1-125.7 19.8-13 21.4-12.7 54.4 0.7 75.3 12.8 19.8 38.3 35.5 73.1 44.9v0.1c-13.9 14.5-28 29-41.8 43.6v-0.1c-32.6-8.5-56-22-68.8-38.6-28.7-36.9-19-106.3 22-152.2 30-33.5 83-50.4 121.2-16.1 1.7 1.5 3.3 3 5 4.6l1.6 1.6 102.9 91.8c36 32.3 100.1 22.1 125.7-19.8 13-21.3 12.7-54.4-0.7-75.3-12.8-19.8-38.3-35.5-73.1-45v-0.1c13.9-14.5 28-29 41.8-43.6v0.1c32.6 8.5 56 22 68.8 38.6 28.7 36.9 19 106.3-22 152.2-29.8 33.6-82.7 50.4-121.2 16.4z" />
         <path d="M512 88.5c-233.9 0-423.5 189.6-423.5 423.5S278.1 935.5 512 935.5 935.5 745.9 935.5 512 745.9 88.5 512 88.5zM761.3 543.9c-44.5 51.5-104 68.5-144.1 63.3l-20.9 21.7c47.9-12.2 114.7-41 155.6-85-4.4 0-9.2-0.1-14.2 0.3-6.4 0.5-12.5 1.5-18.3 3.1l41.9-3.4zM425 401.5l20.9-21.7c-47.9 12.2-114.7 41-155.6 85 4.4 0 9.2 0.1 14.2-0.3 6.4-0.5 12.5-1.5 18.3-3.1L280.9 465c44.5-51.5 104-68.5 144.1-63.5z" />
       </svg>
@@ -21,9 +21,9 @@ export default function LandingUI() {
     { name: 'WooCommerce', icon: SiWoocommerce, color: '#96588a' },
     { name: 'Shopify', icon: SiShopify, color: '#95BF47' },
     { name: 'WhatsApp B2B', icon: SiWhatsapp, color: '#25D366' },
-    { name: 'Andreani', isImg: true, src: 'https://upload.wikimedia.org/wikipedia/commons/e/eb/Logo_Andreani.png' },
-    { name: 'OCA', isImg: true, src: 'https://www.oca.com.ar/assets/images/logo_oca.svg' },
-    { name: 'Zenvia', isImg: true, src: 'https://www.zenvia.com/wp-content/uploads/2021/08/zenvia-logo-orange-purple.svg' }
+    { name: 'Andreani', isImg: true, src: 'https://ps.w.org/andreani-shipping/assets/icon-128x128.png?rev=3429256' },
+    { name: 'OCA', isImg: true, src: 'https://upload.wikimedia.org/wikipedia/commons/b/ba/Logo_OCA_25.png' },
+    { name: 'Zenvia', isImg: true, src: 'https://gdm-catalog-fmapi-prod.imgix.net/ProductLogo/de9596d6-81a8-4986-94e7-b781c49046a1.png?w=90&h=90&fit=max&dpr=3&auto=format&q=50' }
   ];
 
   const doubledIntegrations = [...integrationsList, ...integrationsList];
@@ -40,14 +40,16 @@ export default function LandingUI() {
         {/* Header section */}
         <div className="text-center mb-16 md:mb-24 space-y-6 max-w-3xl mx-auto">
           <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-[var(--color-accent-base)] shadow-2xl shadow-[var(--color-accent-base)]/30 mb-2">
-            <Zap className="w-10 h-10 text-white" />
+            <span className="text-4xl">🤖</span>
           </div>
           <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-[var(--foreground)] leading-tight">
-            IA B2B Llave en Mano <br/>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-accent-base)] to-rose-400">para tu Empresa</span>
+            Creamos tu agente con <br className="hidden md:block" />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-accent-base)] to-rose-400">Inteligencia Artificial</span><br />
+            para tiendas y e-commerce
           </h1>
-          <p className="text-lg md:text-xl text-[var(--muted-foreground)] font-medium max-w-2xl mx-auto">
-            Automatizamos tu atención al cliente, logística y ventas en eCommerce con agentes entrenados a la medida de tus procesos internos.
+          <p className="text-lg md:text-xl text-[var(--muted-foreground)] font-medium max-w-2xl mx-auto space-y-2">
+            <span>Responde tus WhatsApps automáticamente con tecnología de vanguardia.</span><br/>
+            <span>Nosotros nos encargamos de la tecnología, vos solo de vender.</span>
           </p>
         </div>
 
@@ -67,13 +69,33 @@ export default function LandingUI() {
                   {item.isSvg ? (
                     item.content
                   ) : item.isImg ? (
-                    <img src={item.src} alt={item.name} className="h-10 md:h-12 w-auto object-contain" />
+                    <img src={item.src} alt={item.name} className="w-12 h-12 object-contain" referrerPolicy="no-referrer" />
                   ) : item.icon ? (
                     <item.icon size={48} color={item.color} className="h-10 w-10 md:h-12 md:w-12" />
                   ) : null}
                 </div>
               ))}
             </div>
+          </div>
+        </div>
+
+        {/* Zenvia Banner */}
+        <div className="w-full max-w-4xl mx-auto mb-20 md:mb-28 px-4">
+          <div className="bg-gradient-to-r from-[var(--color-accent-base)]/10 to-purple-500/10 border border-[var(--color-accent-base)]/20 rounded-[2rem] p-8 md:p-12 text-center relative overflow-hidden flex flex-col items-center shadow-lg shadow-[var(--color-accent-base)]/5">
+            <div className="absolute -top-24 -right-24 w-64 h-64 bg-[var(--color-accent-base)]/20 rounded-full blur-[80px] pointer-events-none"></div>
+            <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-purple-500/20 rounded-full blur-[80px] pointer-events-none"></div>
+            
+            <img 
+              src="https://gdm-catalog-fmapi-prod.imgix.net/ProductLogo/de9596d6-81a8-4986-94e7-b781c49046a1.png?w=90&h=90&fit=max&dpr=3&auto=format&q=50" 
+              alt="Zenvia" 
+              className="w-20 h-20 md:w-24 md:h-24 object-contain mb-6 relative z-10"
+              referrerPolicy="no-referrer"
+            />
+            <h2 className="text-3xl md:text-4xl font-extrabold mb-4 relative z-10 text-[var(--foreground)]">¿Ya usas Zenvia?</h2>
+            <p className="text-lg md:text-xl text-[var(--muted-foreground)] max-w-2xl relative z-10 font-medium leading-relaxed">
+              Conectamos nuestro agente directamente a tu cuenta de Zenvia y te brindamos soporte continuo. <br/>
+              Mantené tu infraestructura actual con superpoderes de IA.
+            </p>
           </div>
         </div>
 
@@ -129,7 +151,7 @@ export default function LandingUI() {
                     type="submit" 
                     className="w-full h-12 mt-6 rounded-xl bg-[var(--foreground)] text-[var(--background)] font-semibold hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center gap-2 disabled:opacity-70 disabled:scale-100"
                   >
-                    {formState === 'submitting' ? 'Enviando...' : 'Enviar Solicitud'} 
+                    {formState === 'submitting' ? 'Enviando...' : 'Quiero mi AGENTino'} 
                     {formState !== 'submitting' && <ArrowRight className="w-4 h-4" />}
                   </button>
                 </form>
@@ -191,7 +213,7 @@ export default function LandingUI() {
       </main>
       
       <footer className="w-full py-8 text-center text-xs text-[var(--muted-foreground)] border-t border-[var(--border)]/50 mt-12 z-10 bg-[var(--background)]">
-        &copy; {new Date().getFullYear()} NR Labs - High Ticket Agent Concierge. Todos los derechos reservados.
+        &copy; {new Date().getFullYear()} AGENTino 🤖 - IA para WhatsApp y E-commerce. by NR Labs. Todos los derechos reservados.
       </footer>
     </div>
   );
