@@ -56,14 +56,12 @@ CREATE TABLE IF NOT EXISTS provisioning_requests (
   resolved_at TIMESTAMPTZ
 );
 
--- Tabla para Analytics (Chat Histories dummy for MVP structure)
-CREATE TABLE IF NOT EXISTS n8n_chat_histories (
+-- Tabla para Analytics: Registro resumido al final de cada conversación
+CREATE TABLE IF NOT EXISTS agent_events (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   tenant_id UUID REFERENCES tenants(id),
-  session_id TEXT NOT NULL,
-  phone_number TEXT,
-  message TEXT,
-  response TEXT,
-  action TEXT DEFAULT 'continuar', -- continuar, derivar, finalizar, encuesta
+  phone TEXT,
+  action_taken TEXT, -- Ej: 'continuar', 'derivar', 'finalizar', 'encuesta', 'presupuesto'
+  ai_summary TEXT,   -- Resumen generado por el LLM al terminar la charla
   created_at TIMESTAMPTZ DEFAULT NOW()
 );

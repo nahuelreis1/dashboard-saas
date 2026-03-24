@@ -1,8 +1,8 @@
 import React from 'react';
 import { 
   MessageSquare, 
-  Send, 
-  BarChart3, 
+  Sparkles, 
+  Users,
   ArrowUpRight, 
   ArrowDownRight, 
   Phone,
@@ -34,40 +34,72 @@ interface MetricCardProps {
 interface Conversation {
   id: string;
   phone: string;
-  lastMessage: string;
   time: string;
-  action: 'Continuar' | 'Derivar' | 'Finalizar' | 'Encuesta';
+  action: 'Continuar' | 'Derivar' | 'Finalizar' | 'Encuesta' | 'Presupuesto';
+  aiSummary: string;
 }
 
 // --- Dummy Data ---
 const topMetrics = [
-  { title: 'Conversaciones', value: 147, change: '12%', trend: 'up', icon: MessageSquare },
-  { title: 'Mensajes Totales', value: 892, change: '8%', trend: 'up', icon: Send },
-  { title: 'Promedio Msgs/Conv', value: 6.1, change: '3%', trend: 'down', icon: BarChart3 },
+  { title: 'Conversaciones Atendidas', value: 147, change: '12%', trend: 'up', icon: MessageSquare },
+  { title: 'Resolución por IA', value: '85%', change: '5%', trend: 'up', icon: Sparkles },
+  { title: 'Derivaciones a Humanos', value: 22, change: '2%', trend: 'down', icon: Users },
 ];
 
 const agentActionsData = [
-  { name: 'Continuar', value: 78, color: 'var(--color-accent-base, #3b82f6)' },
-  { name: 'Derivar', value: 12, color: '#f59e0b' }, // Amber
-  { name: 'Finalizar', value: 8, color: '#10b981' }, // Emerald
-  { name: 'Encuesta', value: 2, color: '#6366f1' }, // Indigo
+  { name: 'Continuar', value: 45, color: 'var(--color-accent-base, #3b82f6)' }, // Blue
+  { name: 'Derivar', value: 22, color: '#f59e0b' }, // Amber
+  { name: 'Finalizar', value: 60, color: '#10b981' }, // Emerald
+  { name: 'Encuesta', value: 10, color: '#6366f1' }, // Indigo
+  { name: 'Presupuesto', value: 10, color: '#8b5cf6' }, // Violet
 ];
 
-const hourlyData = Array.from({ length: 24 }, (_, i) => {
-  const hour = i.toString().padStart(2, '0') + ':00';
-  // Create peaks at noon (12) and late afternoon (18)
-  let value = Math.floor(Math.random() * 20) + 5;
-  if (i >= 11 && i <= 14) value += 30;
-  if (i >= 17 && i <= 20) value += 25;
-  return { hour, messages: value };
-});
+const dailyData = [
+  { day: 'Lun', conversations: 45 },
+  { day: 'Mar', conversations: 52 },
+  { day: 'Mié', conversations: 38 },
+  { day: 'Jue', conversations: 65 },
+  { day: 'Vie', conversations: 48 },
+  { day: 'Sáb', conversations: 25 },
+  { day: 'Dom', conversations: 18 },
+];
 
 const latestConversations: Conversation[] = [
-  { id: '1', phone: '+54 341 *** 8300', lastMessage: 'Hola, quería consultar por el servicio...', time: '14:22', action: 'Continuar' },
-  { id: '2', phone: '+54 11 *** 9211', lastMessage: 'Muchas gracias por la atención.', time: '14:15', action: 'Finalizar' },
-  { id: '3', phone: '+34 612 *** 455', lastMessage: 'Necesito hablar con un humano por favor.', time: '13:50', action: 'Derivar' },
-  { id: '4', phone: '+54 341 *** 1122', lastMessage: '¿Cuál es el horario de atención?', time: '13:42', action: 'Continuar' },
-  { id: '5', phone: '+1 415 *** 0099', lastMessage: 'Excelente experiencia.', time: '12:30', action: 'Encuesta' },
+  { 
+    id: '1', 
+    phone: '+54 341 *** 8300', 
+    time: '14:22', 
+    action: 'Presupuesto',
+    aiSummary: 'El cliente consultó por precios de griferías FV y se le envió el PDF de la línea Puelo con un presupuesto estimado.'
+  },
+  { 
+    id: '2', 
+    phone: '+54 11 *** 9211', 
+    time: '14:15', 
+    action: 'Finalizar',
+    aiSummary: 'Se resolvieron las dudas sobre horarios de entrega y el cliente agradeció la información.'
+  },
+  { 
+    id: '3', 
+    phone: '+34 612 *** 455', 
+    time: '13:50', 
+    action: 'Derivar',
+    aiSummary: 'Cliente molesto por una demora en el envío de un pedido mayorista. Solicita hablar urgente con un representante comercial.'
+  },
+  { 
+    id: '4', 
+    phone: '+54 341 *** 1122', 
+    time: '13:42', 
+    action: 'Continuar',
+    aiSummary: 'El usuario está explorando el catálogo de pisos flotantes. Todavía no tomó una decisión de compra.'
+  },
+  { 
+    id: '5', 
+    phone: '+1 415 *** 0099', 
+    time: '12:30', 
+    action: 'Encuesta',
+    aiSummary: 'Compra finalizada con éxito. Se le envió la encuesta de satisfacción sobre la atención del bot.'
+  },
 ];
 
 // --- Components ---
@@ -96,6 +128,7 @@ const ActionBadge: React.FC<{ action: Conversation['action'] }> = ({ action }) =
     Derivar: 'bg-amber-500/10 text-amber-500 border-amber-500/20',
     Finalizar: 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20',
     Encuesta: 'bg-indigo-500/10 text-indigo-500 border-indigo-500/20',
+    Presupuesto: 'bg-violet-500/10 text-violet-500 border-violet-500/20',
   };
 
   return (
@@ -125,7 +158,7 @@ const MetricsDashboard: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Pie Chart */}
         <div className="lg:col-span-5 bg-[var(--card)] border border-[var(--border)] rounded-xl p-6 shadow-sm">
-          <h3 className="text-lg font-semibold mb-6">Acciones del Agente</h3>
+          <h3 className="text-lg font-semibold mb-6">Distribución de Decisiones</h3>
           <div className="h-[300px] w-full">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
@@ -154,22 +187,23 @@ const MetricsDashboard: React.FC = () => {
 
         {/* Bar Chart */}
         <div className="lg:col-span-7 bg-[var(--card)] border border-[var(--border)] rounded-xl p-6 shadow-sm">
-          <h3 className="text-lg font-semibold mb-6">Horarios Pico (Mensajes x Hora)</h3>
+          <h3 className="text-lg font-semibold mb-6">Conversaciones por Día</h3>
           <div className="h-[300px] w-full">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={hourlyData}>
+              <BarChart data={dailyData}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--border)" opacity={0.5} />
                 <XAxis 
-                  dataKey="hour" 
+                  dataKey="day" 
                   axisLine={false} 
                   tickLine={false} 
-                  tick={{ fontSize: 10, fill: 'var(--muted-foreground)' }} 
-                  interval={3}
+                  tick={{ fontSize: 12, fill: 'var(--muted-foreground)' }} 
+                  dy={10}
                 />
                 <YAxis 
                   axisLine={false} 
                   tickLine={false} 
-                  tick={{ fontSize: 10, fill: 'var(--muted-foreground)' }} 
+                  tick={{ fontSize: 12, fill: 'var(--muted-foreground)' }} 
+                  dx={-10}
                 />
                 <Tooltip 
                    cursor={{ fill: 'var(--color-accent-base)', opacity: 0.1 }}
@@ -177,10 +211,10 @@ const MetricsDashboard: React.FC = () => {
                    itemStyle={{ color: 'var(--foreground)' }}
                 />
                 <Bar 
-                  dataKey="messages" 
+                  dataKey="conversations" 
                   fill="var(--color-accent-base, #3b82f6)" 
                   radius={[4, 4, 0, 0]} 
-                  barSize={20}
+                  barSize={40}
                 />
               </BarChart>
             </ResponsiveContainer>
@@ -191,7 +225,7 @@ const MetricsDashboard: React.FC = () => {
       {/* Latest Conversations Table */}
       <div className="bg-[var(--card)] border border-[var(--border)] rounded-xl shadow-sm overflow-hidden">
         <div className="p-6 border-b border-[var(--border)] flex justify-between items-center">
-          <h3 className="text-lg font-semibold">Últimas Conversaciones</h3>
+          <h3 className="text-lg font-semibold">Feed de Control</h3>
           <button className="text-muted-foreground hover:text-foreground transition-colors">
             <MoreVertical size={20} />
           </button>
@@ -201,9 +235,9 @@ const MetricsDashboard: React.FC = () => {
             <thead>
               <tr className="bg-muted/30 text-muted-foreground text-xs uppercase tracking-wider">
                 <th className="px-6 py-4 font-medium">Teléfono</th>
-                <th className="px-6 py-4 font-medium">Último Mensaje</th>
                 <th className="px-6 py-4 font-medium">Hora</th>
-                <th className="px-6 py-4 font-medium text-right">Acción</th>
+                <th className="px-6 py-4 font-medium">Acción</th>
+                <th className="px-6 py-4 font-medium">Resumen de la IA</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-[var(--border)]">
@@ -217,14 +251,14 @@ const MetricsDashboard: React.FC = () => {
                       <span className="text-sm font-medium">{conv.phone}</span>
                     </div>
                   </td>
-                  <td className="px-6 py-4 max-w-xs truncate text-sm text-muted-foreground">
-                    {conv.lastMessage}
-                  </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-muted-foreground">
                     {conv.time}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-right">
+                  <td className="px-6 py-4 whitespace-nowrap">
                     <ActionBadge action={conv.action} />
+                  </td>
+                  <td className="px-6 py-4 text-sm text-muted-foreground min-w-[300px]">
+                    {conv.aiSummary}
                   </td>
                 </tr>
               ))}
@@ -233,7 +267,7 @@ const MetricsDashboard: React.FC = () => {
         </div>
         <div className="p-4 border-t border-[var(--border)] text-center">
           <button className="text-sm text-[var(--color-accent-base)] font-medium hover:underline">
-            Ver todas las conversaciones
+            Ver todo el historial
           </button>
         </div>
       </div>
