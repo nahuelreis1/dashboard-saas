@@ -9,43 +9,28 @@ import {
   ShieldCheck,
   MessageSquareText,
   Building2,
-  MousePointerClick
+  BookOpen
 } from 'lucide-react';
 
 /**
  * AgentConfigForm - Prototipo Funcional de NR Labs
  * Refactorizado para simplificar la configuración del "Cerebro del Agente".
- * Se eliminaron integraciones externas (movidas a Integraciones).
+ * Se eliminaron integraciones externas y acciones técnicas.
  */
 const AgentConfigForm: React.FC = () => {
   const [agentData, setAgentData] = useState({
     name: '',
-    tone: 'professional',
     company_name: '',
-    company_description: '',
-    company_info: '', // Sucursales, horarios, contactos
-    actions: [] as string[], // Array de acciones permitidas
-    custom_prompt: ''
+    agent_role: '',
+    tone: 'formal-rioplatense',
+    format_rules: '',
+    company_info: '',
+    branches_info: '',
+    verification_protocol: '',
+    general_rules: ''
   });
 
   const [status, setStatus] = useState<'idle' | 'saving' | 'success'>('idle');
-
-  const actionOptions = [
-    { id: 'continue', label: 'Continuar Conversación' },
-    { id: 'escalate', label: 'Derivar a Humano' },
-    { id: 'end', label: 'Finalizar Conversación' },
-    { id: 'survey', label: 'Encuesta de Satisfacción' },
-    { id: 'quote', label: 'Cotizar Presupuesto' },
-  ];
-
-  const handleActionToggle = (actionId: string) => {
-    setAgentData(prev => ({
-      ...prev,
-      actions: prev.actions.includes(actionId)
-        ? prev.actions.filter(id => id !== actionId)
-        : [...prev.actions, actionId]
-    }));
-  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -73,11 +58,11 @@ const AgentConfigForm: React.FC = () => {
 
       <form onSubmit={handleSubmit} className="space-y-8">
         
-        {/* IDENTIDAD Y TONO */}
+        {/* IDENTIDAD */}
         <div className="glass-card bg-[var(--card)] border border-[var(--border)] p-10 rounded-[2.5rem] shadow-2xl space-y-8 relative overflow-hidden transition-all hover:shadow-indigo-500/5">
           <div className="flex items-center gap-3 mb-2">
             <Sparkles className="w-6 h-6 text-indigo-500" />
-            <h3 className="text-xl font-black text-[var(--foreground)] uppercase tracking-tight">Identidad & Tono</h3>
+            <h3 className="text-xl font-black text-[var(--foreground)] uppercase tracking-tight">Identidad</h3>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -85,7 +70,7 @@ const AgentConfigForm: React.FC = () => {
               <label className="text-xs font-black text-[var(--muted-foreground)] uppercase tracking-wider ml-1">Nombre del Agente</label>
               <input 
                 type="text" 
-                placeholder="Ej: Sofía"
+                placeholder="Ej: Accesa"
                 value={agentData.name}
                 onChange={(e) => setAgentData({...agentData, name: e.target.value})}
                 className="w-full px-6 py-4 rounded-2xl bg-[var(--background)] border-2 border-[var(--border)] text-sm font-bold focus:border-indigo-500 outline-none transition-all shadow-sm"
@@ -93,131 +78,140 @@ const AgentConfigForm: React.FC = () => {
               />
             </div>
             <div className="space-y-3">
-              <label className="text-xs font-black text-[var(--muted-foreground)] uppercase tracking-wider ml-1">Tono de Comunicación</label>
-              <div className="relative">
-                <select 
-                  value={agentData.tone}
-                  onChange={(e) => setAgentData({...agentData, tone: e.target.value})}
-                  className="w-full px-6 py-4 rounded-2xl bg-[var(--background)] border-2 border-[var(--border)] text-sm font-bold focus:border-indigo-500 outline-none appearance-none transition-all shadow-sm cursor-pointer"
-                >
-                  <option value="professional">Profesional y Corporativo</option>
-                  <option value="friendly">Cercano y Entusiasta</option>
-                  <option value="direct">Directo y Resolutivo</option>
-                  <option value="luxury">Sofisticado y Premium</option>
-                </select>
-                <ChevronDown className="absolute right-6 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--muted-foreground)] pointer-events-none" />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* DATOS DE LA EMPRESA */}
-        <div className="glass-card bg-[var(--card)] border border-[var(--border)] p-10 rounded-[2.5rem] shadow-2xl space-y-8 transition-all hover:shadow-indigo-500/5">
-          <div className="flex items-center gap-3 mb-2">
-            <Building2 className="w-6 h-6 text-indigo-500" />
-            <h3 className="text-xl font-black text-[var(--foreground)] uppercase tracking-tight">Datos de la Empresa</h3>
-          </div>
-
-          <div className="space-y-8">
-            <div className="space-y-3">
-              <label className="text-xs font-black text-[var(--muted-foreground)] uppercase tracking-wider ml-1">Nombre de la Empresa</label>
+              <label className="text-xs font-black text-[var(--muted-foreground)] uppercase tracking-wider ml-1">Empresa</label>
               <input 
                 type="text" 
-                placeholder="Ej: NR Labs AI"
+                placeholder="Ej: Accesaniga"
                 value={agentData.company_name}
                 onChange={(e) => setAgentData({...agentData, company_name: e.target.value})}
                 className="w-full px-6 py-4 rounded-2xl bg-[var(--background)] border-2 border-[var(--border)] text-sm font-bold focus:border-indigo-500 outline-none transition-all shadow-sm"
                 required
               />
             </div>
+          </div>
+          
+          <div className="space-y-3">
+            <label className="text-xs font-black text-[var(--muted-foreground)] uppercase tracking-wider ml-1">Rol / Especialidad</label>
+            <textarea 
+              rows={2}
+              placeholder='Ej: "Especializada en griferías, sanitarios..."'
+              value={agentData.agent_role}
+              onChange={(e) => setAgentData({...agentData, agent_role: e.target.value})}
+              className="w-full px-6 py-4 rounded-2xl bg-[var(--background)] border-2 border-[var(--border)] text-sm font-bold focus:border-indigo-500 outline-none transition-all resize-none shadow-sm"
+              required
+            />
+          </div>
+        </div>
 
+        {/* ESTILO DE COMUNICACIÓN */}
+        <div className="glass-card bg-[var(--card)] border border-[var(--border)] p-10 rounded-[2.5rem] shadow-2xl space-y-8 relative overflow-hidden transition-all hover:shadow-indigo-500/5">
+          <div className="flex items-center gap-3 mb-2">
+            <MessageSquareText className="w-6 h-6 text-indigo-500" />
+            <h3 className="text-xl font-black text-[var(--foreground)] uppercase tracking-tight">Estilo de Comunicación</h3>
+          </div>
+
+          <div className="space-y-8">
             <div className="space-y-3">
-              <label className="text-xs font-black text-[var(--muted-foreground)] uppercase tracking-wider ml-1">Descripción del Negocio</label>
-              <textarea 
-                rows={3}
-                placeholder="Describe qué hace la empresa, productos principales..."
-                value={agentData.company_description}
-                onChange={(e) => setAgentData({...agentData, company_description: e.target.value})}
-                className="w-full px-6 py-4 rounded-2xl bg-[var(--background)] border-2 border-[var(--border)] text-sm font-bold focus:border-indigo-500 outline-none transition-all resize-none shadow-sm"
-                required
-              />
+              <label className="text-xs font-black text-[var(--muted-foreground)] uppercase tracking-wider ml-1">Tono</label>
+              <div className="relative">
+                <select 
+                  value={agentData.tone}
+                  onChange={(e) => setAgentData({...agentData, tone: e.target.value})}
+                  className="w-full px-6 py-4 rounded-2xl bg-[var(--background)] border-2 border-[var(--border)] text-sm font-bold focus:border-indigo-500 outline-none appearance-none transition-all shadow-sm cursor-pointer"
+                >
+                  <option value="formal-rioplatense">Formal Rioplatense</option>
+                  <option value="amigable">Amigable y Cercano</option>
+                  <option value="direct">Directo y Resolutivo</option>
+                  <option value="professional">Profesional y Corporativo</option>
+                </select>
+                <ChevronDown className="absolute right-6 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--muted-foreground)] pointer-events-none" />
+              </div>
             </div>
 
             <div className="space-y-3">
-              <div className="flex items-center justify-between ml-1">
-                <label className="text-xs font-black text-[var(--muted-foreground)] uppercase tracking-wider">Información Estructurada</label>
-                <div className="flex items-center gap-1.5 px-3 py-1 bg-amber-500/10 rounded-full">
-                  <Info className="w-3 h-3 text-amber-600" />
-                  <span className="text-[10px] font-black text-amber-600 uppercase">Recomendado</span>
-                </div>
-              </div>
+              <label className="text-xs font-black text-[var(--muted-foreground)] uppercase tracking-wider ml-1">Reglas de formato</label>
               <textarea 
-                rows={4}
-                placeholder="Sucursales, horarios de atención, teléfonos de contacto, redes sociales..."
+                rows={2}
+                placeholder='Ej: "Respondé siempre en texto plano, sin markdown. Un solo párrafo."'
+                value={agentData.format_rules}
+                onChange={(e) => setAgentData({...agentData, format_rules: e.target.value})}
+                className="w-full px-6 py-4 rounded-2xl bg-[var(--background)] border-2 border-[var(--border)] text-sm font-bold focus:border-indigo-500 outline-none transition-all resize-none shadow-sm"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* INFORMACIÓN DE LA EMPRESA (MEMORIA) */}
+        <div className="glass-card bg-[var(--card)] border border-[var(--border)] p-10 rounded-[2.5rem] shadow-2xl space-y-8 transition-all hover:shadow-indigo-500/5">
+          <div className="flex items-center gap-3 mb-2">
+            <Building2 className="w-6 h-6 text-indigo-500" />
+            <h3 className="text-xl font-black text-[var(--foreground)] uppercase tracking-tight">Memoria del Agente</h3>
+          </div>
+
+          <div className="space-y-8">
+            <div className="space-y-3">
+              <label className="text-xs font-black text-[var(--muted-foreground)] uppercase tracking-wider ml-1">Descripción, Rubros, Web y Emails</label>
+              <textarea 
+                rows={5}
+                placeholder="Ingresa la información general sobre la empresa..."
                 value={agentData.company_info}
                 onChange={(e) => setAgentData({...agentData, company_info: e.target.value})}
                 className="w-full px-6 py-4 rounded-2xl bg-[var(--background)] border-2 border-[var(--border)] text-sm font-bold focus:border-indigo-500 outline-none transition-all resize-none shadow-sm"
               />
             </div>
+
+            <div className="space-y-3">
+              <label className="text-xs font-black text-[var(--muted-foreground)] uppercase tracking-wider ml-1">Sucursales y Horarios</label>
+              <textarea 
+                rows={3}
+                placeholder="Direcciones, horarios de atención..."
+                value={agentData.branches_info}
+                onChange={(e) => setAgentData({...agentData, branches_info: e.target.value})}
+                className="w-full px-6 py-4 rounded-2xl bg-[var(--background)] border-2 border-[var(--border)] text-sm font-bold focus:border-indigo-500 outline-none transition-all resize-none shadow-sm"
+              />
+            </div>
           </div>
         </div>
 
-        {/* ACCIONES PERMITIDAS */}
+        {/* PROTOCOLOS ESPECÍFICOS */}
         <div className="glass-card bg-[var(--card)] border border-[var(--border)] p-10 rounded-[2.5rem] shadow-2xl space-y-8 transition-all hover:shadow-indigo-500/5">
           <div className="flex items-center gap-3 mb-2">
-            <MousePointerClick className="w-6 h-6 text-indigo-500" />
-            <h3 className="text-xl font-black text-[var(--foreground)] uppercase tracking-tight">Acciones Permitidas</h3>
+            <ShieldCheck className="w-6 h-6 text-indigo-500" />
+            <h3 className="text-xl font-black text-[var(--foreground)] uppercase tracking-tight">Protocolos Específicos</h3>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {actionOptions.map((action) => (
-              <label 
-                key={action.id}
-                className={`flex items-center gap-4 p-5 rounded-2xl border-2 cursor-pointer transition-all ${
-                  agentData.actions.includes(action.id)
-                    ? 'border-indigo-500 bg-indigo-500/5 shadow-md'
-                    : 'border-[var(--border)] bg-[var(--background)] hover:border-indigo-500/30'
-                }`}
-              >
-                <div className={`w-6 h-6 rounded-md border-2 flex items-center justify-center transition-all ${
-                  agentData.actions.includes(action.id) ? 'bg-indigo-500 border-indigo-500' : 'border-[var(--muted-foreground)]/30'
-                }`}>
-                  {agentData.actions.includes(action.id) && <CheckCircle2 className="w-4 h-4 text-white" />}
-                </div>
-                <input 
-                  type="checkbox" 
-                  className="hidden" 
-                  checked={agentData.actions.includes(action.id)}
-                  onChange={() => handleActionToggle(action.id)}
-                />
-                <span className={`text-sm font-bold ${agentData.actions.includes(action.id) ? 'text-indigo-600' : 'text-[var(--muted-foreground)]'}`}>
-                  {action.label}
-                </span>
-              </label>
-            ))}
+          <div className="space-y-3">
+            <label className="text-xs font-black text-[var(--muted-foreground)] uppercase tracking-wider ml-1">Protocolo de Verificación de Identidad</label>
+            <textarea 
+              rows={3}
+              placeholder='Ej: "Antes de dar tracking, pedir email y cruzarlo con get_orders..."'
+              value={agentData.verification_protocol}
+              onChange={(e) => setAgentData({...agentData, verification_protocol: e.target.value})}
+              className="w-full px-6 py-4 rounded-2xl bg-[var(--background)] border-2 border-[var(--border)] text-sm font-bold focus:border-indigo-500 outline-none transition-all resize-none shadow-sm"
+            />
           </div>
         </div>
 
-        {/* INSTRUCCIONES ADICIONALES (PROMPT) */}
+        {/* REGLAS GENERALES */}
         <div className="glass-card bg-[var(--card)] border border-[var(--border)] p-10 rounded-[2.5rem] shadow-2xl space-y-8 transition-all hover:shadow-indigo-500/5">
           <div className="flex items-center gap-3 mb-2">
-            <MessageSquareText className="w-6 h-6 text-indigo-500" />
-            <h3 className="text-xl font-black text-[var(--foreground)] uppercase tracking-tight">Instrucciones Adicionales</h3>
+            <BookOpen className="w-6 h-6 text-indigo-500" />
+            <h3 className="text-xl font-black text-[var(--foreground)] uppercase tracking-tight">Reglas Generales</h3>
           </div>
 
           <div className="space-y-4">
             <div className="p-5 rounded-2xl bg-indigo-500/5 border border-indigo-500/10 flex items-start gap-4">
-              <ShieldCheck className="w-6 h-6 text-indigo-500 shrink-0 mt-1" />
+              <Info className="w-6 h-6 text-indigo-500 shrink-0 mt-1" />
               <p className="text-xs text-indigo-600/80 font-bold leading-relaxed">
-                Este es el "Custom Prompt" maestro. Define aquí reglas de comportamiento específicas, frases prohibidas o flujos lógicos complejos que el agente debe seguir obligatoriamente.
+                Define aquí reglas de comportamiento específicas, frases prohibidas o instrucciones adicionales.
               </p>
             </div>
             
             <textarea 
-              rows={10}
-              placeholder="Escribe aquí las instrucciones avanzadas para el cerebro de la IA..."
-              value={agentData.custom_prompt}
-              onChange={(e) => setAgentData({...agentData, custom_prompt: e.target.value})}
+              rows={6}
+              placeholder='Ej: "Siempre saludá primero, no inventes precios..."'
+              value={agentData.general_rules}
+              onChange={(e) => setAgentData({...agentData, general_rules: e.target.value})}
               className="w-full px-8 py-6 rounded-[2rem] bg-[var(--background)] border-2 border-[var(--border)] text-sm font-bold focus:border-indigo-500 outline-none transition-all resize-none shadow-sm font-mono"
             />
           </div>

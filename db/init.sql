@@ -16,11 +16,13 @@ CREATE TABLE IF NOT EXISTS agent_config (
   -- Agente (Cerebro)
   agent_name TEXT DEFAULT 'Asistente',
   company_name TEXT NOT NULL,
-  company_description TEXT,
-  company_info JSONB DEFAULT '{}'::jsonb, -- {sucursales, horarios, contactos, web}
+  agent_role TEXT,
   tone TEXT DEFAULT 'formal',
-  actions JSONB DEFAULT '["continuar","derivar","finalizar","encuesta"]'::jsonb,
-  custom_prompt_additions TEXT,
+  format_rules TEXT,
+  company_info TEXT,
+  branches_info TEXT,
+  verification_protocol TEXT,
+  general_rules TEXT,
   
   -- Base de conocimiento
   drive_folder_id TEXT,

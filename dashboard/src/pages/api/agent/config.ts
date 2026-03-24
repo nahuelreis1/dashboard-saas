@@ -48,11 +48,13 @@ export const GET: APIRoute = async ({ request, cookies }) => {
         system_prompt: buildSystemPrompt({
           agent_name: config.agent_name,
           company_name: config.company_name,
-          company_description: config.company_description,
-          company_info: config.company_info,
+          agent_role: config.agent_role,
           tone: config.tone,
-          actions: config.actions,
-          custom_prompt_additions: config.custom_prompt_additions
+          format_rules: config.format_rules,
+          company_info: config.company_info,
+          branches_info: config.branches_info,
+          verification_protocol: config.verification_protocol,
+          general_rules: config.general_rules
         }),
         drive_folder_id: config.drive_folder_id,
         andreani_auth: andreaniAuth,
@@ -83,8 +85,13 @@ export const GET: APIRoute = async ({ request, cookies }) => {
     const config = rows[0] || {
       agent_name: 'Asistente',
       company_name: 'Mi Empresa',
-      company_description: '',
-      tone: 'formal'
+      agent_role: '',
+      tone: 'formal',
+      format_rules: '',
+      company_info: '',
+      branches_info: '',
+      verification_protocol: '',
+      general_rules: ''
     };
 
     return new Response(JSON.stringify(config), {
@@ -107,16 +114,24 @@ export const PUT: APIRoute = async ({ request, cookies }) => {
     // Mapeo simple para MVP, en prod deberias validar con zod.
     await db.query(`
       INSERT INTO agent_config (
-        tenant_id, agent_name, company_name, company_description, tone
-      ) VALUES ($1, $2, $3, $4, $5)
+        tenant_id, agent_name, company_name, agent_role, tone, format_rules,
+        company_info, branches_info, verification_protocol, general_rules
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
       ON CONFLICT (tenant_id) DO UPDATE SET 
-        agent_name = $2, company_name = $3, company_description = $4, tone = $5, updated_at = NOW()
+        agent_name = $2, company_name = $3, agent_role = $4, tone = $5, format_rules = $6,
+        company_info = $7, branches_info = $8, verification_protocol = $9, general_rules = $10,
+        updated_at = NOW()
     `, [
       session.userId, 
       body.agent_name || 'Asistente',
       body.company_name || 'Mi Empresa',
-      body.company_description || '',
-      body.tone || 'formal'
+      body.agent_role || '',
+      body.tone || 'formal',
+      body.format_rules || '',
+      body.company_info || '',
+      body.branches_info || '',
+      body.verification_protocol || '',
+      body.general_rules || ''
     ]);
 
     return new Response(JSON.stringify({ success: true }), {
