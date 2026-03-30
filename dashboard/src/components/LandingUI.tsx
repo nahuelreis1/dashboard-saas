@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { SiWoocommerce, SiShopify, SiWhatsapp } from '@icons-pack/react-simple-icons';
+import { SiOpenai } from 'react-icons/si';
+import { SiWoocommerce, SiShopify, SiWhatsapp, SiN8n, SiGooglegemini, SiLangchain, SiPostgresql, SiDocker, SiLinux, SiJavascript, SiPython } from '@icons-pack/react-simple-icons';
 import { Chrome, ShieldAlert, Zap, CheckCircle2, ShoppingCart, Truck, Globe, Brain, Handshake, Link as LinkIcon, Bot } from 'lucide-react';
 
 export default function LandingUI() {
@@ -29,6 +30,20 @@ export default function LandingUI() {
   ];
 
   const doubledIntegrations = [...integrationsList, ...integrationsList, ...integrationsList];
+
+  const techIconsList = [
+    { name: 'n8n', icon: SiN8n, color: '#FF6D5A' },
+    { name: 'Gemini', icon: SiGooglegemini, color: '#8E75B2' },
+    { name: 'OpenAI', icon: SiOpengl, color: '#412991' },
+    { name: 'LangChain', icon: SiLangchain, color: '#1C3C3C' },
+    { name: 'PostgreSQL', icon: SiPostgresql, color: '#4169E1' },
+    { name: 'Docker', icon: SiDocker, color: '#2496ED' },
+    { name: 'Linux', icon: SiLinux, color: '#FCC624' },
+    { name: 'JavaScript', icon: SiJavascript, color: '#F7DF1E' },
+    { name: 'Python', icon: SiPython, color: '#3776AB' }
+  ];
+
+  const doubledTechIcons = [...techIconsList, ...techIconsList, ...techIconsList];
 
   const formIntegrations = [
     { id: 'whatsapp', label: 'WhatsApp', icon: <SiWhatsapp size={20} color="#25D366" /> },
@@ -97,7 +112,7 @@ export default function LandingUI() {
               
               <div className="flex w-max animate-marquee items-center gap-20 md:gap-32 px-10 group-hover:[animation-play-state:paused]">
                 {doubledIntegrations.map((item, i) => (
-                  <div key={i} className="flex-shrink-0 flex items-center justify-center grayscale hover:grayscale-0 transition-all duration-300 opacity-50 hover:opacity-100 min-w-[100px] hover:scale-110">
+                  <div key={`int-${i}`} className="flex-shrink-0 flex items-center justify-center grayscale hover:grayscale-0 transition-all duration-300 opacity-50 hover:opacity-100 min-w-[100px] hover:scale-110">
                     {item.isImg ? (
                       <img src={item.src} alt={item.name} className="w-16 h-16 md:w-20 md:h-20 object-contain drop-shadow-lg" referrerPolicy="no-referrer" />
                     ) : item.icon ? (
@@ -105,6 +120,25 @@ export default function LandingUI() {
                     ) : null}
                   </div>
                 ))}
+              </div>
+            </div>
+
+            <div className="mt-16">
+              <p className="text-center text-sm font-bold text-[var(--muted-foreground)] uppercase tracking-[0.2em] mb-10">
+                Impulsado por tecnología de clase mundial
+              </p>
+              
+              <div className="relative flex overflow-hidden w-full group py-4">
+                <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-[var(--background)] to-transparent z-10 pointer-events-none"></div>
+                <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-[var(--background)] to-transparent z-10 pointer-events-none"></div>
+                
+                <div className="flex w-max animate-marquee-reverse items-center gap-20 md:gap-32 px-10 group-hover:[animation-play-state:paused]">
+                  {doubledTechIcons.map((item, i) => (
+                    <div key={`tech-${i}`} className="flex-shrink-0 flex items-center justify-center grayscale hover:grayscale-0 transition-all duration-300 opacity-50 hover:opacity-100 min-w-[100px] hover:scale-110">
+                      <item.icon size={64} color={item.color} className="w-16 h-16 drop-shadow-lg" />
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
