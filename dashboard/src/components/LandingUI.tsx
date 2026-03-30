@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { SiOpenai } from 'react-icons/si';
 import { SiWoocommerce, SiShopify, SiWhatsapp, SiN8n, SiGooglegemini, SiLangchain, SiPostgresql, SiDocker, SiLinux, SiJavascript, SiPython } from '@icons-pack/react-simple-icons';
 import { Chrome, ShieldAlert, Zap, CheckCircle2, ShoppingCart, Truck, Globe, Brain, Handshake, Link as LinkIcon, Bot } from 'lucide-react';
@@ -6,6 +6,47 @@ import { Chrome, ShieldAlert, Zap, CheckCircle2, ShoppingCart, Truck, Globe, Bra
 export default function LandingUI() {
   const [formState, setFormState] = useState<'idle' | 'submitting' | 'success'>('idle');
   const [selectedTechs, setSelectedTechs] = useState<string[]>([]);
+
+  // Spotlight & Mate Follower Logic
+  const mousePos = useRef({ x: 0, y: 0 });
+  const followerPos = useRef({ x: 0, y: 0 });
+  const followerRef = useRef<HTMLDivElement>(null);
+  const spotlightRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      mousePos.current = { x: e.clientX, y: e.clientY };
+      
+      // Exact spotlight
+      if (spotlightRef.current) {
+        spotlightRef.current.style.background = `radial-gradient(600px circle at ${e.clientX}px ${e.clientY}px, rgba(139, 92, 246, 0.08), transparent 40%)`;
+      }
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+
+    let animationFrameId: number;
+    const render = () => {
+      // LERP formula for smooth trailing effect
+      followerPos.current.x += (mousePos.current.x - followerPos.current.x) * 0.08;
+      followerPos.current.y += (mousePos.current.y - followerPos.current.y) * 0.08;
+
+      if (followerRef.current) {
+        // Offset by 15px so it sits slightly to the bottom-right of the actual cursor
+        followerRef.current.style.transform = `translate3d(${followerPos.current.x + 15}px, ${followerPos.current.y + 15}px, 0)`;
+      }
+
+      animationFrameId = requestAnimationFrame(render);
+    };
+    render();
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      cancelAnimationFrame(animationFrameId);
+    };
+  }, []);
 
   const toggleTech = (tech: string) => {
     setSelectedTechs(prev => 
@@ -34,7 +75,7 @@ export default function LandingUI() {
   const techIconsList = [
     { name: 'n8n', icon: SiN8n, color: '#FF6D5A' },
     { name: 'Gemini', icon: SiGooglegemini, color: '#8E75B2' },
-    { name: 'OpenAI', icon: SiOpengl, color: '#412991' },
+    { name: 'OpenAI', icon: SiOpenai, color: '#412991' },
     { name: 'LangChain', icon: SiLangchain, color: '#1C3C3C' },
     { name: 'PostgreSQL', icon: SiPostgresql, color: '#4169E1' },
     { name: 'Docker', icon: SiDocker, color: '#2496ED' },
@@ -45,18 +86,35 @@ export default function LandingUI() {
 
   const doubledTechIcons = [...techIconsList, ...techIconsList, ...techIconsList];
 
-  const formIntegrations = [
-    { id: 'whatsapp', label: 'WhatsApp', icon: <SiWhatsapp size={20} color="#25D366" /> },
-    { id: 'meli', label: 'MercadoLibre', icon: <img src="https://companieslogo.com/img/orig/MELI_BIG-d1f8e207.png?t=1720244492" alt="Meli" className="w-5 h-5 object-contain" /> },
-    { id: 'tiendanube', label: 'Shopify / Woo', icon: <ShoppingCart size={20} className="text-purple-500" /> },
-    { id: 'logistica', label: 'Logística', icon: <Truck size={20} className="text-blue-500" /> },
+  const formInterests = [
+    { id: 'soporte', label: 'Soporte Técnico', icon: <Brain size={20} className="text-blue-500" /> },
+    { id: 'ventas', label: 'Ventas E-commerce', icon: <ShoppingCart size={20} className="text-purple-500" /> },
+    { id: 'interna', label: 'Gestión Interna', icon: <Bot size={20} className="text-emerald-500" /> },
     { id: 'zenvia', label: 'Zenvia', icon: <img src="https://gdm-catalog-fmapi-prod.imgix.net/ProductLogo/de9596d6-81a8-4986-94e7-b781c49046a1.png?w=90&h=90&fit=max&dpr=3&auto=format&q=50" alt="Zenvia" className="w-5 h-5 object-contain" /> },
-    { id: 'api', label: 'API Custom', icon: <Globe size={20} className="text-emerald-500" /> }
+    { id: 'whatsapp', label: 'WhatsApp', icon: <SiWhatsapp size={20} color="#25D366" /> },
+    { id: 'api', label: 'API Custom', icon: <Globe size={20} className="text-rose-500" /> }
   ];
 
   return (
-    <div className="min-h-screen bg-[var(--background)] text-[var(--foreground)] relative overflow-hidden flex flex-col items-center selection:bg-blue-500/30 font-sans">
+    <div className="min-h-screen bg-[var(--background)] text-[var(--foreground)] relative overflow-hidden flex flex-col items-center selection:bg-blue-500/30 font-sans cursor-default">
       
+      {/* Spotlight Effect */}
+      <div 
+        ref={spotlightRef}
+        className="fixed inset-0 z-0 pointer-events-none transition-colors duration-500"
+        style={{ willChange: 'background' }}
+      />
+
+      {/* Agentic Follower */}
+      <div 
+        ref={followerRef} 
+        className="fixed top-0 left-0 z-[100] pointer-events-none flex items-center justify-center w-8 h-8"
+        style={{ willChange: 'transform' }}
+      >
+        <div className="absolute inset-0 bg-purple-500/60 blur-[16px] rounded-full animate-pulse scale-[2.0]"></div>
+        <span className="relative z-10 text-3xl drop-shadow-[0_0_12px_rgba(168,85,247,0.9)] opacity-90 animate-[bounce_4s_infinite]">🧉</span>
+      </div>
+
       {/* SaaS Premium Glows */}
       <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
           <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-blue-500/10 rounded-full blur-[160px]"></div>
@@ -70,7 +128,7 @@ export default function LandingUI() {
           <span className="text-3xl font-black tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600 drop-shadow-sm">
             AGENTino
           </span>
-          <span className="text-3xl drop-shadow-md">🤖🧉</span>
+          <span className="text-3xl drop-shadow-md">🤖</span>
         </div>
         <div className="hidden md:flex items-center gap-8 text-sm font-medium text-[var(--muted-foreground)]">
           <a href="#features" className="hover:text-[var(--foreground)] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-md px-2 py-1">Características</a>
@@ -91,13 +149,13 @@ export default function LandingUI() {
               Plataforma B2B para Alta Demanda
             </div>
             <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight text-[var(--foreground)] leading-[1.1]">
-              El vendedor infalible impulsado por <br className="hidden md:block" />
+              Agentes de Inteligencia Artificial <br className="hidden md:block" />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-500 to-rose-400 animate-gradient-x">
-                Inteligencia Artificial
+                a la medida de tu empresa
               </span>
             </h1>
             <p className="text-xl md:text-2xl text-[var(--muted-foreground)] font-medium max-w-3xl mx-auto leading-relaxed">
-              Automatiza la atención por WhatsApp, sincroniza stock con e-commerce y coordina envíos en piloto automático.
+              Automatiza ventas, escala tu soporte técnico y optimiza operaciones. Construimos cerebros digitales avanzados que se integran perfectamente a tu ecosistema actual, para que vos te enfoques en crecer.
             </p>
           </div>
 
@@ -160,9 +218,9 @@ export default function LandingUI() {
               <div className="w-16 h-16 bg-blue-500/10 text-blue-500 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-blue-500/20 transition-all">
                 <Brain className="w-8 h-8" />
               </div>
-              <h3 className="text-2xl font-bold mb-4">IA de Vanguardia</h3>
+              <h3 className="text-2xl font-bold mb-4">Soluciones Cognitivas Adaptables</h3>
               <p className="text-[var(--muted-foreground)] leading-relaxed text-lg">
-                Nuestros agentes entienden contexto, consultan stock en tiempo real en tu e-commerce (WooCommerce, Shopify, MercadoLibre) y cierran ventas de forma autónoma.
+                Nuestros agentes van más allá de un simple FAQ. Comprenden contexto complejo, resuelven problemas técnicos, sincronizan datos con tu e-commerce y toman decisiones en tiempo real.
               </p>
             </div>
             
@@ -171,9 +229,9 @@ export default function LandingUI() {
               <div className="w-16 h-16 bg-purple-500/10 text-purple-500 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-purple-500/20 transition-all">
                 <Handshake className="w-8 h-8" />
               </div>
-              <h3 className="text-2xl font-bold mb-4">Acompañamiento Continuo</h3>
+              <h3 className="text-2xl font-bold mb-4">Acompañamiento Estratégico</h3>
               <p className="text-[var(--muted-foreground)] leading-relaxed text-lg">
-                No te damos una herramienta vacía. Te construimos el agente a medida, hacemos fine-tuning constante y te brindamos soporte humano. Nunca te dejamos solo.
+                No te entregamos una herramienta y desaparecemos. Nos encargamos del setup completo, realizamos fine-tuning continuo de los modelos y evolucionamos el agente a medida que tu negocio crece.
               </p>
             </div>
 
@@ -182,9 +240,9 @@ export default function LandingUI() {
               <div className="w-16 h-16 bg-emerald-500/10 text-emerald-500 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-emerald-500/20 transition-all">
                 <LinkIcon className="w-8 h-8" />
               </div>
-              <h3 className="text-2xl font-bold mb-4">Integración Transparente</h3>
+              <h3 className="text-2xl font-bold mb-4">Integración Omnicanal</h3>
               <p className="text-[var(--muted-foreground)] leading-relaxed text-lg">
-                ¿Usás Zenvia? Lo conectamos a tu cuenta. ¿No lo usás? Hacemos bots nativos directo a WhatsApp. Inyectamos la inteligencia sin romper tus flujos actuales.
+                Nos conectamos a tus herramientas actuales sin fricción. Ya sea WhatsApp nativo, tu instancia de Zenvia, CRMs corporativos o tu tienda online, el agente se integra como un empleado más.
               </p>
             </div>
           </div>
@@ -273,9 +331,9 @@ export default function LandingUI() {
                     </div>
 
                     <div className="space-y-3 pt-4">
-                      <label className="text-xs font-bold uppercase tracking-wider text-[var(--muted-foreground)]">Stack Tecnológico Requerido</label>
+                      <label className="text-xs font-bold uppercase tracking-wider text-[var(--muted-foreground)]">Áreas de Interés y Stack</label>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        {formIntegrations.map((tech) => {
+                        {formInterests.map((tech) => {
                           const isSelected = selectedTechs.includes(tech.id);
                           return (
                             <div 
