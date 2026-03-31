@@ -216,12 +216,6 @@ export default function LandingUI() {
           <a href="#features" className="hover:text-[var(--foreground)] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-md px-2 py-1">Características</a>
           <a href="#zenvia" className="hover:text-[var(--foreground)] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-md px-2 py-1">Por qué elegirnos</a>
           
-          <div className="w-px h-5 bg-white/10 mx-2"></div>
-          
-          <a href="/api/auth/google" className="hover:text-white transition-colors flex items-center gap-2 text-white/70 font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-md px-2 py-1">
-            Ya soy cliente <span aria-hidden="true">&rarr;</span>
-          </a>
-          
           <a href="#onboarding" className="px-5 py-2.5 rounded-full bg-white text-black font-bold hover:scale-105 transition-transform shadow-[0_0_15px_rgba(255,255,255,0.1)] focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background)]">
             Solicitar Acceso
           </a>
@@ -533,10 +527,6 @@ export default function LandingUI() {
                 </button>
               </form>
             )}
-          </div>
-          
-          <div className="mt-8 text-center text-[var(--muted-foreground)] text-sm">
-            ¿Ya tenés un agente desplegado? <a href="/api/auth/google" className="text-blue-400 hover:text-blue-300 font-bold underline underline-offset-4 decoration-blue-500/30 transition-colors">Ingresá a tu consola operativa acá</a>.
           </div>
         </section>
 

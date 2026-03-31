@@ -1,17 +1,18 @@
 ---
-// src/pages/index.astro
-// En un Dashboard SSR real, aquí verificaríamos sesión y redirigiríamos.
-// Para este MVP redirigimos a login directamente o mostramos landing mínima.
+import LandingUI from '../components/LandingUI.tsx';
+import '../styles/globals.css';
 ---
 
-<!DOCTYPE html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <title>Redirigiendo...</title>
-  <meta http-equiv="refresh" content="0;url=/login" />
-</head>
-<body class="bg-slate-50 flex items-center justify-center min-h-screen">
-  <div class="animate-pulse text-slate-400 font-medium">Cargando AI Agents Dashboard...</div>
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>AGENTino | IA para WhatsApp y E-commerce</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <LandingUI client:load />
+  </body>
 </html>
