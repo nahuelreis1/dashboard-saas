@@ -112,7 +112,6 @@ export default function LandingUI() {
         style={{ willChange: 'transform' }}
       >
         <div className="absolute inset-0 bg-purple-500/60 blur-[16px] rounded-full animate-pulse scale-[2.0]"></div>
-        <span className="relative z-10 text-3xl drop-shadow-[0_0_12px_rgba(168,85,247,0.9)] opacity-90 animate-[bounce_4s_infinite]">🧉</span>
       </div>
 
       {/* SaaS Premium Glows */}
@@ -128,7 +127,13 @@ export default function LandingUI() {
           <span className="text-3xl font-black tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600 drop-shadow-sm">
             AGENTino
           </span>
-          <span className="text-3xl drop-shadow-md">🤖</span>
+          <div className="relative flex items-end mr-3">
+            <span className="text-4xl relative z-10 animate-robot-glow">🤖</span>
+            <span className="text-[1.4rem] absolute -right-4 -bottom-1 z-20 animate-mate-drink" style={{ transformOrigin: 'bottom left' }}>🧉</span>
+            <span className="absolute -top-3 -right-10 text-[10px] font-mono text-blue-400 font-bold opacity-0 animate-data-float tracking-widest">
+              _sync()
+            </span>
+          </div>
         </div>
         <div className="hidden md:flex items-center gap-8 text-sm font-medium text-[var(--muted-foreground)]">
           <a href="#features" className="hover:text-[var(--foreground)] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-md px-2 py-1">Características</a>
@@ -164,10 +169,10 @@ export default function LandingUI() {
               Integración nativa con tu ecosistema operativo
             </p>
             
-            <div className="relative flex overflow-hidden w-full group py-4">
-              <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-[#030712] to-transparent z-10 pointer-events-none"></div>
-              <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-[#030712] to-transparent z-10 pointer-events-none"></div>
-              
+            <div 
+              className="relative flex overflow-hidden w-full group py-4"
+              style={{ WebkitMaskImage: 'linear-gradient(to right, transparent, black 15%, black 85%, transparent)', maskImage: 'linear-gradient(to right, transparent, black 15%, black 85%, transparent)' }}
+            >
               <div className="flex w-full">
                 {[...Array(4)].map((_, i) => (
                   <div key={i} className="flex animate-marquee shrink-0 items-center gap-20 md:gap-32 px-10 md:px-16 group-hover:[animation-play-state:paused]" aria-hidden={i > 0 ? "true" : undefined}>
@@ -178,7 +183,7 @@ export default function LandingUI() {
                         style={{ '--icon-color': item.color || 'rgba(255,255,255,0.5)', WebkitTapHighlightColor: 'transparent' } as React.CSSProperties}
                       >
                         {item.isImg ? (
-                          <img src={item.src} alt={item.name} className="w-16 h-16 md:w-20 md:h-20 object-contain drop-shadow-lg" referrerPolicy="no-referrer" />
+                          <img src={item.src} alt={item.name} className={`w-16 h-16 md:w-20 md:h-20 object-contain drop-shadow-lg ${item.name === 'Zenvia' ? 'bg-white p-2 md:p-3 rounded-2xl' : ''}`} referrerPolicy="no-referrer" />
                         ) : item.icon ? (
                           <item.icon size={80} color={item.color} className="w-16 h-16 md:w-20 md:h-20 drop-shadow-lg" />
                         ) : null}
@@ -194,10 +199,10 @@ export default function LandingUI() {
                 Impulsado por tecnología de clase mundial
               </p>
               
-              <div className="relative flex overflow-hidden w-full group py-4">
-                <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-[#030712] to-transparent z-10 pointer-events-none"></div>
-                <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-[#030712] to-transparent z-10 pointer-events-none"></div>
-                
+              <div 
+                className="relative flex overflow-hidden w-full group py-4"
+                style={{ WebkitMaskImage: 'linear-gradient(to right, transparent, black 15%, black 85%, transparent)', maskImage: 'linear-gradient(to right, transparent, black 15%, black 85%, transparent)' }}
+              >
                 <div className="flex w-full">
                   {[...Array(4)].map((_, i) => (
                     <div key={i} className="flex animate-marquee-reverse shrink-0 items-center gap-20 md:gap-32 px-10 md:px-16 group-hover:[animation-play-state:paused]" aria-hidden={i > 0 ? "true" : undefined}>
