@@ -170,7 +170,11 @@ export default function LandingUI() {
               
               <div className="flex w-max animate-marquee items-center gap-20 md:gap-32 px-10 group-hover:[animation-play-state:paused]">
                 {doubledIntegrations.map((item, i) => (
-                  <div key={`int-${i}`} className="flex-shrink-0 flex items-center justify-center grayscale hover:grayscale-0 transition-all duration-300 opacity-50 hover:opacity-100 min-w-[100px] hover:scale-110">
+                  <div 
+                    key={`int-${i}`} 
+                    className="flex-shrink-0 flex items-center justify-center grayscale hover:grayscale-0 active:grayscale-0 transition-all duration-300 opacity-50 hover:opacity-100 active:opacity-100 min-w-[100px] hover:scale-110 active:scale-110 cursor-pointer tap-highlight-transparent active:drop-shadow-[0_0_15px_var(--icon-color)]"
+                    style={{ '--icon-color': item.color || 'rgba(255,255,255,0.5)', WebkitTapHighlightColor: 'transparent' } as React.CSSProperties}
+                  >
                     {item.isImg ? (
                       <img src={item.src} alt={item.name} className="w-16 h-16 md:w-20 md:h-20 object-contain drop-shadow-lg" referrerPolicy="no-referrer" />
                     ) : item.icon ? (
@@ -192,7 +196,11 @@ export default function LandingUI() {
                 
                 <div className="flex w-max animate-marquee-reverse items-center gap-20 md:gap-32 px-10 group-hover:[animation-play-state:paused]">
                   {doubledTechIcons.map((item, i) => (
-                    <div key={`tech-${i}`} className="flex-shrink-0 flex items-center justify-center grayscale hover:grayscale-0 transition-all duration-300 opacity-50 hover:opacity-100 min-w-[100px] hover:scale-110">
+                    <div 
+                      key={`tech-${i}`} 
+                      className="flex-shrink-0 flex items-center justify-center grayscale hover:grayscale-0 active:grayscale-0 transition-all duration-300 opacity-50 hover:opacity-100 active:opacity-100 min-w-[100px] hover:scale-110 active:scale-110 cursor-pointer tap-highlight-transparent active:drop-shadow-[0_0_15px_var(--icon-color)]"
+                      style={{ '--icon-color': item.color || 'rgba(255,255,255,0.5)', WebkitTapHighlightColor: 'transparent' } as React.CSSProperties}
+                    >
                       <item.icon size={64} color={item.color} className="w-16 h-16 drop-shadow-lg" />
                     </div>
                   ))}
