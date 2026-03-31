@@ -7,26 +7,26 @@
 }
 
 :root {
-  --background: #ffffff;
-  --foreground: #0f172a;
-  --card: #ffffff;
-  --card-foreground: #0f172a;
-  --popover: #ffffff;
-  --popover-foreground: #0f172a;
-  --primary: #0f172a;
-  --primary-foreground: #f8fafc;
-  --secondary: #f1f5f9;
-  --secondary-foreground: #0f172a;
-  --muted: #f1f5f9;
-  --muted-foreground: #64748b;
-  --accent: #f1f5f9;
-  --accent-foreground: #0f172a;
+  --background: #030712;
+  --foreground: #f8fafc;
+  --card: #0f172a;
+  --card-foreground: #f8fafc;
+  --popover: #030712;
+  --popover-foreground: #f8fafc;
+  --primary: #f8fafc;
+  --primary-foreground: #030712;
+  --secondary: #1e293b;
+  --secondary-foreground: #f8fafc;
+  --muted: #1e293b;
+  --muted-foreground: #94a3b8;
+  --accent: #1e293b;
+  --accent-foreground: #f8fafc;
   --destructive: #ef4444;
   --destructive-foreground: #f8fafc;
-  --border: #e2e8f0;
-  --input: #e2e8f0;
-  --ring: #0f172a;
-  --radius: 0.5rem;
+  --border: #1e293b;
+  --input: #1e293b;
+  --ring: #cbd5e1;
+  --radius: 0.75rem;
 
   /* Custom Red Accent - Rose 600 style */
   --color-accent-base: #e11d48;
@@ -34,25 +34,25 @@
 }
 
 .dark {
-  --background: #020617;
-  --foreground: #f8fafc;
+  --background: #030712;
+  --foreground: #fafafa;
   --card: #0f172a;
-  --card-foreground: #f8fafc;
-  --popover: #020617;
-  --popover-foreground: #f8fafc;
-  --primary: #f8fafc;
-  --primary-foreground: #0f172a;
+  --card-foreground: #fafafa;
+  --popover: #030712;
+  --popover-foreground: #fafafa;
+  --primary: #fafafa;
+  --primary-foreground: #030712;
   --secondary: #1e293b;
-  --secondary-foreground: #f8fafc;
+  --secondary-foreground: #fafafa;
   --muted: #1e293b;
   --muted-foreground: #94a3b8;
   --accent: #1e293b;
-  --accent-foreground: #f8fafc;
+  --accent-foreground: #fafafa;
   --destructive: #7f1d1d;
-  --destructive-foreground: #f8fafc;
-  --border: rgba(255, 255, 255, 0.1);
+  --destructive-foreground: #fafafa;
+  --border: #1e293b;
   --input: #1e293b;
-  --ring: #cbd5e1;
+  --ring: #d4d4d8;
 
   /* Dark mode accent - slightly more vibrant */
   --color-accent-base: #fb7185;
@@ -76,27 +76,19 @@
   }
 
   .glass-card {
-    @apply bg-[var(--card)]/50 backdrop-blur-md border border-[var(--border)] shadow-sm rounded-xl overflow-hidden;
+    @apply bg-[var(--card)]/40 backdrop-blur-2xl border border-white/10 shadow-[0_8px_30px_rgb(0,0,0,0.12)] rounded-xl overflow-hidden relative;
   }
 
   .animate-marquee {
     animation: marquee 35s linear infinite;
   }
-  
-  .animate-marquee:hover {
-    animation-play-state: paused;
-  }
 
   .animate-marquee-reverse {
     animation: marquee 35s linear infinite reverse;
-  }
-  
-  .animate-marquee-reverse:hover {
-    animation-play-state: paused;
   }
 }
 
 @keyframes marquee {
   0% { transform: translateX(0%); }
-  100% { transform: translateX(-50%); } /* -50% because we'll duplicate the content inside a flex container */
+  100% { transform: translateX(-100%); }
 }

@@ -70,8 +70,6 @@ export default function LandingUI() {
     { name: 'Zenvia', isImg: true, src: 'https://gdm-catalog-fmapi-prod.imgix.net/ProductLogo/de9596d6-81a8-4986-94e7-b781c49046a1.png?w=90&h=90&fit=max&dpr=3&auto=format&q=50' }
   ];
 
-  const doubledIntegrations = [...integrationsList, ...integrationsList, ...integrationsList];
-
   const techIconsList = [
     { name: 'n8n', icon: SiN8n, color: '#FF6D5A' },
     { name: 'Gemini', icon: SiGooglegemini, color: '#8E75B2' },
@@ -83,8 +81,6 @@ export default function LandingUI() {
     { name: 'JavaScript', icon: SiJavascript, color: '#F7DF1E' },
     { name: 'Python', icon: SiPython, color: '#3776AB' }
   ];
-
-  const doubledTechIcons = [...techIconsList, ...techIconsList, ...techIconsList];
 
   const formInterests = [
     { id: 'soporte', label: 'Soporte Técnico', icon: <Brain size={20} className="text-blue-500" /> },
@@ -98,6 +94,10 @@ export default function LandingUI() {
   return (
     <div className="min-h-screen bg-[var(--background)] text-[var(--foreground)] relative overflow-hidden flex flex-col items-center selection:bg-blue-500/30 font-sans cursor-default">
       
+      {/* Background with mesh gradient & subtle noise */}
+      <div className="fixed inset-0 z-0 pointer-events-none bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-900/20 via-[#030712] to-[#030712]"></div>
+      <div className="fixed inset-0 z-0 pointer-events-none opacity-[0.03] mix-blend-overlay" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }}></div>
+
       {/* Spotlight Effect */}
       <div 
         ref={spotlightRef}
@@ -133,7 +133,7 @@ export default function LandingUI() {
         <div className="hidden md:flex items-center gap-8 text-sm font-medium text-[var(--muted-foreground)]">
           <a href="#features" className="hover:text-[var(--foreground)] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-md px-2 py-1">Características</a>
           <a href="#zenvia" className="hover:text-[var(--foreground)] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-md px-2 py-1">Por qué elegirnos</a>
-          <a href="#onboarding" className="px-5 py-2.5 rounded-full bg-[var(--foreground)] text-[var(--background)] font-bold hover:scale-105 transition-transform shadow-[0_0_15px_rgba(255,255,255,0.1)] focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background)]">
+          <a href="#onboarding" className="px-5 py-2.5 rounded-full bg-white text-black font-bold hover:scale-105 transition-transform shadow-[0_0_15px_rgba(255,255,255,0.1)] focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background)]">
             Solicitar Acceso
           </a>
         </div>
@@ -144,7 +144,7 @@ export default function LandingUI() {
         {/* Section 1: Header & Carousel */}
         <section className="w-full max-w-7xl flex flex-col items-center">
           <div className="text-center mb-16 md:mb-20 space-y-8 max-w-4xl mx-auto animate-in fade-in slide-in-from-bottom-8 duration-700">
-            <div className="inline-flex items-center justify-center px-4 py-1.5 rounded-full border border-[var(--border)] bg-[var(--muted)]/50 backdrop-blur-md text-sm font-medium text-[var(--muted-foreground)] mb-4 shadow-sm">
+            <div className="inline-flex items-center justify-center px-4 py-1.5 rounded-full border border-[var(--border)] bg-white/5 backdrop-blur-md text-sm font-medium text-white/80 mb-4 shadow-sm">
               <span className="flex w-2 h-2 rounded-full bg-emerald-500 mr-2 animate-pulse"></span>
               Plataforma B2B para Alta Demanda
             </div>
@@ -159,49 +159,57 @@ export default function LandingUI() {
             </p>
           </div>
 
-          <div className="w-full mb-24 md:mb-32">
+          <div className="w-full mb-24 md:mb-32 relative">
             <p className="text-center text-sm font-bold text-[var(--muted-foreground)] uppercase tracking-[0.2em] mb-10">
               Integración nativa con tu ecosistema operativo
             </p>
             
             <div className="relative flex overflow-hidden w-full group py-4">
-              <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-[var(--background)] to-transparent z-10 pointer-events-none"></div>
-              <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-[var(--background)] to-transparent z-10 pointer-events-none"></div>
+              <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-[#030712] to-transparent z-10 pointer-events-none"></div>
+              <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-[#030712] to-transparent z-10 pointer-events-none"></div>
               
-              <div className="flex w-max animate-marquee items-center gap-20 md:gap-32 px-10 group-hover:[animation-play-state:paused]">
-                {doubledIntegrations.map((item, i) => (
-                  <div 
-                    key={`int-${i}`} 
-                    className="flex-shrink-0 flex items-center justify-center grayscale hover:grayscale-0 active:grayscale-0 transition-all duration-300 opacity-50 hover:opacity-100 active:opacity-100 min-w-[100px] hover:scale-110 active:scale-110 cursor-pointer tap-highlight-transparent active:drop-shadow-[0_0_15px_var(--icon-color)]"
-                    style={{ '--icon-color': item.color || 'rgba(255,255,255,0.5)', WebkitTapHighlightColor: 'transparent' } as React.CSSProperties}
-                  >
-                    {item.isImg ? (
-                      <img src={item.src} alt={item.name} className="w-16 h-16 md:w-20 md:h-20 object-contain drop-shadow-lg" referrerPolicy="no-referrer" />
-                    ) : item.icon ? (
-                      <item.icon size={80} color={item.color} className="w-16 h-16 md:w-20 md:h-20 drop-shadow-lg" />
-                    ) : null}
+              <div className="flex w-full">
+                {[...Array(4)].map((_, i) => (
+                  <div key={i} className="flex animate-marquee shrink-0 items-center gap-20 md:gap-32 px-10 md:px-16 group-hover:[animation-play-state:paused]" aria-hidden={i > 0 ? "true" : undefined}>
+                    {integrationsList.map((item, j) => (
+                      <div 
+                        key={`int-${i}-${j}`} 
+                        className="flex-shrink-0 flex items-center justify-center grayscale hover:grayscale-0 active:grayscale-0 transition-all duration-300 opacity-50 hover:opacity-100 active:opacity-100 min-w-[100px] hover:scale-110 active:scale-110 cursor-pointer tap-highlight-transparent active:drop-shadow-[0_0_15px_var(--icon-color)]"
+                        style={{ '--icon-color': item.color || 'rgba(255,255,255,0.5)', WebkitTapHighlightColor: 'transparent' } as React.CSSProperties}
+                      >
+                        {item.isImg ? (
+                          <img src={item.src} alt={item.name} className="w-16 h-16 md:w-20 md:h-20 object-contain drop-shadow-lg" referrerPolicy="no-referrer" />
+                        ) : item.icon ? (
+                          <item.icon size={80} color={item.color} className="w-16 h-16 md:w-20 md:h-20 drop-shadow-lg" />
+                        ) : null}
+                      </div>
+                    ))}
                   </div>
                 ))}
               </div>
             </div>
 
-            <div className="mt-16">
+            <div className="mt-16 relative">
               <p className="text-center text-sm font-bold text-[var(--muted-foreground)] uppercase tracking-[0.2em] mb-10">
                 Impulsado por tecnología de clase mundial
               </p>
               
               <div className="relative flex overflow-hidden w-full group py-4">
-                <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-[var(--background)] to-transparent z-10 pointer-events-none"></div>
-                <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-[var(--background)] to-transparent z-10 pointer-events-none"></div>
+                <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-[#030712] to-transparent z-10 pointer-events-none"></div>
+                <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-[#030712] to-transparent z-10 pointer-events-none"></div>
                 
-                <div className="flex w-max animate-marquee-reverse items-center gap-20 md:gap-32 px-10 group-hover:[animation-play-state:paused]">
-                  {doubledTechIcons.map((item, i) => (
-                    <div 
-                      key={`tech-${i}`} 
-                      className="flex-shrink-0 flex items-center justify-center grayscale hover:grayscale-0 active:grayscale-0 transition-all duration-300 opacity-50 hover:opacity-100 active:opacity-100 min-w-[100px] hover:scale-110 active:scale-110 cursor-pointer tap-highlight-transparent active:drop-shadow-[0_0_15px_var(--icon-color)]"
-                      style={{ '--icon-color': item.color || 'rgba(255,255,255,0.5)', WebkitTapHighlightColor: 'transparent' } as React.CSSProperties}
-                    >
-                      <item.icon size={64} color={item.color} className="w-16 h-16 drop-shadow-lg" />
+                <div className="flex w-full">
+                  {[...Array(4)].map((_, i) => (
+                    <div key={i} className="flex animate-marquee-reverse shrink-0 items-center gap-20 md:gap-32 px-10 md:px-16 group-hover:[animation-play-state:paused]" aria-hidden={i > 0 ? "true" : undefined}>
+                      {techIconsList.map((item, j) => (
+                        <div 
+                          key={`tech-${i}-${j}`} 
+                          className="flex-shrink-0 flex items-center justify-center grayscale hover:grayscale-0 active:grayscale-0 transition-all duration-300 opacity-50 hover:opacity-100 active:opacity-100 min-w-[100px] hover:scale-110 active:scale-110 cursor-pointer tap-highlight-transparent active:drop-shadow-[0_0_15px_var(--icon-color)]"
+                          style={{ '--icon-color': item.color || 'rgba(255,255,255,0.5)', WebkitTapHighlightColor: 'transparent' } as React.CSSProperties}
+                        >
+                          <item.icon size={64} color={item.color} className="w-16 h-16 drop-shadow-lg" />
+                        </div>
+                      ))}
                     </div>
                   ))}
                 </div>
@@ -222,34 +230,34 @@ export default function LandingUI() {
           </div>
           <div className="grid md:grid-cols-3 gap-8">
             {/* Card 1 */}
-            <div className="bg-[var(--card)]/60 backdrop-blur-xl border border-[var(--border)] p-8 md:p-10 rounded-3xl shadow-xl shadow-blue-500/5 hover:border-blue-500/50 hover:bg-blue-500/5 transition-all duration-300 group">
-              <div className="w-16 h-16 bg-blue-500/10 text-blue-500 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-blue-500/20 transition-all">
+            <div className="bg-white/5 border border-white/10 backdrop-blur-2xl shadow-2xl p-8 md:p-10 rounded-3xl hover:border-blue-500/50 hover:bg-white/10 transition-all duration-300 group">
+              <div className="w-16 h-16 bg-blue-500/10 text-blue-500 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-blue-500/20 transition-all shadow-[0_0_15px_rgba(59,130,246,0.2)]">
                 <Brain className="w-8 h-8" />
               </div>
               <h3 className="text-2xl font-bold mb-4">Soluciones Cognitivas Adaptables</h3>
-              <p className="text-[var(--muted-foreground)] leading-relaxed text-lg">
+              <p className="text-white/70 leading-relaxed text-lg">
                 Nuestros agentes van más allá de un simple FAQ. Comprenden contexto complejo, resuelven problemas técnicos, sincronizan datos con tu e-commerce y toman decisiones en tiempo real.
               </p>
             </div>
             
             {/* Card 2 */}
-            <div className="bg-[var(--card)]/60 backdrop-blur-xl border border-[var(--border)] p-8 md:p-10 rounded-3xl shadow-xl shadow-purple-500/5 hover:border-purple-500/50 hover:bg-purple-500/5 transition-all duration-300 group">
-              <div className="w-16 h-16 bg-purple-500/10 text-purple-500 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-purple-500/20 transition-all">
+            <div className="bg-white/5 border border-white/10 backdrop-blur-2xl shadow-2xl p-8 md:p-10 rounded-3xl hover:border-purple-500/50 hover:bg-white/10 transition-all duration-300 group">
+              <div className="w-16 h-16 bg-purple-500/10 text-purple-500 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-purple-500/20 transition-all shadow-[0_0_15px_rgba(168,85,247,0.2)]">
                 <Handshake className="w-8 h-8" />
               </div>
               <h3 className="text-2xl font-bold mb-4">Acompañamiento Estratégico</h3>
-              <p className="text-[var(--muted-foreground)] leading-relaxed text-lg">
+              <p className="text-white/70 leading-relaxed text-lg">
                 No te entregamos una herramienta y desaparecemos. Nos encargamos del setup completo, realizamos fine-tuning continuo de los modelos y evolucionamos el agente a medida que tu negocio crece.
               </p>
             </div>
 
             {/* Card 3 */}
-            <div className="bg-[var(--card)]/60 backdrop-blur-xl border border-[var(--border)] p-8 md:p-10 rounded-3xl shadow-xl shadow-emerald-500/5 hover:border-emerald-500/50 hover:bg-emerald-500/5 transition-all duration-300 group">
-              <div className="w-16 h-16 bg-emerald-500/10 text-emerald-500 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-emerald-500/20 transition-all">
+            <div className="bg-white/5 border border-white/10 backdrop-blur-2xl shadow-2xl p-8 md:p-10 rounded-3xl hover:border-emerald-500/50 hover:bg-white/10 transition-all duration-300 group">
+              <div className="w-16 h-16 bg-emerald-500/10 text-emerald-500 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-emerald-500/20 transition-all shadow-[0_0_15px_rgba(16,185,129,0.2)]">
                 <LinkIcon className="w-8 h-8" />
               </div>
               <h3 className="text-2xl font-bold mb-4">Integración Omnicanal</h3>
-              <p className="text-[var(--muted-foreground)] leading-relaxed text-lg">
+              <p className="text-white/70 leading-relaxed text-lg">
                 Nos conectamos a tus herramientas actuales sin fricción. Ya sea WhatsApp nativo, tu instancia de Zenvia, CRMs corporativos o tu tienda online, el agente se integra como un empleado más.
               </p>
             </div>
@@ -311,15 +319,15 @@ export default function LandingUI() {
                 </p>
               </div>
 
-              <div className="bg-[var(--card)]/80 backdrop-blur-xl border border-[var(--border)] rounded-3xl p-6 md:p-10 shadow-2xl shadow-blue-500/5 relative overflow-hidden group">
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+              <div className="bg-white/5 backdrop-blur-2xl border border-white/10 rounded-3xl p-6 md:p-10 shadow-2xl relative overflow-hidden group">
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-transparent to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
                 
                 {formState === 'success' ? (
                   <div className="flex flex-col items-center justify-center py-12 text-center space-y-4 animate-in fade-in zoom-in duration-500">
                     <div className="w-20 h-20 bg-emerald-500/10 text-emerald-500 rounded-full flex items-center justify-center mb-4 ring-4 ring-emerald-500/20">
                       <CheckCircle2 className="w-10 h-10" />
                     </div>
-                    <h3 className="text-2xl font-bold">¡Solicitud en Proceso!</h3>
+                    <h3 className="text-2xl font-bold text-white">¡Solicitud en Proceso!</h3>
                     <p className="text-[var(--muted-foreground)] max-w-md">
                       Nuestro equipo de ingeniería revisará tu requerimiento y te contactará en menos de 24hs.
                     </p>
@@ -329,12 +337,12 @@ export default function LandingUI() {
                     <div className="grid md:grid-cols-2 gap-6">
                       <div className="space-y-2">
                         <label htmlFor="empresa" className="text-xs font-bold uppercase tracking-wider text-[var(--muted-foreground)]">Empresa</label>
-                        <input id="empresa" required type="text" placeholder="Ej: Acme Corp" className="w-full h-12 px-4 rounded-xl bg-[var(--background)] border border-[var(--border)] focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all outline-none text-[var(--foreground)]" />
+                        <input id="empresa" required type="text" placeholder="Ej: Acme Corp" className="w-full h-12 px-4 rounded-xl bg-[var(--background)]/50 border border-white/10 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all outline-none text-white backdrop-blur-md" />
                       </div>
                       
                       <div className="space-y-2">
                         <label htmlFor="email" className="text-xs font-bold uppercase tracking-wider text-[var(--muted-foreground)]">Email Corporativo</label>
-                        <input id="email" required type="email" placeholder="ceo@empresa.com" className="w-full h-12 px-4 rounded-xl bg-[var(--background)] border border-[var(--border)] focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all outline-none text-[var(--foreground)]" />
+                        <input id="email" required type="email" placeholder="ceo@empresa.com" className="w-full h-12 px-4 rounded-xl bg-[var(--background)]/50 border border-white/10 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all outline-none text-white backdrop-blur-md" />
                       </div>
                     </div>
 
@@ -353,20 +361,20 @@ export default function LandingUI() {
                               role="checkbox"
                               aria-checked={isSelected}
                               tabIndex={0}
-                              className={`flex items-center p-3 rounded-xl border cursor-pointer transition-all duration-200 group focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
+                              className={`flex items-center p-3 rounded-xl border cursor-pointer transition-all duration-200 group focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 backdrop-blur-md ${
                                 isSelected 
-                                  ? 'bg-blue-500/10 border-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.1)]' 
-                                  : 'bg-[var(--background)] border-[var(--border)] hover:border-blue-400/50 hover:bg-[var(--muted)]'
+                                  ? 'bg-blue-500/20 border-blue-500/50 shadow-[0_0_15px_rgba(59,130,246,0.2)]' 
+                                  : 'bg-[var(--background)]/30 border-white/10 hover:border-blue-400/50 hover:bg-white/5'
                               }`}
                             >
-                              <div className={`flex items-center justify-center w-8 h-8 rounded-lg mr-3 ${isSelected ? 'bg-white/10' : 'bg-[var(--card)]'} border border-[var(--border)]`}>
+                              <div className={`flex items-center justify-center w-8 h-8 rounded-lg mr-3 ${isSelected ? 'bg-white/20' : 'bg-black/20'} border border-white/10`}>
                                 {tech.icon}
                               </div>
-                              <span className={`text-sm font-medium flex-1 ${isSelected ? 'text-[var(--foreground)]' : 'text-[var(--muted-foreground)] group-hover:text-[var(--foreground)]'}`}>
+                              <span className={`text-sm font-medium flex-1 ${isSelected ? 'text-white' : 'text-white/60 group-hover:text-white'}`}>
                                 {tech.label}
                               </span>
                               <div className={`w-5 h-5 rounded flex items-center justify-center border transition-colors ${
-                                isSelected ? 'bg-blue-500 border-blue-500' : 'border-[var(--muted-foreground)]/40'
+                                isSelected ? 'bg-blue-500 border-blue-500' : 'border-white/20'
                               }`}>
                                 {isSelected && <CheckCircle2 className="w-3.5 h-3.5 text-white" />}
                               </div>
@@ -379,7 +387,7 @@ export default function LandingUI() {
                     <button 
                       disabled={formState === 'submitting'}
                       type="submit" 
-                      className="w-full min-h-[56px] mt-8 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-bold text-lg shadow-[0_0_20px_rgba(59,130,246,0.3)] hover:shadow-[0_0_30px_rgba(59,130,246,0.5)] active:scale-[0.98] transition-all flex items-center justify-center gap-3 disabled:opacity-70 disabled:scale-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--card)]"
+                      className="w-full min-h-[56px] mt-8 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-bold text-lg shadow-[0_0_20px_rgba(59,130,246,0.3)] hover:shadow-[0_0_30px_rgba(59,130,246,0.5)] active:scale-[0.98] transition-all flex items-center justify-center gap-3 disabled:opacity-70 disabled:scale-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:ring-offset-2 focus-visible:ring-offset-[#030712]"
                     >
                       {formState === 'submitting' ? 'Procesando...' : 'Desplegar Mi Agente'} 
                       {formState !== 'submitting' && <Zap className="w-5 h-5" />}
@@ -398,10 +406,10 @@ export default function LandingUI() {
                 </p>
               </div>
 
-              <div className="bg-[var(--card)]/80 backdrop-blur-xl border border-[var(--border)] shadow-2xl rounded-3xl p-6 md:p-8 flex flex-col relative overflow-hidden h-full min-h-[400px]">
+              <div className="bg-white/5 backdrop-blur-2xl border border-white/10 shadow-2xl rounded-3xl p-6 md:p-8 flex flex-col relative overflow-hidden h-full min-h-[400px]">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/10 blur-[50px] pointer-events-none"></div>
 
-                <div className="mb-8 rounded-2xl bg-amber-500/10 border border-amber-500/20 p-5 flex gap-4 text-amber-600 dark:text-amber-500">
+                <div className="mb-8 rounded-2xl bg-amber-500/10 border border-amber-500/20 p-5 flex gap-4 text-amber-500">
                   <ShieldAlert className="w-6 h-6 shrink-0 mt-1" />
                   <div className="text-sm leading-relaxed">
                     <span className="font-bold block mb-1 text-base">Acceso Restringido</span>
@@ -412,7 +420,7 @@ export default function LandingUI() {
                 <div className="flex-1 flex flex-col justify-center gap-4 relative z-10">
                   <a 
                     href="/api/auth/google"
-                    className="flex items-center justify-center gap-3 w-full min-h-[56px] bg-[var(--background)] border border-[var(--border)] rounded-xl font-bold text-[var(--foreground)] hover:border-blue-500/50 hover:bg-blue-500/5 hover:text-blue-500 transition-all duration-300 shadow-sm group focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+                    className="flex items-center justify-center gap-3 w-full min-h-[56px] bg-[var(--background)]/50 border border-white/10 backdrop-blur-md rounded-xl font-bold text-white hover:border-blue-500/50 hover:bg-blue-500/10 hover:text-blue-400 transition-all duration-300 shadow-sm group focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
                   >
                     <Chrome className="w-5 h-5 group-hover:scale-110 transition-transform" />
                     <span>Autenticar con Google</span>
@@ -420,16 +428,16 @@ export default function LandingUI() {
                   
                   <div className="relative py-4">
                     <div className="absolute inset-0 flex items-center">
-                      <span className="w-full border-t border-[var(--border)]"></span>
+                      <span className="w-full border-t border-white/10"></span>
                     </div>
                     <div className="relative flex justify-center text-xs uppercase font-bold tracking-widest">
-                      <span className="bg-[var(--card)] px-4 text-[var(--muted-foreground)]">Entorno de Pruebas</span>
+                      <span className="bg-[#030712] px-4 text-[var(--muted-foreground)] rounded-full border border-white/5">Entorno de Pruebas</span>
                     </div>
                   </div>
                   
                   <a 
                     href="/dashboard"
-                    className="flex items-center justify-center gap-2 w-full min-h-[48px] rounded-xl bg-[var(--muted)]/50 text-[var(--foreground)] text-sm font-medium hover:bg-[var(--muted)] hover:shadow-inner transition-all border border-transparent hover:border-[var(--border)] focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+                    className="flex items-center justify-center gap-2 w-full min-h-[48px] rounded-xl bg-white/5 text-white/80 text-sm font-medium hover:bg-white/10 hover:shadow-inner transition-all border border-transparent hover:border-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
                   >
                     Entrar al Sandbox Local
                   </a>
@@ -442,9 +450,9 @@ export default function LandingUI() {
 
       </main>
       
-      <footer className="w-full py-10 mt-20 text-center border-t border-[var(--border)]/50 z-10 bg-[var(--background)]/80 backdrop-blur-lg">
+      <footer className="w-full py-10 mt-20 text-center border-t border-white/10 z-10 bg-[#030712]/80 backdrop-blur-lg">
         <p className="text-sm font-medium text-[var(--muted-foreground)]">
-          &copy; {new Date().getFullYear()} <span className="text-[var(--foreground)] font-bold">AGENTino 🤖</span> by NR Labs. Todos los derechos reservados.
+          &copy; {new Date().getFullYear()} <span className="text-white font-bold">AGENTino 🤖</span> by NR Labs. Todos los derechos reservados.
         </p>
       </footer>
     </div>
