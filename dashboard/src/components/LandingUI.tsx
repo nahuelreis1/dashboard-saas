@@ -3,6 +3,59 @@ import { SiOpenai } from 'react-icons/si';
 import { SiWoocommerce, SiShopify, SiWhatsapp, SiN8n, SiGooglegemini, SiLangchain, SiPostgresql, SiDocker, SiLinux, SiJavascript, SiPython } from '@icons-pack/react-simple-icons';
 import { Zap, CheckCircle2, ShoppingCart, Globe, Brain, Handshake, Link as LinkIcon, Bot, MessageSquare } from 'lucide-react';
 
+const PoweredByLogos = ({ className = '', size = 'md' }: { className?: string, size?: 'sm' | 'md' }) => {
+  const svgClass = size === 'sm' ? 'h-5 w-auto' : 'h-10 w-auto';
+  const imgClass = size === 'sm' ? 'h-4 w-auto' : 'h-7 md:h-8 w-auto';
+  const gapClass = size === 'sm' ? 'gap-4' : 'gap-8 md:gap-12';
+  const dividerClass = size === 'sm' ? 'h-4' : 'h-8';
+
+  return (
+    <div className={`flex items-center ${gapClass} ${className}`}>
+      <div className="text-white flex items-center">
+        <svg
+          viewBox="1000 1300 1200 800"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          className={`${svgClass} opacity-80 hover:opacity-100 transition-opacity`}
+        >
+          <g transform="translate(0,3328) scale(0.1,-0.1)" fill="currentColor" stroke="none">
+            <path
+              fillRule="evenodd"
+              d="M 11938.0 19678.0  c120 -123 269 -277 332 -343 63 -66 253 -262 421 -435 168 -173 388 -401 490 -506 248 -259 971 -1005 1531 -1581 252 -259 481 -497 509 -527 28 -31 55 -56 60 -56 6 0 9 531 9 1323 0 727 0 1345 0 1372 l1 50 23 -65 c68 -194 195 -346 373 -446 l83 -46 2 -1687 c2 -927 2 -1688 0 -1691 -4 -6 -825 832 -1597 1630 -296 307 -1130 1165 -1360 1400 -110 113 -445 458 -744 768 l-543 562 -379 0 -379 0 2 -3297 3 -3298 320 0 320 0 3 2098 c1 1154 6 2097 10 2095 8 -3 473 -482 882 -909 146 -152 580 -601 965 -998 385 -397 812 -837 949 -979 137 -141 385 -396 550 -567 166 -170 393 -406 505 -523 112 -117 213 -215 225 -217 11 -3 242 -4 511 -3 l490 3 5 2811 5 2812 60 45 c70 52 180 164 220 225 l28 42 1347 0 1347 0 119 -122 c65 -68 241 -250 392 -405 l274 -283 -1 -602 -1 -602 -133 -136 c-261 -268 -406 -417 -533 -552 l-129 -137 -1252 -1 -1253 0 0 -330 0 -330 919 0 918 0 73 -127 c41 -71 122 -209 181 -308 58 -99 174 -299 257 -445 82 -146 223 -389 312 -540 181 -305 211 -356 438 -745 l157 -270 379 -3 c340 -2 378 -1 372 13 -6 17 -87 158 -256 445 -134 228 -435 745 -595 1020 -43 74 -115 198 -160 275 -45 77 -109 187 -142 245 -34 58 -102 175 -152 262 -50 86 -91 161 -91 167 0 7 28 11 78 11 l77 0 310 321 c171 177 437 455 593 618 l282 295 0 860 0 859 -112 116 c-62 64 -326 335 -588 603 l-475 488 -1435 0 -1435 0 -23 83 c-31 113 -99 223 -196 319 -43 43 -76 82 -72 86 4 4 761 8 1681 10 l1674 2 118 -122 c178 -185 899 -923 1145 -1173 l218 -220 0 -1049 0 -1049 -102 -106 c-57 -58 -202 -207 -323 -331 -121 -124 -299 -308 -396 -410 -96 -102 -219 -231 -272 -287 l-97 -101 83 -144 c418 -721 808 -1390 1045 -1793 254 -432 452 -781 452 -796 0 -5 -374 -9 -918 -9 -863 0 -920 1 -934 18 -26 29 -312 509 -543 912 -144 251 -170 296 -428 735 -113 193 -259 445 -325 560 l-120 210 -119 5 c-184 9 -1363 12 -1411 4 l-42 -7 0 -1202 c0 -662 -3 -1210 -6 -1219 -6 -14 -90 -16 -853 -16 l-847 0 -410 423 c-226 232 -489 503 -585 603 -182 189 -726 749 -1054 1084 -176 180 -669 692 -1133 1174 -106 111 -197 202 -202 204 -5 2 -8 -724 -7 -1740 l2 -1743 -810 0 -810 0 -3 3780 c-1 2079 0 3786 3 3793 3 9 157 12 720 12 l717 0 216 -222 z M 11501.0 18503.0  c133 -141 1013 -1048 1248 -1288 135 -138 406 -414 601 -615 195 -201 462 -475 595 -610 132 -135 351 -360 485 -500 135 -140 378 -392 540 -560 862 -891 798 -823 800 -860 1 -19 2 -165 1 -325 l-1 -290 -138 140 c-75 77 -376 385 -667 685 -552 567 -802 824 -1190 1220 -127 129 -307 314 -400 410 -94 96 -285 292 -425 435 -140 143 -437 447 -660 675 -222 228 -509 521 -637 650 l-233 235 0 333 c0 182 4 332 8 332 5 0 38 -30 73 -67 z M17000 17320 l0 -930 1154 0 1155 0 255 267 256 267 0 402 0 402 -256 261 -256 261 -1154 0 -1154 0 0 -930z"
+            />
+            <circle cx="16150" cy="19100" r="390" fill="#EF4444">
+              <animate
+                attributeName="cy"
+                values="19100; 19100; 13500; 19100; 19100"
+                keyTimes="0; 0.2; 0.5; 0.8; 1"
+                dur="4s"
+                repeatCount="indefinite"
+                calcMode="spline"
+                keySplines="0.42 0 0.58 1; 0.42 0 0.58 1; 0.42 0 0.58 1; 0.42 0 0.58 1"
+              />
+              <animate
+                attributeName="r"
+                values="390; 390; 350; 390; 390"
+                keyTimes="0; 0.2; 0.5; 0.8; 1"
+                dur="4s"
+                repeatCount="indefinite"
+                calcMode="spline"
+                keySplines="0.42 0 0.58 1; 0.42 0 0.58 1; 0.42 0 0.58 1; 0.42 0 0.58 1"
+              />
+            </circle>
+          </g>
+        </svg>
+      </div>
+      <div className={`w-px bg-white/20 ${dividerClass}`}></div>
+      <img 
+        src="https://www.axyoma.com.ar/wp-content/uploads/2025/10/logo-axyoma-scaled.png" 
+        alt="Axyoma" 
+        className={`${imgClass} object-contain opacity-80 hover:opacity-100 transition-opacity invert dark:invert-0`} 
+      />
+    </div>
+  );
+};
+
 export default function LandingUI() {
   const [formState, setFormState] = useState<'idle' | 'submitting' | 'success'>('idle');
   const [selectedTechs, setSelectedTechs] = useState<string[]>([]);
@@ -193,6 +246,12 @@ export default function LandingUI() {
             <p className="text-xl md:text-2xl text-[var(--muted-foreground)] font-medium max-w-3xl mx-auto leading-relaxed">
               Automatiza ventas, escala tu soporte técnico y optimiza operaciones. Construimos cerebros digitales avanzados que se integran perfectamente a tu ecosistema actual, para que vos te enfoques en crecer.
             </p>
+            
+            {/* Pequeña mención Powered by en el Hero */}
+            <div className="flex flex-col md:flex-row items-center justify-center gap-4 mt-10 opacity-70 hover:opacity-100 transition-opacity">
+              <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[var(--muted-foreground)]">Powered by</span>
+              <PoweredByLogos size="sm" />
+            </div>
           </div>
 
           <div className="w-full mb-24 md:mb-32 relative">
@@ -483,9 +542,20 @@ export default function LandingUI() {
 
       </main>
       
-      <footer className="w-full py-10 mt-10 text-center border-t border-white/10 z-10 bg-[#030712]/80 backdrop-blur-lg">
-        <p className="text-sm font-medium text-[var(--muted-foreground)]">
-          &copy; {new Date().getFullYear()} <span className="text-white font-bold">AGENTino 🤖</span> by NR Labs. Todos los derechos reservados.
+      <footer className="w-full py-12 mt-10 border-t border-white/10 z-10 bg-[#030712]/80 backdrop-blur-lg flex flex-col items-center justify-center gap-8 relative overflow-hidden">
+        {/* Subtle glow for the footer */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-lg h-px bg-gradient-to-r from-transparent via-blue-500/50 to-transparent"></div>
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-sm h-[100px] bg-blue-500/10 blur-[80px] pointer-events-none"></div>
+        
+        <div className="flex flex-col items-center gap-5 z-10">
+          <span className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--muted-foreground)]">
+            Desarrollado en alianza por
+          </span>
+          <PoweredByLogos size="md" />
+        </div>
+
+        <p className="text-sm font-medium text-[var(--muted-foreground)] z-10">
+          &copy; {new Date().getFullYear()} <span className="text-white font-bold">AGENTino 🤖</span>. Todos los derechos reservados.
         </p>
       </footer>
     </div>
