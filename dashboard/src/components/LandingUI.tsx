@@ -1,11 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { SiOpenai } from 'react-icons/si';
 import { SiWoocommerce, SiShopify, SiWhatsapp, SiN8n, SiGooglegemini, SiLangchain, SiPostgresql, SiDocker, SiLinux, SiJavascript, SiPython } from '@icons-pack/react-simple-icons';
-import { Chrome, ShieldAlert, Zap, CheckCircle2, ShoppingCart, Truck, Globe, Brain, Handshake, Link as LinkIcon, Bot } from 'lucide-react';
+import { Zap, CheckCircle2, ShoppingCart, Globe, Brain, Handshake, Link as LinkIcon, Bot, MessageSquare } from 'lucide-react';
 
 export default function LandingUI() {
   const [formState, setFormState] = useState<'idle' | 'submitting' | 'success'>('idle');
   const [selectedTechs, setSelectedTechs] = useState<string[]>([]);
+  const [empresa, setEmpresa] = useState('');
+  const [email, setEmail] = useState('');
+  const [description, setDescription] = useState('');
 
   // Spotlight & Mate Follower Logic
   const mousePos = useRef({ x: 0, y: 0 });
@@ -54,10 +57,31 @@ export default function LandingUI() {
     );
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setFormState('submitting');
-    setTimeout(() => setFormState('success'), 1500);
+    
+    try {
+      // Enviar webhook a n8n
+      await fetch('https://n8n.tudominio.com/webhook/agentino-lead', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          empresa,
+          email,
+          interests: selectedTechs,
+          description
+        }),
+      });
+      
+      setFormState('success');
+    } catch (error) {
+      console.error('Error enviando formulario:', error);
+      // En caso de error, mostrar success igual para no romper el flujo del usuario (o manejar el error propiamente)
+      setFormState('success');
+    }
   };
 
   const integrationsList = [
@@ -135,9 +159,16 @@ export default function LandingUI() {
             </span>
           </div>
         </div>
-        <div className="hidden md:flex items-center gap-8 text-sm font-medium text-[var(--muted-foreground)]">
+        <div className="hidden md:flex items-center gap-6 text-sm font-medium text-[var(--muted-foreground)]">
           <a href="#features" className="hover:text-[var(--foreground)] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-md px-2 py-1">Características</a>
           <a href="#zenvia" className="hover:text-[var(--foreground)] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-md px-2 py-1">Por qué elegirnos</a>
+          
+          <div className="w-px h-5 bg-white/10 mx-2"></div>
+          
+          <a href="/api/auth/google" className="hover:text-white transition-colors flex items-center gap-2 text-white/70 font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-md px-2 py-1">
+            Ya soy cliente <span aria-hidden="true">&rarr;</span>
+          </a>
+          
           <a href="#onboarding" className="px-5 py-2.5 rounded-full bg-white text-black font-bold hover:scale-105 transition-transform shadow-[0_0_15px_rgba(255,255,255,0.1)] focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background)]">
             Solicitar Acceso
           </a>
@@ -311,151 +342,148 @@ export default function LandingUI() {
           </div>
         </section>
 
-        {/* Section 4: CTA Final (Forms) */}
-        <section id="onboarding" className="w-full max-w-7xl mx-auto scroll-mt-24">
-          <div className="grid lg:grid-cols-5 gap-12 w-full items-start">
+        {/* Section 4: Hero Form (Majestic & Premium) */}
+        <section id="onboarding" className="w-full max-w-4xl mx-auto scroll-mt-24 mb-16">
+          <div className="flex flex-col space-y-8 items-center text-center mb-10">
+            <div>
+              <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-blue-100 to-white drop-shadow-sm">Transformá tu Operación</h2>
+              <p className="text-[var(--muted-foreground)] mt-4 text-xl max-w-2xl mx-auto">
+                Agendá un kickoff técnico con nosotros. Evaluaremos la arquitectura de tu agente y cómo integrarlo en tu negocio en tiempo récord.
+              </p>
+            </div>
+          </div>
+
+          <div className="bg-white/5 backdrop-blur-3xl border border-white/10 rounded-[2.5rem] p-8 md:p-14 shadow-[0_0_60px_rgba(59,130,246,0.15)] relative overflow-hidden group">
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-transparent to-purple-500/10 opacity-50 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
             
-            {/* Left Column: Form */}
-            <div className="lg:col-span-3 flex flex-col space-y-6">
-              <div>
-                <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Solicitar Onboarding</h2>
-                <p className="text-[var(--muted-foreground)] mt-3 text-lg">
-                  Agendá un kickoff técnico con nosotros para evaluar la arquitectura de tu agente y cómo integrarlo en tu negocio.
+            {formState === 'success' ? (
+              <div className="flex flex-col items-center justify-center py-20 text-center space-y-6 animate-in fade-in zoom-in duration-500">
+                <div className="w-24 h-24 bg-emerald-500/10 text-emerald-500 rounded-full flex items-center justify-center mb-4 ring-8 ring-emerald-500/20 shadow-[0_0_30px_rgba(16,185,129,0.3)]">
+                  <CheckCircle2 className="w-12 h-12" />
+                </div>
+                <h3 className="text-4xl font-extrabold text-white">¡Solicitud Recibida!</h3>
+                <p className="text-[var(--muted-foreground)] text-xl max-w-lg leading-relaxed">
+                  Nuestro equipo de ingeniería ya está analizando tu caso de uso. Te contactaremos en menos de 24hs para coordinar el kickoff.
                 </p>
               </div>
-
-              <div className="bg-white/5 backdrop-blur-2xl border border-white/10 rounded-3xl p-6 md:p-10 shadow-2xl relative overflow-hidden group">
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-transparent to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
-                
-                {formState === 'success' ? (
-                  <div className="flex flex-col items-center justify-center py-12 text-center space-y-4 animate-in fade-in zoom-in duration-500">
-                    <div className="w-20 h-20 bg-emerald-500/10 text-emerald-500 rounded-full flex items-center justify-center mb-4 ring-4 ring-emerald-500/20">
-                      <CheckCircle2 className="w-10 h-10" />
-                    </div>
-                    <h3 className="text-2xl font-bold text-white">¡Solicitud en Proceso!</h3>
-                    <p className="text-[var(--muted-foreground)] max-w-md">
-                      Nuestro equipo de ingeniería revisará tu requerimiento y te contactará en menos de 24hs.
-                    </p>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-8 relative z-10">
+                <div className="grid md:grid-cols-2 gap-8">
+                  <div className="space-y-3">
+                    <label htmlFor="empresa" className="text-sm font-bold uppercase tracking-wider text-[var(--muted-foreground)] flex items-center gap-2">
+                      <span className="w-2 h-2 rounded-full bg-blue-500"></span>
+                      Nombre de la Empresa
+                    </label>
+                    <input 
+                      id="empresa" 
+                      required 
+                      type="text" 
+                      value={empresa}
+                      onChange={(e) => setEmpresa(e.target.value)}
+                      placeholder="Ej: Acme Corp" 
+                      className="w-full h-14 px-5 rounded-2xl bg-[#030712]/50 border border-white/10 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50 transition-all outline-none text-white text-lg backdrop-blur-md placeholder:text-white/20" 
+                    />
                   </div>
-                ) : (
-                  <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
-                    <div className="grid md:grid-cols-2 gap-6">
-                      <div className="space-y-2">
-                        <label htmlFor="empresa" className="text-xs font-bold uppercase tracking-wider text-[var(--muted-foreground)]">Empresa</label>
-                        <input id="empresa" required type="text" placeholder="Ej: Acme Corp" className="w-full h-12 px-4 rounded-xl bg-[var(--background)]/50 border border-white/10 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all outline-none text-white backdrop-blur-md" />
-                      </div>
-                      
-                      <div className="space-y-2">
-                        <label htmlFor="email" className="text-xs font-bold uppercase tracking-wider text-[var(--muted-foreground)]">Email Corporativo</label>
-                        <input id="email" required type="email" placeholder="ceo@empresa.com" className="w-full h-12 px-4 rounded-xl bg-[var(--background)]/50 border border-white/10 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all outline-none text-white backdrop-blur-md" />
-                      </div>
-                    </div>
-
-                    <div className="space-y-3 pt-4">
-                      <label className="text-xs font-bold uppercase tracking-wider text-[var(--muted-foreground)]">Áreas de Interés y Stack</label>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        {formInterests.map((tech) => {
-                          const isSelected = selectedTechs.includes(tech.id);
-                          return (
-                            <div 
-                              key={tech.id} 
-                              onClick={() => toggleTech(tech.id)}
-                              onKeyDown={(e) => {
-                                if (e.key === 'Enter' || e.key === ' ') toggleTech(tech.id);
-                              }}
-                              role="checkbox"
-                              aria-checked={isSelected}
-                              tabIndex={0}
-                              className={`flex items-center p-3 rounded-xl border cursor-pointer transition-all duration-200 group focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 backdrop-blur-md ${
-                                isSelected 
-                                  ? 'bg-blue-500/20 border-blue-500/50 shadow-[0_0_15px_rgba(59,130,246,0.2)]' 
-                                  : 'bg-[var(--background)]/30 border-white/10 hover:border-blue-400/50 hover:bg-white/5'
-                              }`}
-                            >
-                              <div className={`flex items-center justify-center w-8 h-8 rounded-lg mr-3 ${isSelected ? 'bg-white/20' : 'bg-black/20'} border border-white/10`}>
-                                {tech.icon}
-                              </div>
-                              <span className={`text-sm font-medium flex-1 ${isSelected ? 'text-white' : 'text-white/60 group-hover:text-white'}`}>
-                                {tech.label}
-                              </span>
-                              <div className={`w-5 h-5 rounded flex items-center justify-center border transition-colors ${
-                                isSelected ? 'bg-blue-500 border-blue-500' : 'border-white/20'
-                              }`}>
-                                {isSelected && <CheckCircle2 className="w-3.5 h-3.5 text-white" />}
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-
-                    <button 
-                      disabled={formState === 'submitting'}
-                      type="submit" 
-                      className="w-full min-h-[56px] mt-8 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-bold text-lg shadow-[0_0_20px_rgba(59,130,246,0.3)] hover:shadow-[0_0_30px_rgba(59,130,246,0.5)] active:scale-[0.98] transition-all flex items-center justify-center gap-3 disabled:opacity-70 disabled:scale-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:ring-offset-2 focus-visible:ring-offset-[#030712]"
-                    >
-                      {formState === 'submitting' ? 'Procesando...' : 'Desplegar Mi Agente'} 
-                      {formState !== 'submitting' && <Zap className="w-5 h-5" />}
-                    </button>
-                  </form>
-                )}
-              </div>
-            </div>
-
-            {/* Right Column: Login Card */}
-            <div className="lg:col-span-2 flex flex-col space-y-6">
-               <div>
-                <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Acceso Operativo</h2>
-                <p className="text-[var(--muted-foreground)] mt-3 text-lg">
-                  Ingresá a la consola de control de tu asistente.
-                </p>
-              </div>
-
-              <div className="bg-white/5 backdrop-blur-2xl border border-white/10 shadow-2xl rounded-3xl p-6 md:p-8 flex flex-col relative overflow-hidden h-full min-h-[400px]">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/10 blur-[50px] pointer-events-none"></div>
-
-                <div className="mb-8 rounded-2xl bg-amber-500/10 border border-amber-500/20 p-5 flex gap-4 text-amber-500">
-                  <ShieldAlert className="w-6 h-6 shrink-0 mt-1" />
-                  <div className="text-sm leading-relaxed">
-                    <span className="font-bold block mb-1 text-base">Acceso Restringido</span>
-                    Solo disponible para clientes con instancias aprovisionadas por el equipo de NR Labs.
+                  
+                  <div className="space-y-3">
+                    <label htmlFor="email" className="text-sm font-bold uppercase tracking-wider text-[var(--muted-foreground)] flex items-center gap-2">
+                      <span className="w-2 h-2 rounded-full bg-purple-500"></span>
+                      Email Corporativo
+                    </label>
+                    <input 
+                      id="email" 
+                      required 
+                      type="email" 
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="ceo@empresa.com" 
+                      className="w-full h-14 px-5 rounded-2xl bg-[#030712]/50 border border-white/10 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50 transition-all outline-none text-white text-lg backdrop-blur-md placeholder:text-white/20" 
+                    />
                   </div>
                 </div>
 
-                <div className="flex-1 flex flex-col justify-center gap-4 relative z-10">
-                  <a 
-                    href="/api/auth/google"
-                    className="flex items-center justify-center gap-3 w-full min-h-[56px] bg-[var(--background)]/50 border border-white/10 backdrop-blur-md rounded-xl font-bold text-white hover:border-blue-500/50 hover:bg-blue-500/10 hover:text-blue-400 transition-all duration-300 shadow-sm group focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
-                  >
-                    <Chrome className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                    <span>Autenticar con Google</span>
-                  </a>
-                  
-                  <div className="relative py-4">
-                    <div className="absolute inset-0 flex items-center">
-                      <span className="w-full border-t border-white/10"></span>
-                    </div>
-                    <div className="relative flex justify-center text-xs uppercase font-bold tracking-widest">
-                      <span className="bg-[#030712] px-4 text-[var(--muted-foreground)] rounded-full border border-white/5">Entorno de Pruebas</span>
-                    </div>
+                <div className="space-y-4 pt-2">
+                  <label className="text-sm font-bold uppercase tracking-wider text-[var(--muted-foreground)] flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+                    Seleccioná tu Stack y Objetivos
+                  </label>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                    {formInterests.map((tech) => {
+                      const isSelected = selectedTechs.includes(tech.id);
+                      return (
+                        <div 
+                          key={tech.id} 
+                          onClick={() => toggleTech(tech.id)}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter' || e.key === ' ') toggleTech(tech.id);
+                          }}
+                          role="checkbox"
+                          aria-checked={isSelected}
+                          tabIndex={0}
+                          className={`flex flex-col items-center justify-center p-5 rounded-2xl border-2 cursor-pointer transition-all duration-300 group focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 backdrop-blur-md ${
+                            isSelected 
+                              ? 'bg-blue-500/10 border-blue-500/50 shadow-[0_0_20px_rgba(59,130,246,0.15)] transform scale-[1.02]' 
+                              : 'bg-[#030712]/30 border-white/5 hover:border-white/20 hover:bg-white/5'
+                          }`}
+                        >
+                          <div className={`flex items-center justify-center w-12 h-12 rounded-xl mb-3 transition-colors duration-300 ${isSelected ? 'bg-blue-500/20' : 'bg-black/30 group-hover:bg-black/50'} border border-white/10`}>
+                            {tech.icon}
+                          </div>
+                          <span className={`text-sm font-bold text-center ${isSelected ? 'text-white' : 'text-white/60 group-hover:text-white'}`}>
+                            {tech.label}
+                          </span>
+                        </div>
+                      );
+                    })}
                   </div>
-                  
-                  <a 
-                    href="/dashboard"
-                    className="flex items-center justify-center gap-2 w-full min-h-[48px] rounded-xl bg-white/5 text-white/80 text-sm font-medium hover:bg-white/10 hover:shadow-inner transition-all border border-transparent hover:border-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
-                  >
-                    Entrar al Sandbox Local
-                  </a>
                 </div>
-              </div>
-            </div>
 
+                <div className="space-y-3 pt-2">
+                  <label htmlFor="description" className="text-sm font-bold uppercase tracking-wider text-[var(--muted-foreground)] flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-amber-500"></span>
+                    Descripción / Caso de Uso
+                  </label>
+                  <div className="relative">
+                    <textarea 
+                      id="description" 
+                      required 
+                      value={description}
+                      onChange={(e) => setDescription(e.target.value)}
+                      placeholder="Contanos brevemente qué problema querés resolver o qué proceso querés automatizar..." 
+                      className="w-full min-h-[120px] p-5 rounded-2xl bg-[#030712]/50 border border-white/10 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50 transition-all outline-none text-white text-lg backdrop-blur-md placeholder:text-white/20 resize-y" 
+                    />
+                    <MessageSquare className="absolute top-5 right-5 w-6 h-6 text-white/10" />
+                  </div>
+                </div>
+
+                <button 
+                  disabled={formState === 'submitting'}
+                  type="submit" 
+                  className="w-full h-16 mt-6 rounded-2xl bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-500 hover:via-indigo-500 hover:to-purple-500 text-white font-extrabold text-xl shadow-[0_0_30px_rgba(59,130,246,0.4)] hover:shadow-[0_0_40px_rgba(59,130,246,0.6)] active:scale-[0.98] transition-all flex items-center justify-center gap-3 disabled:opacity-70 disabled:scale-100 focus:outline-none focus-visible:ring-4 focus-visible:ring-purple-500/50"
+                >
+                  {formState === 'submitting' ? (
+                    <span className="flex items-center gap-3">
+                      <span className="w-6 h-6 border-4 border-white/30 border-t-white rounded-full animate-spin"></span>
+                      Procesando Solicitud...
+                    </span>
+                  ) : (
+                    <>
+                      Desplegar Mi Agente <Zap className="w-6 h-6" />
+                    </>
+                  )}
+                </button>
+              </form>
+            )}
+          </div>
+          
+          <div className="mt-8 text-center text-[var(--muted-foreground)] text-sm">
+            ¿Ya tenés un agente desplegado? <a href="/api/auth/google" className="text-blue-400 hover:text-blue-300 font-bold underline underline-offset-4 decoration-blue-500/30 transition-colors">Ingresá a tu consola operativa acá</a>.
           </div>
         </section>
 
       </main>
       
-      <footer className="w-full py-10 mt-20 text-center border-t border-white/10 z-10 bg-[#030712]/80 backdrop-blur-lg">
+      <footer className="w-full py-10 mt-10 text-center border-t border-white/10 z-10 bg-[#030712]/80 backdrop-blur-lg">
         <p className="text-sm font-medium text-[var(--muted-foreground)]">
           &copy; {new Date().getFullYear()} <span className="text-white font-bold">AGENTino 🤖</span> by NR Labs. Todos los derechos reservados.
         </p>
