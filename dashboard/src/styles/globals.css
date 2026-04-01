@@ -94,8 +94,8 @@
 }
 
 @keyframes mate-drink {
-  0%, 100% { transform: translate(0, 0) rotate(0deg); }
-  30%, 70% { transform: translate(-8px, -10px) rotate(-5deg); }
+  0%, 100% { transform: translateY(0); }
+  30%, 70% { transform: translateY(-4px); }
 }
 @keyframes robot-glow {
   0%, 100% { filter: drop-shadow(0 0 0px rgba(59, 130, 246, 0)); }
