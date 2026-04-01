@@ -10,7 +10,7 @@ const PoweredByLogos = ({ className = '', size = 'md' }: { className?: string, s
   const dividerClass = size === 'sm' ? 'h-4' : 'h-8';
 
   return (
-    <div className={`flex items-center ${gapClass} ${className}`}>
+    <div className={`flex flex-wrap justify-center items-center ${gapClass} ${className}`}>
       <div className="text-white flex items-center">
         <svg
           viewBox="1000 1300 1200 800"
@@ -163,7 +163,7 @@ export default function LandingUI() {
     { id: 'soporte', label: 'Soporte Técnico', icon: <Brain size={20} className="text-blue-500" /> },
     { id: 'ventas', label: 'Ventas E-commerce', icon: <ShoppingCart size={20} className="text-purple-500" /> },
     { id: 'interna', label: 'Gestión Interna', icon: <Bot size={20} className="text-emerald-500" /> },
-    { id: 'zenvia', label: 'Zenvia', icon: <img src="https://gdm-catalog-fmapi-prod.imgix.net/ProductLogo/de9596d6-81a8-4986-94e7-b781c49046a1.png?w=90&h=90&fit=max&dpr=3&auto=format&q=50" alt="Zenvia" className="w-5 h-5 object-contain" /> },
+    { id: 'zenvia', label: 'Zenvia', icon: <img src="https://gdm-catalog-fmapi-prod.imgix.net/ProductLogo/de9596d6-81a8-4986-94e7-b781c49046a1.png?w=90&h=90&fit=max&dpr=3&auto=format&q=50" alt="Zenvia" className="w-5 h-5 object-contain bg-white p-1 rounded-md" /> },
     { id: 'whatsapp', label: 'WhatsApp', icon: <SiWhatsapp size={20} color="#25D366" /> },
     { id: 'api', label: 'API Custom', icon: <Globe size={20} className="text-rose-500" /> }
   ];
@@ -539,7 +539,7 @@ export default function LandingUI() {
         
         <div className="flex flex-col items-center gap-5 z-10">
           <span className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--muted-foreground)]">
-            Desarrollado en alianza por
+            POWERED BY
           </span>
           <PoweredByLogos size="md" />
         </div>
