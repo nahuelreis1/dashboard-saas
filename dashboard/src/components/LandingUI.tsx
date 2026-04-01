@@ -206,7 +206,7 @@ export default function LandingUI() {
           </span>
           <div className="relative flex items-end mr-3">
             <span className="text-4xl relative z-10 animate-robot-glow">🤖</span>
-            <span className="text-[1.4rem] absolute -right-4 -bottom-1 z-20 animate-mate-drink" style={{ transformOrigin: 'bottom left' }}>🧉</span>
+            <span className="text-[1.4rem] absolute -right-3 -bottom-2 z-20 animate-mate-drink" style={{ transformOrigin: 'bottom left' }}>🧉</span>
             <span className="absolute -top-3 -right-10 text-[10px] font-mono text-blue-400 font-bold opacity-0 animate-data-float tracking-widest">
               _sync()
             </span>
