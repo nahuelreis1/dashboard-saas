@@ -116,7 +116,7 @@ export default function LandingUI() {
     
     try {
       // Enviar webhook a n8n
-      await fetch('https://n8n.tudominio.com/webhook/agentino-lead', {
+      await fetch('/api/leads', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
